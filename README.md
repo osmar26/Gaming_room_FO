@@ -4,7 +4,7 @@ Este repositorio es para fines educativos. Aquí encontrará un pequeño proyect
 A continuación se listarán los lineamientos que se solicitaron para nuestro proyecto final, el cual se divide en dos entregas, una para el laboratorio de está clase y otra para teoría. 
 
 >>>>>> Para la entrega del laboratorio contendrá los siguientes elementos:
- I. Debe de contar con por lo menos 3 paletas o flippers con materiales las cuales se moverán cada una con teclas independientes
+I. Debe de contar con por lo menos 3 paletas o flippers con materiales las cuales se moverán cada una con teclas independientes
 II. Debe de tener un resorte (que se vea como resorte) el cual se compacta y expande al presionar el botón derecho del ratón.
 III. En el tablero debe de haber por lo menos 1 objeto creado de forma jerárquica con alguna animación simple implementada el cual deberá ser instanciado varias veces para representar algunos obstáculos; la canica podría chocar o rebotar con dichas instancias del objeto
 IV. Debe de haber 3 luces implementadas, una que ilumine todo el tablero, otra luz que ilumine la zona de las dos paletas inferiores y una tercera luz que ilumine al objeto con materiales previamente creado, las luces se deben de poder prender y apagar de forma independiente
