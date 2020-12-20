@@ -19,7 +19,7 @@ Para la entrega del laboratorio contendrá los siguientes elementos:
 13. Para adaptar mejor este proyecto de teoría junto con el que se nos pide en el laboratorio, el juego de pinball se encontraría en una recamara, simulando un cuarto de “juegos”, en donde existan otros modelos (más simples) referentes a esta zona de juegos como algunos muebles, una mesa de billar, entre otras cosas y ajustar la cámara adecuadamente para que se pueda apreciar esta zona de juegos y el pinball.
 14. Por último, nosotros escogimos dos personajes en una dinámica de la clase de teoría, los cuales son: Zurg (el juguete de Toy story) y el personaje Samus Aran, por lo que nuestro cuarto de juegos contendrá ciertas referencias a los universos de dichos personajes. 
 
-Para la entrega de teoría se agregarán los siguietes líneamientos:
-15. Agregar los personajes que se escogieron los cuales son el Emperador Zurg y Samus Aran
+Para la entrega de teoría se agregarán los siguietes líneamientos: 
+15. Agregar los personajes que se escogieron los cuales son el Emperador Zurg y Samus Aran 
 16. Uno de los dos personajes deberá disparar un arma y se deberá simular el disparo, esto se activará con alguna tecla en específica. 
 17. Agregar como parte del escenario un molino con primitivas geométricas y usando jerarquía en el desarrollo de la figura. 
