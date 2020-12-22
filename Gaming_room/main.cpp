@@ -1,16 +1,15 @@
 /*---------------------------------------------------------*/
-/* ----------------   Proyecto Final ----------------------*/
+/* ---------------- Proyecto Final ------------------------*/
 /*-----------------    2021-1   ---------------------------*/
-/*-----------------                         ---------------*/
 #include <Windows.h>
 
 #include <glad/glad.h>
-#include <glfw3.h>	//main
+#include <glfw3.h> 	//main
 #include <stdlib.h>		
 #include <glm/glm.hpp>	//camera y model
 #include <glm/gtc/matrix_transform.hpp>	//camera y model
 #include <glm/gtc/type_ptr.hpp>
-#include <time.h>
+#include<time.h>
 
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -19,7 +18,7 @@
 #define SDL_MAIN_HANDLED
 #include <SDL/SDL.h>
 
-#include <shader_m.h>
+#include <shader_m.h> 
 #include <camera.h>
 #include <modelAnim.h>
 #include <model.h>
@@ -31,7 +30,8 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void my_input(GLFWwindow *window);
+//void my_input(GLFWwindow *window);
+void my_input(GLFWwindow* window, int key, int scancode, int action, int mods);
 void animate(void);
 
 // settings
@@ -39,7 +39,7 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 20.0f, 80.0f));
 float MovementSpeed = 0.1f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
@@ -49,13 +49,11 @@ bool firstMouse = true;
 const int FPS = 60;
 const int LOOP_TIME = 1000 / FPS; // = 16 milisec // 1000 millisec == 1 sec
 double	deltaTime = 0.0f,
-		lastFrame = 0.0f;
+lastFrame = 0.0f;
 
-// Light
-//glm::vec3 lightDirection = glm::vec3(-0.2f, -1.0f, -0.3f);
 //Lighting
 glm::vec3 lightPosition(0.0f, 4.0f, -10.0f);
-glm::vec3 lightDirection(0.0f, -1.0f, 0.0f);
+glm::vec3 lightDirection(0.0f, -1.0f, -1.0f);
 
 // posiciones
 float x = 0.0f;
@@ -64,13 +62,107 @@ float movAuto_z = 0.0f;
 bool animacion = false;
 
 
+//Keyframes (Manipulación y dibujo)
+float	posX = 0.0f,
+posY = 0.0f,
+posZ = 0.0f,
+rotRodIzq = 0.0f,
+giroMonito = 0.0f;
+float	incX = 0.0f,
+incY = 0.0f,
+incZ = 0.0f,
+rotInc = 0.0f,
+giroMonitoInc = 0.0f;
+
+#define MAX_FRAMES 9
+int i_max_steps = 60;
+int i_curr_steps = 0;
+typedef struct _frame
+{
+	//Variables para GUARDAR Key Frames
+	float posX;		//Variable para PosicionX
+	float posY;		//Variable para PosicionY
+	float posZ;		//Variable para PosicionZ
+	float rotRodIzq;
+	float giroMonito;
+
+}FRAME;
+
+FRAME KeyFrame[MAX_FRAMES];
+int FrameIndex = 0;			//introducir datos
+bool play = false;
+int playIndex = 0;
+
+void saveFrame(void)
+{
+	//printf("frameindex %d\n", FrameIndex);
+	std::cout << "Frame Index = " << FrameIndex << std::endl;
+
+	KeyFrame[FrameIndex].posX = posX;
+	KeyFrame[FrameIndex].posY = posY;
+	KeyFrame[FrameIndex].posZ = posZ;
+
+	KeyFrame[FrameIndex].rotRodIzq = rotRodIzq;
+	KeyFrame[FrameIndex].giroMonito = giroMonito;
+
+	FrameIndex++;
+}
+
+void resetElements(void)
+{
+	posX = KeyFrame[0].posX;
+	posY = KeyFrame[0].posY;
+	posZ = KeyFrame[0].posZ;
+
+	rotRodIzq = KeyFrame[0].rotRodIzq;
+	giroMonito = KeyFrame[0].giroMonito;
+}
+
+void interpolation(void)
+{
+	incX = (KeyFrame[playIndex + 1].posX - KeyFrame[playIndex].posX) / i_max_steps;
+	incY = (KeyFrame[playIndex + 1].posY - KeyFrame[playIndex].posY) / i_max_steps;
+	incZ = (KeyFrame[playIndex + 1].posZ - KeyFrame[playIndex].posZ) / i_max_steps;
+
+	rotInc = (KeyFrame[playIndex + 1].rotRodIzq - KeyFrame[playIndex].rotRodIzq) / i_max_steps;
+	giroMonitoInc = (KeyFrame[playIndex + 1].giroMonito - KeyFrame[playIndex].giroMonito) / i_max_steps;
+
+}
+
+
 void animate(void)
 {
-	if (animacion)
+	if (play)
 	{
-		movAuto_z += 0.03f;
+		if (i_curr_steps >= i_max_steps) //end of animation between frames?
+		{
+			playIndex++;
+			if (playIndex > FrameIndex - 2)	//end of total animation?
+			{
+				std::cout << "Animation ended" << std::endl;
+				//printf("termina anim\n");
+				playIndex = 0;
+				play = false;
+			}
+			else //Next frame interpolations
+			{
+				i_curr_steps = 0; //Reset counter
+								  //Interpolation
+				interpolation();
+			}
+		}
+		else
+		{
+			//Draw animation
+			posX += incX;
+			posY += incY;
+			posZ += incZ;
 
-		std::cout << "posicion = " << movAuto_z << " en Z" << std::endl;
+			rotRodIzq += rotInc;
+			giroMonito += giroMonitoInc;
+
+			i_curr_steps++;
+		}
 	}
 }
 
@@ -100,6 +192,7 @@ int main()
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetKeyCallback(window, my_input);
 
 	// tell GLFW to capture our mouse
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -142,7 +235,24 @@ int main()
 	// load models
 	// -----------
 	Model piso("resources/objects/piso/piso.obj");
-	Model carro("resources/objects/lambo/carroceria.obj");
+	Model botaDer("resources/objects/Personaje/bota.obj");
+	Model piernaDer("resources/objects/Personaje/piernader.obj");
+	Model piernaIzq("resources/objects/Personaje/piernader.obj");
+	Model torso("resources/objects/Personaje/torso.obj");
+	Model brazoDer("resources/objects/Personaje/brazoder.obj");
+	Model brazoIzq("resources/objects/Personaje/brazoizq.obj");
+	Model cabeza("resources/objects/Personaje/cabeza.obj");
+	Model pisoModel("resources/objects/piso/piso.obj");
+
+	//Inicialización de KeyFrames
+	for (int i = 0; i < MAX_FRAMES; i++)
+	{
+		KeyFrame[i].posX = 0;
+		KeyFrame[i].posY = 0;
+		KeyFrame[i].posZ = 0;
+		KeyFrame[i].rotRodIzq = 0;
+		KeyFrame[i].giroMonito = 0;
+	}
 
 	// draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -152,14 +262,14 @@ int main()
 	while (!glfwWindowShouldClose(window))
 	{
 		skyboxShader.setInt("skybox", 0);
-		
+
 		// per-frame time logic
 		// --------------------
 		lastFrame = SDL_GetTicks();
 
 		// input
 		// -----
-		my_input(window);
+		//my_input(window);
 		animate();
 
 		// render
@@ -167,16 +277,13 @@ int main()
 		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Personaje 1
-		// -------------------------------------------------------------------------------------------------------------------------
 		// don't forget to enable shader before setting uniforms
 		staticShader.use();
 		//Setup Advanced Lights
 		staticShader.setVec3("viewPos", camera.Position);
 		staticShader.setVec3("dirLight.direction", lightDirection);
 		staticShader.setVec3("dirLight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("dirLight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
 
 		staticShader.setVec3("pointLight[0].position", lightPosition);
@@ -197,9 +304,8 @@ int main()
 
 		staticShader.setFloat("material_shininess", 32.0f);
 
-
-
 		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 tmp = glm::mat4(1.0f);
 		// view/projection transformations
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
 		glm::mat4 view = camera.GetViewMatrix();
@@ -210,20 +316,12 @@ int main()
 		glm::vec3 lightColor = glm::vec3(1.0f);
 		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.75f);
-		
+
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Escenario
 		// -------------------------------------------------------------------------------------------------------------------------
 		staticShader.setMat4("projection", projection);
 		staticShader.setMat4("view", view);
-
-		/*staticShader.setVec3("material.specular", glm::vec3(0.5f));
-		staticShader.setFloat("material.shininess", 32.0f);
-		staticShader.setVec3("light.ambient", ambientColor);
-		staticShader.setVec3("light.diffuse", diffuseColor);
-		staticShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-		staticShader.setVec3("light.direction", lightDirection);
-		staticShader.setVec3("viewPos", camera.Position);*/
 
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
@@ -231,12 +329,58 @@ int main()
 		staticShader.setMat4("model", model);
 		piso.Draw(staticShader);
 
-		model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(15.0f, -1.75f, movAuto_z));
-		model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
-		//model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Personaje
+		// -------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 1, 0));
+		model = glm::translate(model, glm::vec3(posX, posY, posZ));
+		tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
 		staticShader.setMat4("model", model);
-		carro.Draw(staticShader);
+		torso.Draw(staticShader);
+
+		//Pierna Der
+		model = glm::translate(tmp, glm::vec3(-0.5f, 0.0f, -0.1f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piernaDer.Draw(staticShader);
+
+		//Pie Der
+		model = glm::translate(model, glm::vec3(0, -0.9f, -0.2f));
+		staticShader.setMat4("model", model);
+		botaDer.Draw(staticShader);
+
+		//Pierna Izq
+		model = glm::translate(tmp, glm::vec3(0.5f, 0.0f, -0.1f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piernaIzq.Draw(staticShader);
+
+		//Pie Iz
+		model = glm::translate(model, glm::vec3(0, -0.9f, -0.2f));
+		staticShader.setMat4("model", model);
+		botaDer.Draw(staticShader);	//Izq trase
+
+		//Brazo derecho
+		model = glm::translate(tmp, glm::vec3(0.0f, -1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-0.75f, 2.5f, 0));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		brazoDer.Draw(staticShader);
+
+		//Brazo izquierdo
+		model = glm::translate(tmp, glm::vec3(0.0f, -1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		brazoIzq.Draw(staticShader);
+
+		//Cabeza
+		model = glm::translate(tmp, glm::vec3(0.0f, -1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::translate(model, glm::vec3(0.0f, 2.5f, 0));
+		staticShader.setMat4("model", model);
+		cabeza.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Termina Escenario
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -247,7 +391,7 @@ int main()
 		skyboxShader.use();
 		skybox.Draw(skyboxShader, view, projection, camera);
 
-		// Creo que limitan el framerate a 60
+		// Limitar el framerate a 60
 		deltaTime = SDL_GetTicks() - lastFrame; // time for full 1 loop
 		//std::cout <<"frame time = " << frameTime << " milli sec"<< std::endl;
 		if (deltaTime < LOOP_TIME)
@@ -269,7 +413,68 @@ int main()
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void my_input(GLFWwindow *window)
+void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera.ProcessKeyboard(FORWARD, (float)deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera.ProcessKeyboard(BACKWARD, (float)deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.ProcessKeyboard(LEFT, (float)deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
+	//To Configure Model
+	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+		posZ++;
+	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+		posZ--;
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
+		posX--;
+	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
+		posX++;
+	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+		rotRodIzq--;
+	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+		rotRodIzq++;
+	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS)
+		giroMonito--;
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
+		giroMonito++;
+
+	//To play KeyFrame animation 
+	if (key == GLFW_KEY_P && action == GLFW_PRESS)
+	{
+		if (play == false && (FrameIndex > 1))
+		{
+			std::cout << "Play animation" << std::endl;
+			resetElements();
+			//First Interpolation				
+			interpolation();
+
+			play = true;
+			playIndex = 0;
+			i_curr_steps = 0;
+		}
+		else
+		{
+			play = false;
+			std::cout << "Not enough Key Frames" << std::endl;
+		}
+	}
+
+	//To Save a KeyFrame
+	if (key == GLFW_KEY_L && action == GLFW_PRESS)
+	{
+		if (FrameIndex < MAX_FRAMES)
+		{
+			saveFrame();
+		}
+	}
+}
+
+/*void my_input(GLFWwindow *window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
@@ -282,21 +487,55 @@ void my_input(GLFWwindow *window)
 		camera.ProcessKeyboard(LEFT, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		animacion = true;
-	
-
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		camera.MovementSpeed = MovementSpeed * 2.5f;
-	else
-		camera.MovementSpeed = MovementSpeed;
-
+	//To Configure Model
+	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+		posZ++;
+	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+		posZ--;
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
+		posX--;
 	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
-		lightPosition.x -= 1.0f;
-	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
-		lightPosition.x += 1.0f;
-	
-}
+		posX++;
+	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+		rotRodIzq--;
+	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+		rotRodIzq++;
+	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS)
+		giroMonito--;
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
+		giroMonito++;
+
+
+	//To play KeyFrame animation
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+	{
+		if (play == false && (FrameIndex > 1))
+		{
+			std::cout << "play" << std::endl;
+			resetElements();
+			//First Interpolation
+			interpolation();
+
+			play = true;
+			playIndex = 0;
+			i_curr_steps = 0;
+		}
+		else
+		{
+			play = false;
+		}
+	}
+
+	//To Save a KeyFrame
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+	{
+		if (FrameIndex < MAX_FRAMES)
+		{
+			saveFrame();
+		}
+	}
+
+}*/
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
