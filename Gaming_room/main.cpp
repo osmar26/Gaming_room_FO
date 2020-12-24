@@ -6,14 +6,14 @@
 #include <glad/glad.h>
 #include <glfw3.h> 	//main
 #include <stdlib.h>		
-#include <glm/glm.hpp>	//camera y model
-#include <glm/gtc/matrix_transform.hpp>	//camera y model
+#include <glm/glm.hpp>	//camera y modelos
+#include <glm/gtc/matrix_transform.hpp>	//camera y modelos
 #include <glm/gtc/type_ptr.hpp>
 #include<time.h>
 
 
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>	//Texture
+#include <stb_image.h>	//Texturas
 
 #define SDL_MAIN_HANDLED
 #include <SDL/SDL.h>
@@ -30,15 +30,14 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-//void my_input(GLFWwindow *window);
 void my_input(GLFWwindow* window, int key, int scancode, int action, int mods);
 void animate(void);
 
-// settings
+// Opciones
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-// camera
+// Camara
 Camera camera(glm::vec3(0.0f, 20.0f, 80.0f));
 float MovementSpeed = 0.1f;
 float lastX = SCR_WIDTH / 2.0f;
@@ -47,15 +46,15 @@ bool firstMouse = true;
 
 // timing
 const int FPS = 60;
-const int LOOP_TIME = 1000 / FPS; // = 16 milisec // 1000 millisec == 1 sec
+const int LOOP_TIME = 1000 / FPS; // = 16 milisegundos // 1000 milisegundos == 1 sec
 double	deltaTime = 0.0f,
 lastFrame = 0.0f;
 
-//Lighting
+//Iluminación
 glm::vec3 lightPosition(0.0f, 4.0f, -10.0f);
 glm::vec3 lightDirection(0.0f, -1.0f, -1.0f);
 
-// posiciones
+// Posiciones
 float x = 0.0f;
 float y = 0.0f;
 float movAuto_z = 0.0f;
@@ -79,7 +78,7 @@ int i_max_steps = 60;
 int i_curr_steps = 0;
 typedef struct _frame
 {
-	//Variables para GUARDAR Key Frames
+	//Variables para guardar cuadros clave
 	float posX;		//Variable para PosicionX
 	float posY;		//Variable para PosicionY
 	float posZ;		//Variable para PosicionZ
