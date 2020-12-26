@@ -18,7 +18,7 @@
 #define SDL_MAIN_HANDLED
 #include <SDL/SDL.h>
 
-#include <shader_m.h> 
+#include <shader.h> 
 #include <camera.h>
 #include <modelAnim.h>
 #include <model.h>
