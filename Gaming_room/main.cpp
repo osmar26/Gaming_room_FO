@@ -279,7 +279,7 @@ int main()
 		// don't forget to enable shader before setting uniforms
 		staticShader.use();
 		//Setup Advanced Lights
-		staticShader.setVec3("viewPos", camera.Position);
+		staticShader.setVec3("viewPos", camera.getPosition());
 		staticShader.setVec3("dirLight.direction", lightDirection);
 		staticShader.setVec3("dirLight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
 		staticShader.setVec3("dirLight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
@@ -306,7 +306,7 @@ int main()
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 tmp = glm::mat4(1.0f);
 		// view/projection transformations
-		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(camera.getZoom()), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
 		glm::mat4 view = camera.GetViewMatrix();
 		staticShader.setMat4("projection", projection);
 		staticShader.setMat4("view", view);
