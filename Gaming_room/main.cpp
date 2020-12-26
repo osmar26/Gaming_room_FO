@@ -234,7 +234,7 @@ int main()
 	// load models
 	// -----------
 	Model piso("resources/objects/piso/piso.obj");
-	Model tv("resources/objects/television/television.fbx");
+	Model tv("resources/objects/television/television_2.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -324,10 +324,10 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// television
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 1, 0));
-		model = glm::translate(model, glm::vec3(posX, posY, posZ));
-		staticShader.setMat4("model", model);
-		tv.Draw(staticShader);
+		//model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 1, 0));
+		//model = glm::translate(model, glm::vec3(posX, posY, posZ));
+		//staticShader.setMat4("model", model);
+		//tv.Draw(staticShader);
 
 		
 		// -------------------------------------------------------------------------------------------------------------------------
