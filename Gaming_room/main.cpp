@@ -33,12 +33,19 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void my_input(GLFWwindow* window, int key, int scancode, int action, int mods);
 void animate(void);
 
+void myData(void);
+void LoadTextures(void);
+unsigned int generateTextures(char*, bool);
+
 // Opciones
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+//
+GLuint VBO, VAO, EBO;
+
 // Camara
-Camera camera(glm::vec3(0.0f, 20.0f, 80.0f));
+Camera camera(glm::vec3(0.0f, -115.0f, 450.0f));
 float MovementSpeed = 0.1f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
@@ -91,6 +98,17 @@ FRAME KeyFrame[MAX_FRAMES];
 int FrameIndex = 0;			//introducir datos
 bool play = false;
 int playIndex = 0;
+
+//Variables para cargar las texturas
+unsigned int	t_wall,
+				t_roof,
+				t_window,
+				t_door,
+				t_base,
+				t_base2,
+				t_bush,
+				t_smokestack,
+				t_door_garage;
 
 void saveFrame(void)
 {
@@ -165,6 +183,112 @@ void animate(void)
 	}
 }
 
+unsigned int generateTextures(const char* filename, bool alfa)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// load image, create texture and generate mipmaps
+	int width, height, nrChannels;
+	stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
+
+	unsigned char *data = stbi_load(filename, &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		if (alfa)
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		else
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		return textureID;
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+		return 100;
+	}
+
+	stbi_image_free(data);
+}
+
+void LoadTextures()
+{
+	t_wall = generateTextures("Texturas/bricks.jpg", 0);
+}
+
+void myData()
+{
+	float vertices[] = {
+		// positions          // texture coords
+		 0.5f,  0.5f, 0.5f,   1.0f, 1.0f, // top right
+		 0.5f, -0.5f, 0.5f,   1.0f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.5f,   0.0f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.5f,   0.0f, 1.0f,  // top left 
+
+		-0.5f, 0.5f, -0.5f,		1.0f, 1.0f,	//V7 // top right
+		-0.5f, -0.5f, -0.5f,	1.0f, 0.0f,	//V3 // bottom right
+		0.5f, -0.5f, -0.5f,		0.0f, 0.0f,	//V2 // bottom left- Trasera
+		0.5f, 0.5f, -0.5f,		0.0f, 1.0f,	//V6 // top left 
+
+		-0.5f, 0.5f, 0.5f,		1.0f, 1.0f, //V4 - Izq
+		-0.5f, -0.5f, 0.5f,		1.0f, 0.0f, //V0
+		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f, //V3
+		-0.5f, 0.5f, -0.5f,		0.0f, 1.0f, //V7
+
+		0.5f, 0.5f, 0.5f,		1.0f, 1.0f, //V5 - Der
+		0.5f, -0.5f, 0.5f,		1.0f, 0.0f,//V1
+		0.5f, -0.5f, -0.5f,		0.0f, 0.0f, //V2
+		0.5f, 0.5f, -0.5f,		0.0f, 1.0f, //V6
+
+		-0.5f, 0.5f, 0.5f,		1.0f, 1.0f, //V4 - Sup
+		-0.5f, 0.5f, -0.5f,		1.0f, 0.0f, //V7
+		0.5f, 0.5f, -0.5f,		0.0f, 0.0f, //V6
+		0.5f, 0.5f, 0.5f,		0.0f, 1.0f, //V5
+
+		-0.5f, -0.5f, -0.5f,	1.0f, 1.0f, //V3
+		-0.5f, -0.5f, 0.5f,		1.0f, 0.0f, //V0 - Inf
+		0.5f, -0.5f, 0.5f,		0.0f, 0.0f, //V1
+		0.5f, -0.5f, -0.5f,		0.0f, 1.0f, //V2
+
+
+		-0.5f, -0.5f, 0.0f,     0.0f, 0.0f,	//TRI
+		0.5f, -0.5f, 0.0f, 		1.0f, 0.0f,
+		0.0f, 0.5f, 0.0f, 		0.5f, 1.0f
+
+	};
+	unsigned int indices[] = {
+		0, 1, 3, // first triangle
+		1, 2, 3  // second triangle
+	};
+
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
+
+	glBindVertexArray(VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	// position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	// texture coord attribute
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+}
+
+
 int main()
 {
 	// glfw: initialize and configure
@@ -206,9 +330,14 @@ int main()
 
 	// configure global opengl state
 	// -----------------------------
+	//Datos a utilizar
+	LoadTextures();
+	myData();
+	//my_sphere.init();
 	glEnable(GL_DEPTH_TEST);
 
 	// build and compile shaders
+	Shader projectionShader("shaders/shader_texture_color.vs", "shaders/shader_texture_color.fs");
 	// -------------------------
 	//Shader staticShader("Shaders/lightVertex.vs", "Shaders/lightFragment.fs");
 	Shader staticShader("Shaders/shader_Lights.vs", "Shaders/shader_Lights.fs");
@@ -321,14 +450,53 @@ int main()
 		staticShader.setMat4("model", model);
 		piso.Draw(staticShader);
 
+
 		// -------------------------------------------------------------------------------------------------------------------------
-		// television
+		// ESTRUCTURA DEL CUARTO 
+		projectionShader.use();
+
+		// pass them to the shaders
+		projectionShader.setMat4("model", model);
+		projectionShader.setMat4("view", view);
+		// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+		projectionShader.setMat4("projection", projection);
+
+		glBindVertexArray(VAO);
+		//Colocar código aquí
+		//este algortmo solicita que al final se dibujen los objetos con blending
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//Fuente valor de alpha, disminuir en uno
+
+		//Estructura externa
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -50.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(500.0f, 200.0f, 550.0f));
+		projectionShader.setMat4("model", model);
+		//la textura se puede combinar con algun color, si se pone en blanco no afectara la imagen
+		projectionShader.setVec3("aColor", 1.0f, 0.8f, 0.0f);
+		glBindTexture(GL_TEXTURE_2D, t_wall);//
+		glDrawArrays(GL_QUADS, 0, 24);
+
+		//estructura interna
+		//model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -100.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(200.0f, 100.0f, 150.0f));
+		//projectionShader.setMat4("model", model);
+		//la textura se puede combinar con algun color, si se pone en blanco no afectara la imagen
+		//projectionShader.setVec3("aColor", 1.0f, 0.8f, 0.0f);
+		//glBindTexture(GL_TEXTURE_2D, t_wall);//
+		//glDrawArrays(GL_QUADS, 0, 24);
+
+		glDisable(GL_BLEND);
+		glBindVertexArray(0);
+		//--------------------------------------------------------------------------------------------------------------------------
+
 		// -------------------------------------------------------------------------------------------------------------------------
+		// Television
 		//model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 1, 0));
 		//model = glm::translate(model, glm::vec3(posX, posY, posZ));
 		//staticShader.setMat4("model", model);
 		//tv.Draw(staticShader);
 
+		// -------------------------------------------------------------------------------------------------------------------------
 		
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Termina Escenario
