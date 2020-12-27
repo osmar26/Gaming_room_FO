@@ -46,7 +46,7 @@ GLuint VBO, VAO, EBO;
 
 // Camara
 Camera camera(glm::vec3(0.0f, -115.0f, 450.0f));
-float MovementSpeed = 2.0f;
+float MovementSpeed = 0.2f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -54,7 +54,7 @@ bool firstMouse = true;
 // timing
 const int FPS = 60;
 const int LOOP_TIME = 1000 / FPS; // = 16 milisegundos // 1000 milisegundos == 1 sec
-double	deltaTime = 0.0f,
+double	deltaTime = 1.0f,
 lastFrame = 0.0f;
 
 //Iluminación
@@ -478,7 +478,7 @@ int main()
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -50.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(500.0f, 200.0f, 550.0f));
 		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", 1.0f, 1.0f, 1.0f);
+		projectionShader.setVec3("aColor", 1.0f, 1.0f, 1.0f);	
 		glBindTexture(GL_TEXTURE_2D, t_inside_wall);//
 		glDrawArrays(GL_QUADS, 0, 24);
 
