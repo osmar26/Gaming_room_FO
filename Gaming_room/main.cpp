@@ -46,7 +46,7 @@ GLuint VBO, VAO, EBO;
 
 // Camara
 Camera camera(glm::vec3(0.0f, -115.0f, 450.0f));
-float MovementSpeed = 0.1f;
+float MovementSpeed = 2.0f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -101,14 +101,9 @@ int playIndex = 0;
 
 //Variables para cargar las texturas
 unsigned int	t_wall,
-				t_roof,
-				t_window,
-				t_door,
-				t_base,
-				t_base2,
-				t_bush,
-				t_smokestack,
-				t_door_garage;
+				t_inside_wall,
+				t_floor,
+				t_ceiling;
 
 void saveFrame(void)
 {
@@ -220,6 +215,9 @@ unsigned int generateTextures(const char* filename, bool alfa)
 void LoadTextures()
 {
 	t_wall = generateTextures("Texturas/bricks.jpg", 0);
+	t_inside_wall = generateTextures("Texturas/inside_wall.jpg", 0);
+	t_floor = generateTextures("Texturas/floor.jpg", 0);
+	t_ceiling = generateTextures("Texturas/ceiling.jpg", 0);
 }
 
 void myData()
@@ -469,21 +467,36 @@ int main()
 
 		//Estructura externa
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -50.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(500.0f, 200.0f, 550.0f));
+		model = glm::scale(model, glm::vec3(501.0f, 201.0f, 551.0f));
 		projectionShader.setMat4("model", model);
 		//la textura se puede combinar con algun color, si se pone en blanco no afectara la imagen
 		projectionShader.setVec3("aColor", 1.0f, 0.8f, 0.0f);
 		glBindTexture(GL_TEXTURE_2D, t_wall);//
 		glDrawArrays(GL_QUADS, 0, 24);
 
-		//estructura interna
-		//model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -100.0f, 0.0f));
-		//model = glm::scale(model, glm::vec3(200.0f, 100.0f, 150.0f));
-		//projectionShader.setMat4("model", model);
-		//la textura se puede combinar con algun color, si se pone en blanco no afectara la imagen
-		//projectionShader.setVec3("aColor", 1.0f, 0.8f, 0.0f);
-		//glBindTexture(GL_TEXTURE_2D, t_wall);//
-		//glDrawArrays(GL_QUADS, 0, 24);
+		//estructura interna - Paredes
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -50.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(500.0f, 200.0f, 550.0f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", 1.0f, 1.0f, 1.0f);
+		glBindTexture(GL_TEXTURE_2D, t_inside_wall);//
+		glDrawArrays(GL_QUADS, 0, 24);
+
+		// Piso
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -149.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(500.0f, 0.25f, 550.0f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", 1.0f, 1.0f, 1.0f);
+		glBindTexture(GL_TEXTURE_2D, t_floor);//
+		glDrawArrays(GL_QUADS, 0, 24);
+
+		// Techo
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 50.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(500.0f, 0.25f, 550.0f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", 1.0f, 1.0f, 1.0f);
+		glBindTexture(GL_TEXTURE_2D, t_ceiling);//
+		glDrawArrays(GL_QUADS, 0, 24);
 
 		glDisable(GL_BLEND);
 		glBindVertexArray(0);
