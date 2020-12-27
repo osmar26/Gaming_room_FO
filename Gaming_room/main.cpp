@@ -504,10 +504,10 @@ int main()
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Television
-		//model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 1, 0));
-		//model = glm::translate(model, glm::vec3(posX, posY, posZ));
-		//staticShader.setMat4("model", model);
-		//tv.Draw(staticShader);
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(60.0f, -149.0f, -215.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		tv.Draw(staticShader);
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		
