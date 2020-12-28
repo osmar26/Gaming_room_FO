@@ -362,6 +362,7 @@ int main()
 	// -----------
 	Model piso("resources/objects/piso/piso.obj");
 	Model tv("resources/objects/television/television_2.obj");
+	Model billar("resources/objects/mesa_billar/mesa_billar.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -508,7 +509,16 @@ int main()
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		tv.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
 
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Mesa de billar 
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(60.0f, -155.5f,150.0f));
+		model = glm::scale(model, glm::vec3(12.0f, 12.0f, 12.0f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		billar.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 		
 		// -------------------------------------------------------------------------------------------------------------------------
