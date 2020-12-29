@@ -363,6 +363,7 @@ int main()
 	Model piso("resources/objects/piso/piso.obj");
 	Model tv("resources/objects/television/television_2.obj");
 	Model billar("resources/objects/mesa_billar/mesa_billar.obj");
+	Model sofa_set("resources/objects/sofa_set/sofa_set.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -511,6 +512,17 @@ int main()
 		tv.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Juego de sofas
+		//model = glm::translate(glm::mat4(1.0f), glm::vec3(40.0f, -149.5f, -130.0f));
+		//model = glm::scale(model, glm::vec3(20.0f, 20.0f, 20.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+		//staticShader.setMat4("model", model);
+		//sofa_set.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
+
+
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Mesa de billar 
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(60.0f, -155.5f,150.0f));
@@ -521,6 +533,7 @@ int main()
 		billar.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 		
+
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Termina Escenario
 		// -------------------------------------------------------------------------------------------------------------------------
