@@ -363,7 +363,7 @@ int main()
 	Model piso("resources/objects/piso/piso.obj");
 	Model tv("resources/objects/television/television_2.obj");
 	Model billar("resources/objects/mesa_billar/mesa_billar.obj");
-	Model sofa_set("resources/objects/sofa_set/sofa_set.obj");
+	//Model sofa_set("resources/objects/sofa_set/sofa_set.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
