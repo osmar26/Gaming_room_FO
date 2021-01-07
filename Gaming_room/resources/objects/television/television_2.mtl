@@ -26,8 +26,8 @@ newmtl Material__56
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka sabana.png
-	map_Kd sabana.png
+	map_Ka video_game.jpg
+	map_Kd video_game.jpg
 
 newmtl ObjStand_blinn5SG
 	Ns 10.0000

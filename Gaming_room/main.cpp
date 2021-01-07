@@ -1,6 +1,9 @@
 /*---------------------------------------------------------*/
-/* ---------------- Proyecto Final ------------------------*/
-/*-----------------    2021-1   ---------------------------*/
+/* ------------------- Proyecto Final ---------------------*/
+/* -------------------     Equipo:    ---------------------*/
+/* ---------------- Juarez Aguilar Osmar ------------------*/
+/* ---------------- Meza Ortega Fernando ------------------*/
+/*---------------------    2021-1   ------------------------*/
 #include <Windows.h>
 
 #include <glad/glad.h>
@@ -103,7 +106,8 @@ int playIndex = 0;
 unsigned int	t_wall,
 				t_inside_wall,
 				t_floor,
-				t_ceiling;
+				t_ceiling,
+				t_pnbll_table;
 
 void saveFrame(void)
 {
@@ -218,11 +222,13 @@ void LoadTextures()
 	t_inside_wall = generateTextures("Texturas/inside_wall.jpg", 0);
 	t_floor = generateTextures("Texturas/floor.jpg", 0);
 	t_ceiling = generateTextures("Texturas/ceiling.jpg", 0);
+	t_pnbll_table = generateTextures("Texturas/pinball_table.jpg", 0);
 }
 
 void myData()
 {
 	float vertices[] = {
+		//CUBO
 		// positions          // texture coords
 		 0.5f,  0.5f, 0.5f,   1.0f, 1.0f, // top right
 		 0.5f, -0.5f, 0.5f,   1.0f, 0.0f, // bottom right
@@ -254,10 +260,41 @@ void myData()
 		0.5f, -0.5f, 0.5f,		0.0f, 0.0f, //V1
 		0.5f, -0.5f, -0.5f,		0.0f, 1.0f, //V2
 
-
+		//TRIANGULO
 		-0.5f, -0.5f, 0.0f,     0.0f, 0.0f,	//TRI
 		0.5f, -0.5f, 0.0f, 		1.0f, 0.0f,
-		0.0f, 0.5f, 0.0f, 		0.5f, 1.0f
+		0.0f, 0.5f, 0.0f, 		0.5f, 1.0f,
+
+		//TRAPECIO
+		-0.5f, -0.5f, 0.5f,		1.0f, 1.0f,	//FRONTAL
+		0.5f, -0.5f, 0.5f,		1.0f, 0.0f,
+		0.25f, 0.5f, 0.5f, 		0.0f, 0.0f,
+		-0.25, 0.5f, 0.5f, 		0.0f, 1.0f,
+
+		0.5f, -0.5f, -0.5f,		1.0f, 1.0f,	//TRASERA
+		-0.5f, -0.5f, -0.5f,	1.0f, 0.0f,
+		-0.25f, 0.5f, -0.5f, 	0.0f, 0.0f,
+		0.25, 0.5f, -0.5f, 		0.0f, 1.0f,
+
+		-0.25f, 0.5f, -0.5f, 	1.0f, 1.0f,
+		-0.25, 0.5f, 0.5f, 		1.0f, 0.0f,
+		-0.5f,-0.5f, 0.5f,		0.0f, 0.0f,	//IZQ
+		-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,
+
+		0.25f, 0.5f, 0.5f,		1.0f, 1.0f,	//DER
+		0.5f, -0.5f, 0.5f,		1.0f, 0.0f,
+		0.5f, -0.5f, -0.5f, 	0.0f, 0.0f,
+		0.25f, 0.5f, -0.5f,		0.0f, 1.0f,
+
+		-0.25f, 0.5f, 0.5f,		1.0f, 1.0f,	//SUP
+		0.25f, 0.5f, 0.5f,		1.0f, 0.0f,
+		0.25f, 0.5f, -0.5f, 	0.0f, 0.0f,
+		-0.25, 0.5f, -0.5f,		0.0f, 1.0f,
+
+		-0.5f, -0.5f, 0.5f,		1.0f, 1.0f,	//INF
+		-0.5f, -0.5f, -0.5f,	1.0f, 0.0f,
+		0.5f, -0.5f, -0.5f, 	0.0f, 0.0f,
+		0.5, -0.5f, 0.5f,		0.0f, 1.0f
 
 	};
 	unsigned int indices[] = {
@@ -439,22 +476,63 @@ int main()
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.75f);
 
 		// -------------------------------------------------------------------------------------------------------------------------
-		// Escenario
+		// ESCENARIO - MODELOS
+		// -------------------------------------------------------------------------------------------------------------------------
 		// -------------------------------------------------------------------------------------------------------------------------
 		staticShader.setMat4("projection", projection);
 		staticShader.setMat4("view", view);
 
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Piso
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, -150.75f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.2f));
 		staticShader.setMat4("model", model);
 		piso.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
 
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Television
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(70.0f, -149.0f, -215.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		tv.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Sofa
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(70.0f, -173.0f, -115.0f));
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.5f));
+		staticShader.setMat4("model", model);
+		sofa_set.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Mesa de billar 
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(60.0f, -155.5f,170.0f));
+		model = glm::scale(model, glm::vec3(12.0f, 12.0f, 12.0f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		billar.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
+		
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Flippers
+		// -------------------------------------------------------------------------------------------------------------------------
+
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// -------------------------------------------------------------------------------------------------------------------------
+		// ESCENARIO - FIGURAS
+		// -------------------------------------------------------------------------------------------------------------------------
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// ESTRUCTURA DEL CUARTO 
 		projectionShader.use();
-
 		// pass them to the shaders
 		projectionShader.setMat4("model", model);
 		projectionShader.setMat4("view", view);
@@ -480,7 +558,7 @@ int main()
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -50.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(500.0f, 200.0f, 550.0f));
 		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", 1.0f, 1.0f, 1.0f);	
+		projectionShader.setVec3("aColor", 1.0f, 1.0f, 1.0f);
 		glBindTexture(GL_TEXTURE_2D, t_inside_wall);//
 		glDrawArrays(GL_QUADS, 0, 24);
 
@@ -500,41 +578,52 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, t_ceiling);//
 		glDrawArrays(GL_QUADS, 0, 24);
 
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Mesa del Pinball
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-150.0f, -120.0f, 50.0f));
+		model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(85.0f, 20.0f, 150.f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		glBindTexture(GL_TEXTURE_2D, t_pnbll_table);
+		glDrawArrays(GL_QUADS, 0, 24);
+
+		//patas
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-180.0f, -140.0f, 115.0f));
+		model = glm::scale(model, glm::vec3(10.0f, 20.0f, 8.f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawArrays(GL_QUADS, 0, 24); //A
+
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-120.0f, -140.0f, 115.0f));
+		model = glm::scale(model, glm::vec3(10.0f, 20.0f, 8.f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawArrays(GL_QUADS, 0, 24); //B
+
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-180.0f, -137.0f, -10.0f));
+		model = glm::scale(model, glm::vec3(10.0f, 25.0f, 8.f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawArrays(GL_QUADS, 0, 24); //C
+
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-120.0f, -137.0f, -10.0f));
+		model = glm::scale(model, glm::vec3(10.0f, 25.0f, 8.f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawArrays(GL_QUADS, 0, 24); //D
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+
+		
+
 		glDisable(GL_BLEND);
 		glBindVertexArray(0);
 		//--------------------------------------------------------------------------------------------------------------------------
 
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Television
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(70.0f, -149.0f, -215.0f));
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		tv.Draw(staticShader);
-		// -------------------------------------------------------------------------------------------------------------------------
 
-
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Sofa
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(70.0f, -173.0f, -115.0f));
-		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.5f));
-		staticShader.setMat4("model", model);
-		sofa_set.Draw(staticShader);
-		// -------------------------------------------------------------------------------------------------------------------------
-
-
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Mesa de billar 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(60.0f, -155.5f,170.0f));
-		model = glm::scale(model, glm::vec3(12.0f, 12.0f, 12.0f));
-		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		staticShader.setMat4("model", model);
-		billar.Draw(staticShader);
-		// -------------------------------------------------------------------------------------------------------------------------
 		
-
 		// -------------------------------------------------------------------------------------------------------------------------
-		// Termina Escenario
+		// TERMINA ESCENARIO
 		// -------------------------------------------------------------------------------------------------------------------------
 
 		//-------------------------------------------------------------------------------------
