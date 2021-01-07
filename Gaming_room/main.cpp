@@ -107,7 +107,8 @@ unsigned int	t_wall,
 				t_inside_wall,
 				t_floor,
 				t_ceiling,
-				t_pnbll_table;
+				t_pnbll_table,
+				t_pnbll_board;
 
 void saveFrame(void)
 {
@@ -223,6 +224,7 @@ void LoadTextures()
 	t_floor = generateTextures("Texturas/floor.jpg", 0);
 	t_ceiling = generateTextures("Texturas/ceiling.jpg", 0);
 	t_pnbll_table = generateTextures("Texturas/pinball_table.jpg", 0);
+	t_pnbll_board = generateTextures("Texturas/pinball_board.jpg", 0);
 }
 
 void myData()
@@ -614,6 +616,14 @@ int main()
 		glDrawArrays(GL_QUADS, 0, 24); //D
 		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
+		//Tablero pinball - Figura
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-150.0f, -110.0f, 50.7f));
+		model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(85.0f, 0.5f, 150.f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		glBindTexture(GL_TEXTURE_2D, t_pnbll_board);
+		glDrawArrays(GL_QUADS, 0, 24);
 		
 
 		glDisable(GL_BLEND);
