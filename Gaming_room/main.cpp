@@ -108,7 +108,8 @@ unsigned int	t_wall,
 				t_floor,
 				t_ceiling,
 				t_pnbll_table,
-				t_pnbll_board;
+				t_pnbll_board,
+				t_obstcl;
 
 void saveFrame(void)
 {
@@ -225,6 +226,7 @@ void LoadTextures()
 	t_ceiling = generateTextures("Texturas/ceiling.jpg", 0);
 	t_pnbll_table = generateTextures("Texturas/pinball_table.jpg", 0);
 	t_pnbll_board = generateTextures("Texturas/pinball_board.jpg", 0);
+	t_obstcl = generateTextures("Texturas/flipper.jpg", 0);
 }
 
 void myData()
@@ -261,11 +263,6 @@ void myData()
 		-0.5f, -0.5f, 0.5f,		1.0f, 0.0f, //V0 - Inf
 		0.5f, -0.5f, 0.5f,		0.0f, 0.0f, //V1
 		0.5f, -0.5f, -0.5f,		0.0f, 1.0f, //V2
-
-		//TRIANGULO
-		-0.5f, -0.5f, 0.0f,     0.0f, 0.0f,	//TRI
-		0.5f, -0.5f, 0.0f, 		1.0f, 0.0f,
-		0.0f, 0.5f, 0.0f, 		0.5f, 1.0f,
 
 		//TRAPECIO
 		-0.5f, -0.5f, 0.5f,		1.0f, 1.0f,	//FRONTAL
@@ -478,14 +475,14 @@ int main()
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.75f);
 
 		// -------------------------------------------------------------------------------------------------------------------------
-		// ESCENARIO - MODELOS
+		// ESCENARIO
 		// -------------------------------------------------------------------------------------------------------------------------
-		// -------------------------------------------------------------------------------------------------------------------------
+		
 		staticShader.setMat4("projection", projection);
 		staticShader.setMat4("view", view);
 
 		// -------------------------------------------------------------------------------------------------------------------------
-		// Piso
+		// Piso - Escenario
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, -150.75f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.2f));
@@ -494,7 +491,12 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 
 		// -------------------------------------------------------------------------------------------------------------------------
+		// CUARTO
+		// -------------------------------------------------------------------------------------------------------------------------
+		//OBJETOS
+		// -------------------------------------------------------------------------------------------------------------------------
 		// Television
+		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(70.0f, -149.0f, -215.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
@@ -503,43 +505,21 @@ int main()
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Sofa
+		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(70.0f, -173.0f, -115.0f));
 		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.5f));
 		staticShader.setMat4("model", model);
 		sofa_set.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Mesa de billar 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(60.0f, -155.5f,170.0f));
-		model = glm::scale(model, glm::vec3(12.0f, 12.0f, 12.0f));
-		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		staticShader.setMat4("model", model);
-		billar.Draw(staticShader);
-		// -------------------------------------------------------------------------------------------------------------------------
-		
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Flippers
-		// -------------------------------------------------------------------------------------------------------------------------
 
-
-		// -------------------------------------------------------------------------------------------------------------------------
-		
-
-		// -------------------------------------------------------------------------------------------------------------------------
-		// -------------------------------------------------------------------------------------------------------------------------
-		// ESCENARIO - FIGURAS
-		// -------------------------------------------------------------------------------------------------------------------------
-
-		// -------------------------------------------------------------------------------------------------------------------------
-		// ESTRUCTURA DEL CUARTO 
 		projectionShader.use();
 		// pass them to the shaders
 		projectionShader.setMat4("model", model);
 		projectionShader.setMat4("view", view);
 		// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 		projectionShader.setMat4("projection", projection);
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
 		glBindVertexArray(VAO);
 		//Colocar código aquí
@@ -547,6 +527,10 @@ int main()
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//Fuente valor de alpha, disminuir en uno
 
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// ESTRUCTURA DEL CUARTO E INTERIOR 
+		// -------------------------------------------------------------------------------------------------------------------------
 		//Estructura externa
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -50.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(501.0f, 201.0f, 551.0f));
@@ -579,9 +563,11 @@ int main()
 		projectionShader.setVec3("aColor", 1.0f, 1.0f, 1.0f);
 		glBindTexture(GL_TEXTURE_2D, t_ceiling);//
 		glDrawArrays(GL_QUADS, 0, 24);
-
+		// -------------------------------------------------------------------------------------------------------------------------
+		
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Mesa del Pinball
+		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-150.0f, -120.0f, 50.0f));
 		model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(85.0f, 20.0f, 150.f));
@@ -614,24 +600,45 @@ int main()
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawArrays(GL_QUADS, 0, 24); //D
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
 		//Tablero pinball - Figura
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-150.0f, -110.0f, 50.7f));
 		model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(85.0f, 0.5f, 150.f));
 		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		projectionShader.setVec3("aColor", glm::vec3(0.8f, 1.0f, 0.2f));
 		glBindTexture(GL_TEXTURE_2D, t_pnbll_board);
-		glDrawArrays(GL_QUADS, 0, 24);
-		
+		glDrawArrays(GL_QUADS, 0, 24);		
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Flippers
+		// -------------------------------------------------------------------------------------------------------------------------
+		//model = glm::translate(glm::mat4(1.0f), glm::vec3(-125.0f, -110.0f, 100.7f));
+		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		//model = glm::scale(model, glm::vec3(3.0f, 15.0f, 5.0f));
+		//projectionShader.setMat4("model", model);
+		//projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		//glBindTexture(GL_TEXTURE_2D, t_obstcl);
+		//glDrawArrays(GL_QUADS, 24, 24);
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		// -------------------------------------------------------------------------------------------------------------------------
 
 		glDisable(GL_BLEND);
 		glBindVertexArray(0);
-		//--------------------------------------------------------------------------------------------------------------------------
-
-
 		
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Mesa de billar 
+		// -------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(60.0f, -155.5f, 170.0f));
+		model = glm::scale(model, glm::vec3(12.0f, 12.0f, 12.0f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		billar.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
+
+	
 		// -------------------------------------------------------------------------------------------------------------------------
 		// TERMINA ESCENARIO
 		// -------------------------------------------------------------------------------------------------------------------------
