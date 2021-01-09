@@ -226,7 +226,7 @@ void LoadTextures()
 	t_ceiling = generateTextures("Texturas/ceiling.jpg", 0);
 	t_pnbll_table = generateTextures("Texturas/pinball_table.jpg", 0);
 	t_pnbll_board = generateTextures("Texturas/pinball_board.jpg", 0);
-	t_obstcl = generateTextures("Texturas/flipper.jpg", 0);
+	//t_obstcl = generateTextures("Texturas/flipper.jpg", 0);
 }
 
 void myData()
@@ -249,10 +249,10 @@ void myData()
 		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f, //V3
 		-0.5f, 0.5f, -0.5f,		0.0f, 1.0f, //V7
 
-		0.5f, 0.5f, 0.5f,		1.0f, 1.0f, //V5 - Der
-		0.5f, -0.5f, 0.5f,		1.0f, 0.0f,//V1
-		0.5f, -0.5f, -0.5f,		0.0f, 0.0f, //V2
-		0.5f, 0.5f, -0.5f,		0.0f, 1.0f, //V6
+		0.5f, 0.5f, 0.5f,		0.0f, 1.0f, //V5 - Der
+		0.5f, -0.5f, 0.5f,		0.0f, 0.0f,//V1
+		0.5f, -0.5f, -0.5f,		1.0f, 0.0f, //V2
+		0.5f, 0.5f, -0.5f,		1.0f, 1.0f, //V6
 
 		-0.5f, 0.5f, 0.5f,		1.0f, 1.0f, //V4 - Sup
 		-0.5f, 0.5f, -0.5f,		1.0f, 0.0f, //V7
@@ -400,6 +400,8 @@ int main()
 	Model tv("resources/objects/television/television_2.obj");
 	Model billar("resources/objects/mesa_billar/mesa_billar.obj");
 	Model sofa_set("resources/objects/sofa_set/sofa.obj");
+	Model flipper("resources/objects/flipper/flipper_1.obj");
+	Model canica("resources/objects/canica/ball.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -569,7 +571,7 @@ int main()
 		// Mesa del Pinball
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-150.0f, -120.0f, 50.0f));
-		model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(85.0f, 20.0f, 150.f));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
@@ -602,8 +604,8 @@ int main()
 		glDrawArrays(GL_QUADS, 0, 24); //D
 
 		//Tablero pinball - Figura
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-150.0f, -110.0f, 50.7f));
-		model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-150.0f, -110.0f, 50.0f));
+		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(85.0f, 0.5f, 150.f));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.8f, 1.0f, 0.2f));
@@ -611,7 +613,7 @@ int main()
 		glDrawArrays(GL_QUADS, 0, 24);		
 
 		// -------------------------------------------------------------------------------------------------------------------------
-		// Flippers
+		// Obstaculo - Modo Jearquico - Pinball
 		// -------------------------------------------------------------------------------------------------------------------------
 		//model = glm::translate(glm::mat4(1.0f), glm::vec3(-125.0f, -110.0f, 100.7f));
 		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -626,7 +628,47 @@ int main()
 		glDisable(GL_BLEND);
 		glBindVertexArray(0);
 		
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Flipper inf Derecho
+		// -------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-139.0f, -112.2f, 105.0f));
+		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		flipper.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
+		
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Flipper inf Izquierdo
+		// -------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-161.0f, -112.2f, 105.0f));
+		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(126.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		flipper.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
 
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Flipper sup Derecho
+		// -------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-136.0f, -112.2f, 70.0f));
+		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		flipper.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Flipper sup Izquierdo
+		// -------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-164.0f, -112.2f, 70.0f));
+		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(126.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		flipper.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// -------------------------------------------------------------------------------------------------------------------------
+		
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Mesa de billar 
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -638,7 +680,7 @@ int main()
 		billar.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 
-	
+			
 		// -------------------------------------------------------------------------------------------------------------------------
 		// TERMINA ESCENARIO
 		// -------------------------------------------------------------------------------------------------------------------------
