@@ -402,6 +402,7 @@ int main()
 	Model sofa_set("resources/objects/sofa_set/sofa.obj");
 	Model flipper("resources/objects/flipper/flipper_1.obj");
 	Model canica("resources/objects/canica/ball.obj");
+	Model resorte("resources/objects/resorte/spring.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -664,6 +665,16 @@ int main()
 		model = glm::rotate(model, glm::radians(126.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		flipper.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Resorte
+		// -------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-95.0f, -110.0f, 105.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));//el scale va en X para simular su compactacion
+		staticShader.setMat4("model", model);
+		resorte.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 
 		// -------------------------------------------------------------------------------------------------------------------------
