@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <vector>
+#include <iostream>
 
 /*Con esta enumeracion definimos varias opciones para el movimiento de la camara.
 Es una abstracción, de esta forma la entrada puede ser por teclado o por Joystick por ejemplo*/
@@ -52,11 +53,16 @@ public:
     para ello se usa la clase enum*/
     void ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime);
 
+    /*Con esta función podremos decrementar la velocidad o incrementarla*/
+    void IncrementaDecrementaVel(bool incre);
+
     //Procesa la entrada proveniente de un sistema de entrada del mouse y requiere el valor x e y.
     void ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset, GLboolean constrainPitch = true);
 
     //Recibe la entrada de la rueda de scroll de un mouse.
     void ProcessMouseScroll(GLfloat yoffset);
+
+    void imprimirPos();
 
     inline glm::vec3 getPosition() const
     {

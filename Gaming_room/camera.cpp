@@ -68,3 +68,30 @@ void Camera::updateCameraVectors()
     Right = glm::normalize(glm::cross(Front, WorldUp));
     Up = glm::normalize(glm::cross(Right, Front));
 }
+
+
+void Camera::IncrementaDecrementaVel(bool incre)
+{
+    if (incre == true)
+    {
+        MovementSpeed += 0.1f;
+        std::cout << "La velocidad de la camara incremento a: " << MovementSpeed << std::endl;
+    }
+    else
+    {
+        MovementSpeed -= 0.1f;
+        std::cout << "La velocidad de la camara decremento a: " << MovementSpeed << std::endl;
+    }
+    //Si superamos ciertos limites sería bueno resetearlo a la velocidad original
+    if (MovementSpeed <= 0.0f || MovementSpeed >= 2.0f)
+    {
+        MovementSpeed = SPEED;
+        std::cout << "La velocidad de la camara supera limites, reseteando a: " << MovementSpeed << std::endl;
+    }
+}
+
+void Camera::imprimirPos()
+{
+    std::cout << "La posicion de la camara es: " << Position.x << ", " << Position.y << ", "
+        << Position.z << std::endl;
+}

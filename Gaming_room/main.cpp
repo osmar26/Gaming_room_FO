@@ -754,7 +754,25 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		camera.ProcessKeyboard(Camera_Movement::LEFT, (float)deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(Camera_Movement::RIGHT, (float)deltaTime);
-	//To Configure Model
+    //O para decrementar velocidad y P para incrementar velocidad
+    if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+    {
+        //Decrementamos por 0.1f
+        camera.IncrementaDecrementaVel(false);
+    }
+    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+    {
+        //Incrementamos por 0.1f
+        camera.IncrementaDecrementaVel(true);
+    }
+
+    //Para conseguir la posicion de la camara, util para ubicar las posiciones de los modelos
+    if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+    {
+        camera.imprimirPos();
+    }
+
+	//To Configure Model, en este momento no estan siendo utilizados
 	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
 		posZ++;
 	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
@@ -771,8 +789,8 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		giroMonito--;
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
 		giroMonito++;
-
-	//To play KeyFrame animation 
+    //Por el momento comentado
+	/*//To play KeyFrame animation 
 	if (key == GLFW_KEY_P && action == GLFW_PRESS)
 	{
 		if (play == false && (FrameIndex > 1))
@@ -800,7 +818,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		{
 			saveFrame();
 		}
-	}
+	}*/
 }
 
 /*void my_input(GLFWwindow *window)
