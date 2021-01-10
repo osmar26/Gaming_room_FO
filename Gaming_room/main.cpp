@@ -403,6 +403,7 @@ int main()
 	Model flipper("resources/objects/flipper/flipper_1.obj");
 	Model canica("resources/objects/canica/ball.obj");
 	Model resorte("resources/objects/resorte/spring.obj");
+    Model pinball("resources/objects/Pinball/Pinball.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -514,7 +515,13 @@ int main()
 		staticShader.setMat4("model", model);
 		sofa_set.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
-
+        // -------------------------------------------------------------------------------------------------------------------------
+        // Carcasa de pinball
+        // -------------------------------------------------------------------------------------------------------------------------
+        model = glm::translate(glm::mat4(1.0f), glm::vec3(-138.0f, -130.0f, 100.0f));
+        model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.5f));
+        staticShader.setMat4("model", model);
+        pinball.Draw(staticShader);
 
 		projectionShader.use();
 		// pass them to the shaders
@@ -567,52 +574,49 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, t_ceiling);//
 		glDrawArrays(GL_QUADS, 0, 24);
 		// -------------------------------------------------------------------------------------------------------------------------
-		
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Mesa del Pinball
-		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-150.0f, -120.0f, 50.0f));
-		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(85.0f, 20.0f, 150.f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-		glBindTexture(GL_TEXTURE_2D, t_pnbll_table);
-		glDrawArrays(GL_QUADS, 0, 24);
+        
+        /*model = glm::translate(glm::mat4(1.0f), glm::vec3(-150.0f, -120.0f, 50.0f));
+        //model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(85.0f, 20.0f, 150.f));
+        projectionShader.setMat4("model", model);
+        projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+        glBindTexture(GL_TEXTURE_2D, t_pnbll_table);
+        glDrawArrays(GL_QUADS, 0, 24);
 
-		//patas
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-180.0f, -140.0f, 115.0f));
-		model = glm::scale(model, glm::vec3(10.0f, 20.0f, 8.f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawArrays(GL_QUADS, 0, 24); //A
+        //patas
+        model = glm::translate(glm::mat4(1.0f), glm::vec3(-180.0f, -140.0f, 115.0f));
+        model = glm::scale(model, glm::vec3(10.0f, 20.0f, 8.f));
+        projectionShader.setMat4("model", model);
+        projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+        glDrawArrays(GL_QUADS, 0, 24); //A
 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-120.0f, -140.0f, 115.0f));
-		model = glm::scale(model, glm::vec3(10.0f, 20.0f, 8.f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawArrays(GL_QUADS, 0, 24); //B
+        model = glm::translate(glm::mat4(1.0f), glm::vec3(-120.0f, -140.0f, 115.0f));
+        model = glm::scale(model, glm::vec3(10.0f, 20.0f, 8.f));
+        projectionShader.setMat4("model", model);
+        projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+        glDrawArrays(GL_QUADS, 0, 24); //B
 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-180.0f, -137.0f, -10.0f));
-		model = glm::scale(model, glm::vec3(10.0f, 25.0f, 8.f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawArrays(GL_QUADS, 0, 24); //C
+        model = glm::translate(glm::mat4(1.0f), glm::vec3(-180.0f, -137.0f, -10.0f));
+        model = glm::scale(model, glm::vec3(10.0f, 25.0f, 8.f));
+        projectionShader.setMat4("model", model);
+        projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+        glDrawArrays(GL_QUADS, 0, 24); //C
 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-120.0f, -137.0f, -10.0f));
-		model = glm::scale(model, glm::vec3(10.0f, 25.0f, 8.f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawArrays(GL_QUADS, 0, 24); //D
+        model = glm::translate(glm::mat4(1.0f), glm::vec3(-120.0f, -137.0f, -10.0f));
+        model = glm::scale(model, glm::vec3(10.0f, 25.0f, 8.f));
+        projectionShader.setMat4("model", model);
+        projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+        glDrawArrays(GL_QUADS, 0, 24); //D
 
-		//Tablero pinball - Figura
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-150.0f, -110.0f, 50.0f));
-		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(85.0f, 0.5f, 150.f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.8f, 1.0f, 0.2f));
-		glBindTexture(GL_TEXTURE_2D, t_pnbll_board);
-		glDrawArrays(GL_QUADS, 0, 24);		
-
+        //Tablero pinball - Figura
+        model = glm::translate(glm::mat4(1.0f), glm::vec3(-150.0f, -110.0f, 50.0f));
+        //model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(85.0f, 0.5f, 150.f));
+        projectionShader.setMat4("model", model);
+        projectionShader.setVec3("aColor", glm::vec3(0.8f, 1.0f, 0.2f));
+        glBindTexture(GL_TEXTURE_2D, t_pnbll_board);
+        glDrawArrays(GL_QUADS, 0, 24);
+        */
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Obstaculo - Modo Jearquico - Pinball
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -633,6 +637,7 @@ int main()
 		// Flipper inf Derecho
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-139.0f, -112.2f, 105.0f));
+        model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		flipper.Draw(staticShader);
@@ -642,6 +647,7 @@ int main()
 		// Flipper inf Izquierdo
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-161.0f, -112.2f, 105.0f));
+        model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(126.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
@@ -651,7 +657,8 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Flipper sup Derecho
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-136.0f, -112.2f, 70.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-136.0f, -112.2f, 70.0f));        
+        model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		flipper.Draw(staticShader);
@@ -661,6 +668,7 @@ int main()
 		// Flipper sup Izquierdo
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-164.0f, -112.2f, 70.0f));
+        model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(126.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
@@ -670,9 +678,10 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Resorte
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-95.0f, -110.0f, 105.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-105.0f, -122.0f, 143.8f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));//el scale va en X para simular su compactacion
+        model = glm::rotate(model, glm::radians(1.8f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.65f, 0.65f, 0.65f));//el scale va en X para simular su compactacion
 		staticShader.setMat4("model", model);
 		resorte.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -684,7 +693,7 @@ int main()
 		// Mesa de billar 
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(60.0f, -155.5f, 170.0f));
-		model = glm::scale(model, glm::vec3(12.0f, 12.0f, 12.0f));
+		model = glm::scale(model, glm::vec3(13.0f, 13.0f, 13.0f));
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		staticShader.setMat4("model", model);
@@ -696,7 +705,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-118.0f, -109.0f, 93.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));//el scale va en X para simular su compactacion
+		model = glm::scale(model, glm::vec3(0.65f, 0.65f, 0.65f));//el scale va en X para simular su compactacion
 		staticShader.setMat4("model", model);
 		canica.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
