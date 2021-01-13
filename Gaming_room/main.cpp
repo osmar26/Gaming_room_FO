@@ -636,7 +636,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Flipper inf Derecho
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-130.0f, -122.1f, 140.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-130.0f, -123.0f, 140.0f));
         model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		staticShader.setMat4("model", model);
@@ -646,7 +646,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Flipper inf Izquierdo
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-146.0f, -122.1f, 140.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-146.0f, -123.0f, 140.0f));
         model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(126.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -659,7 +659,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-127.0f, -122.1f, 110.0f));        
         model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
-		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		flipper.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -669,7 +669,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-149.0f, -122.1f, 110.0f));
         model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
-		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(126.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		flipper.Draw(staticShader);
@@ -678,7 +678,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Resorte
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-106.5f, -122.3f, 143.8f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-106.5f, -122.5f, 143.8f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(1.8f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.65f, 0.65f, 0.65f));//el scale va en X para simular su compactacion
