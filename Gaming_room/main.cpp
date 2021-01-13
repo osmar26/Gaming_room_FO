@@ -27,6 +27,7 @@
 #include <model.h>
 #include <Skybox.h>
 #include <iostream>
+#include <irrklang/irrKlang.h>
 
 //#pragma comment(lib, "winmm.lib")
 
@@ -70,6 +71,10 @@ float y = 0.0f;
 float movAuto_z = 0.0f;
 bool animacion = false;
 
+//Musica
+irrklang::ISoundEngine *SoundEngine = irrklang::createIrrKlangDevice();
+irrklang::ISoundSource* amigo = SoundEngine->addSoundSourceFromFile("audio/You ve Got a Friend in Me with.mp3");
+irrklang::ISoundSource* tallon = SoundEngine->addSoundSourceFromFile("audio/Metroid PrimeTD.mp3");
 
 //Keyframes (Manipulación y dibujo)
 float	posX = 0.0f,
@@ -420,6 +425,10 @@ int main()
 
 	// render loop
 	// -----------
+
+    //Para la musica
+    SoundEngine->play2D(amigo, true);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		skyboxShader.setInt("skybox", 0);
@@ -736,6 +745,8 @@ int main()
 
 	skybox.Terminate();
 
+    SoundEngine->drop();
+
 	glfwTerminate();
 	return 0;
 }
@@ -789,6 +800,19 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		giroMonito--;
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
 		giroMonito++;
+    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+    {
+        if (SoundEngine->isCurrentlyPlaying(amigo))
+        {
+            SoundEngine->stopAllSounds();
+            SoundEngine->play2D(tallon, true);
+        }
+        else if (SoundEngine->isCurrentlyPlaying(tallon))
+        {
+            SoundEngine->stopAllSounds();
+            SoundEngine->play2D(amigo, true);
+        }
+    }
     //Por el momento comentado
 	/*//To play KeyFrame animation 
 	if (key == GLFW_KEY_P && action == GLFW_PRESS)
