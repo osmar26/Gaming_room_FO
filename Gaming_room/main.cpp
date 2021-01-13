@@ -88,6 +88,18 @@ incZ = 0.0f,
 rotInc = 0.0f,
 giroMonitoInc = 0.0f;
 
+//Animacion metroid
+GLfloat metroid_x = 0.0f, 
+        metroid_y=0.0f, 
+        metroid_z=0.0f,
+        metroid_ori=180.0f;
+
+bool animacion_metroid = true,
+    re_metroid1 = true,
+    re_metroid2 = false,
+    re_metroid3 = false,
+    re_metroid4 = false; 
+
 #define MAX_FRAMES 9
 int i_max_steps = 60;
 int i_curr_steps = 0;
@@ -155,38 +167,56 @@ void interpolation(void)
 
 void animate(void)
 {
-	if (play)
-	{
-		if (i_curr_steps >= i_max_steps) //end of animation between frames?
-		{
-			playIndex++;
-			if (playIndex > FrameIndex - 2)	//end of total animation?
-			{
-				std::cout << "Animation ended" << std::endl;
-				//printf("termina anim\n");
-				playIndex = 0;
-				play = false;
-			}
-			else //Next frame interpolations
-			{
-				i_curr_steps = 0; //Reset counter
-								  //Interpolation
-				interpolation();
-			}
-		}
-		else
-		{
-			//Draw animation
-			posX += incX;
-			posY += incY;
-			posZ += incZ;
+    if (animacion_metroid)
+    {
+        static float pii = glm::pi<float>();
+        if (re_metroid1)
+        {
+            metroid_x += 0.2f;
+            if (metroid_x >= 5.0f)
+            {
+                re_metroid1 = false;
+                re_metroid2 = true;
+                metroid_ori = -90.0f;
+            }
+        }
+        if (re_metroid2)
+        {
+            metroid_z -= 0.2f;
+            metroid_y += 0.2f*glm::tan(1.6819f*pii / 180.0f);
+            if (metroid_z <= -2.5f)
+            {
+                re_metroid2 = false;
+                re_metroid3 = true;
+                metroid_ori = 0.0f;
+            }
+        }
+        if (re_metroid3)
+        {
+            metroid_x -= 0.2f;
+            if (metroid_x <= 0.0f)
+            {
+                re_metroid3 = false;
+                re_metroid4 = true;
+                metroid_ori = 90.0f;
+            }
+        }
 
-			rotRodIzq += rotInc;
-			giroMonito += giroMonitoInc;
-
-			i_curr_steps++;
-		}
-	}
+        if (re_metroid4)
+        {
+            metroid_z += 0.2f;
+            metroid_y -= 0.2f*glm::tan(1.6819f*pii / 180.0f);
+            if (metroid_z >= 0.0f)
+            {
+                re_metroid4 = false;
+                re_metroid1 = true;
+                metroid_x = 0.0f;
+                metroid_y = 0.0f;
+                metroid_z = 0.0f;
+                metroid_ori = 180.0f;
+            }
+        }
+    }
 }
 
 unsigned int generateTextures(const char* filename, bool alfa)
@@ -409,6 +439,7 @@ int main()
 	Model canica("resources/objects/canica/ball.obj");
 	Model resorte("resources/objects/resorte/spring.obj");
     Model pinball("resources/objects/Pinball/Pinball.obj");
+    Model metroid("resources/objects/Metroid/metroid.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -487,7 +518,7 @@ int main()
 		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.75f);
 
-		// -------------------------------------------------------------------------------------------------------------------------
+		// ---------------------------------------------------------a----------------------------------------------------------------
 		// ESCENARIO
 		// -------------------------------------------------------------------------------------------------------------------------
 		
@@ -638,7 +669,8 @@ int main()
 		//glDrawArrays(GL_QUADS, 24, 24);
 		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
 		// -------------------------------------------------------------------------------------------------------------------------
-
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glDisable(GL_BLEND);
 		glBindVertexArray(0);
 		
@@ -694,9 +726,6 @@ int main()
 		staticShader.setMat4("model", model);
 		resorte.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
-
-		// -------------------------------------------------------------------------------------------------------------------------
-		// -------------------------------------------------------------------------------------------------------------------------
 		
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Mesa de billar 
@@ -718,6 +747,22 @@ int main()
 		staticShader.setMat4("model", model);
 		canica.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
+
+        // -------------------------------------------------------------------------------------------------------------------------
+        // Metroid-obstaculo
+        // -------------------------------------------------------------------------------------------------------------------------
+
+        model = glm::translate(glm::mat4(1.0f), glm::vec3(-138.579f + metroid_x, -119.0f + metroid_y, 82.2686f + metroid_z));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(1.8f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(metroid_ori), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, glm::vec3(2.5f, 2.5f, 2.5f));
+        staticShader.setMat4("model", model);
+        metroid.Draw(staticShader);
+
+
+        // -------------------------------------------------------------------------------------------------------------------------
+        // -------------------------------------------------------------------------------------------------------------------------
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// TERMINA ESCENARIO

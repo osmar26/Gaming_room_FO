@@ -21,6 +21,13 @@
 #include <vector>
 using namespace std;
 
+struct Material {
+    glm::vec3 Diffuse;
+    glm::vec3 Specular;
+    glm::vec3 Ambient;
+    float Shininess;
+};
+
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
 
 class Model 
@@ -65,6 +72,26 @@ private:
 
         // process ASSIMP's root node recursively
         processNode(scene->mRootNode, scene);
+    }
+
+    Material loadMaterial(aiMaterial* mat) {
+        Material material;
+        aiColor3D color(0.f, 0.f, 0.f);
+        float shininess;
+
+        mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+        material.Diffuse = glm::vec3(color.r, color.b, color.g);
+
+        mat->Get(AI_MATKEY_COLOR_AMBIENT, color);
+        material.Ambient = glm::vec3(color.r, color.b, color.g);
+
+        mat->Get(AI_MATKEY_COLOR_SPECULAR, color);
+        material.Specular = glm::vec3(color.r, color.b, color.g);
+
+        mat->Get(AI_MATKEY_SHININESS, shininess);
+        material.Shininess = shininess;
+
+        return material;
     }
 
     // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
