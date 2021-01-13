@@ -703,7 +703,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Canicas
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-118.0f, -121.0f, 139.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-118.5f, -121.5f, 138.5f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.65f, 0.65f, 0.65f));//el scale va en X para simular su compactacion
 		staticShader.setMat4("model", model);
