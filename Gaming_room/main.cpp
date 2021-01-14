@@ -79,15 +79,15 @@ irrklang::ISoundSource* tallon = SoundEngine->addSoundSourceFromFile("audio/Metr
 
 //Keyframes (Manipulación y dibujo)
 float	posX = 0.0f,
-posY = 0.0f,
-posZ = 0.0f,
-rotRodIzq = 0.0f,
-giroMonito = 0.0f;
+		posY = 0.0f,
+		posZ = 0.0f,
+		rotRodIzq = 0.0f,
+		giroMonito = 0.0f;	
 float	incX = 0.0f,
-incY = 0.0f,
-incZ = 0.0f,
-rotInc = 0.0f,
-giroMonitoInc = 0.0f;
+		incY = 0.0f,
+		incZ = 0.0f,
+		rotInc = 0.0f,
+		giroMonitoInc = 0.0f;
 
 //Para facilitar las animaciones en el plano inclinado del pinball
 GLfloat const angulo = 1.6959f;
@@ -120,11 +120,11 @@ GLfloat metroid_x = 0.0f,
 		metroid_z = 0.0f,
 		metroid_ori = 180.0f;
 
-//animacion resorte
+//animacion resorte y canica 
 GLfloat mov_resorte_x = 0.65f,
-		mov_canica_x = 0.0f,
-		mov_canica_y = 0.0f,
-		mov_canica_z = 0.0f,
+		mov_canica_x = -116.5f,
+		mov_canica_y = -121.5f,
+		mov_canica_z = 138.5f,
 		rot_canica = 0.0f;
 
 
@@ -139,7 +139,10 @@ bool animacion_resorte = false,
 	flag_resorte1 = true,
 	flag_resorte2 = false;
 
-//bool animacion_canica_1 = false;
+bool animacion_canica_1 = false,
+	flag_canica1 = false,
+	flag_canica2 = false,
+	flag_canica3 = false;
 
 #define MAX_FRAMES 9
 int i_max_steps = 60;
@@ -274,10 +277,53 @@ void animate(void)
 			if (mov_resorte_x >= 0.65f) {
 				flag_resorte2 = false;
 				flag_resorte1 = false;
-				//animacion_canica_1 = true;
+				animacion_canica_1 = true;
 			}
 			else {
 				mov_resorte_x += 0.05f;
+			}
+		}
+
+		if (animacion_canica_1) {
+			//mov_canica_x = -116.5ff,
+			//mov_canica_y = -121.5f,
+			//mov_canica_z = 138.5f,
+			if (mov_canica_z > 95.0f) {
+				mov_canica_z -= 0.5f;
+			}
+			else {
+				flag_canica1 = true;
+			}
+
+			if (flag_canica1) {
+				if (mov_canica_y >= -117.5f) {
+					mov_canica_y += 0.5f;
+				}
+				else {
+					flag_canica1 = false;
+					flag_canica2 = true;
+				}
+			}
+			
+			if (flag_canica2) {
+				if (mov_canica_x >= -135.0f) {
+					mov_canica_x -= 0.05f;
+				}
+				else {
+					flag_canica2 = false;
+					flag_canica3 - true;
+				}
+			}
+			
+			if (flag_canica3) {
+				if (mov_canica_z <= 138.5f) {
+					mov_canica_z += 0.5f;
+				}
+				else {
+					flag_canica3 = false;
+					animacion_canica_1 = false;
+					//flag_canica4 = true;
+				}
 			}
 		}
 	}
@@ -805,10 +851,10 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 
 		// -------------------------------------------------------------------------------------------------------------------------
-		// Canicas
+		// Canica Resorte
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-118.5f, -121.5f, 138.5f));
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(mov_canica_x, mov_canica_y, mov_canica_z));
+		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
 		staticShader.setMat4("model", model);
 		canica.Draw(staticShader);
