@@ -155,11 +155,8 @@ bool animacion_flippers_izq = false,
 	animacion_flippers_der = false,
 	flag_flip1 = true,
 	flag_flip2 = false,
-	flag_flip3 = false,
-	flag_flip4 = false,
-	flag_flip5 = false,
-	flag_flip6 = false,
-	flag_flip7 = false;
+	flag_flip3 = true,
+	flag_flip4 = false;
 
 #define MAX_FRAMES 9
 int i_max_steps = 60;
@@ -344,8 +341,11 @@ void animate(void)
 			}
 
 			if (flag_canica4) {
-				animacion_resorte = false;
+				//reset values
+				flag_canica0 = true;
 				animacion_canica_1 = false;
+				flag_resorte1 = true;
+				animacion_resorte = false;
 				mov_canica_x = -116.5f;
 				mov_canica_y = -121.5f;
 				mov_canica_z = 139.5f;
@@ -373,15 +373,16 @@ void animate(void)
 			else {
 				flag_flip2 = false;
 				animacion_flippers_izq = false;
+				flag_flip1 = true;
 			}
 		}
 	}
 
 	if (animacion_flippers_der) {
 		if (flag_flip3) {
-			if (rot_flipper_inf_der <= 200.0f || rot_flipper_sup_der <= 200.0f) {
-				rot_flipper_inf_der += 5.5;
-				rot_flipper_sup_der += 5.5;
+			if (rot_flipper_inf_der >= -74.0f || rot_flipper_sup_der >= -74.0f) {
+				rot_flipper_inf_der -= 5.5;
+				rot_flipper_sup_der -= 5.5;
 			}
 			else {
 				flag_flip3 = false;
@@ -390,13 +391,14 @@ void animate(void)
 		}
 
 		if (flag_flip4) {
-			if (rot_flipper_inf_der >= 126.0f || rot_flipper_sup_der >= 126.0f) {
-				rot_flipper_inf_der -= 5.5;
-				rot_flipper_sup_der -= 5.5;
+			if (rot_flipper_inf_der <= 0.0f || rot_flipper_sup_der <= 0.0f) {
+				rot_flipper_inf_der += 5.5;
+				rot_flipper_sup_der += 5.5;
 			}
 			else {
 				flag_flip4 = false;
 				animacion_flippers_der = false;
+				flag_flip3 = true;
 			}
 		}
 	}
