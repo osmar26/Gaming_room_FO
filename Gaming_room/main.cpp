@@ -88,6 +88,29 @@ incZ = 0.0f,
 rotInc = 0.0f,
 giroMonitoInc = 0.0f;
 
+//Para facilitar las animaciones en el plano inclinado del pinball
+GLfloat angulo = 1.6959f;
+glm::vec3 inf_izq = glm::vec3(-159.632f, -122.493f, 157.976f);
+glm::vec3 inf_der = glm::vec3(-117.212f, -122.493f, 157.976f);
+glm::vec3 sup_izq = glm::vec3(-159.632f, -119.196f, 61.5415f);
+glm::vec3 sup_der = glm::vec3(-117.212f, -119.196f, 61.5415f);
+GLfloat const ANCHO = inf_der.x - inf_izq.x;
+GLfloat const ALTO = inf_der.z - sup_der.z;
+GLfloat const ALTURA = sup_der.y - inf_der.y;
+
+//Esquina inf izquierda 0.0f, 0.0f, 0.0f
+//Esquina inf derecha ANCHO, 0.0F, 0.0f
+//Esquina sup derecha ANCHO, ALTURA, ALTO
+//Esquina sup izquierda 0.0f, ALTURA, ALTO
+//ANCHO: 42.42  ALTURA:3.297 ALTO: 96.4345
+
+glm::vec3 convertir_inclinado(glm::vec2 coordenada)
+{
+    GLfloat coordenada = (coordenada.y / ALTO)*3.297;
+    glm::vec3 vector = glm::vec3(coordenada.x, coordenada, coordenada.y);
+    return vector;
+}
+
 //Animacion metroid
 GLfloat metroid_x = 0.0f, 
         metroid_y=0.0f, 
@@ -366,11 +389,11 @@ int main()
 	/*glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);*/
-
 #ifdef __APPLE__
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
+    convertir_inclinado(glm::vec2(0.0f, 0.0f));
 	// glfw window creation
 	// --------------------
 	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Gaming Room - Final Project", NULL, NULL);
