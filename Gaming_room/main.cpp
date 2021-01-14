@@ -342,6 +342,7 @@ void animate(void)
 
 			if (flag_canica4) {
 				//reset values
+				flag_canica4 = false;
 				flag_canica0 = true;
 				animacion_canica_1 = false;
 				flag_resorte1 = true;
