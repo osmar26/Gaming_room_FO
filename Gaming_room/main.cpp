@@ -33,6 +33,7 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void my_input(GLFWwindow* window, int key, int scancode, int action, int mods);
 void animate(void);
@@ -113,17 +114,32 @@ glm::vec3 convertir_inclinado(glm::vec2 coordenada)
     return vector;
 }
 
-//Animacion metroid
-GLfloat metroid_x = 0.0f, 
-        metroid_y=0.0f, 
-        metroid_z=0.0f,
-        metroid_ori=180.0f;
+//Animacion metroid 
+GLfloat metroid_x = 0.0f,
+		metroid_y = 0.0f,
+		metroid_z = 0.0f,
+		metroid_ori = 180.0f;
+
+//animacion resorte
+GLfloat mov_resorte_x = 0.65f,
+		mov_canica_x = 0.0f,
+		mov_canica_y = 0.0f,
+		mov_canica_z = 0.0f,
+		rot_canica = 0.0f;
+
+
 
 bool animacion_metroid = true,
     re_metroid1 = true,
     re_metroid2 = false,
     re_metroid3 = false,
     re_metroid4 = false; 
+
+bool animacion_resorte = false,
+	flag_resorte1 = true,
+	flag_resorte2 = false;
+
+//bool animacion_canica_1 = false;
 
 #define MAX_FRAMES 9
 int i_max_steps = 60;
@@ -242,6 +258,29 @@ void animate(void)
             }
         }
     }
+	
+	if (animacion_resorte) {
+		if (flag_resorte1) {
+			if (mov_resorte_x >= 0.10f) {
+				mov_resorte_x -= 0.05f;
+			}
+			else {
+				flag_resorte2 = true;
+				flag_resorte1 = false;
+			}
+		}
+		
+		if (flag_resorte2) {
+			if (mov_resorte_x >= 0.65f) {
+				flag_resorte2 = false;
+				flag_resorte1 = false;
+				//animacion_canica_1 = true;
+			}
+			else {
+				mov_resorte_x += 0.05f;
+			}
+		}
+	}
 }
 
 unsigned int generateTextures(const char* filename, bool alfa)
@@ -411,6 +450,7 @@ int main()
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 	glfwSetKeyCallback(window, my_input);
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
 
 	// tell GLFW to capture our mouse
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -748,7 +788,7 @@ int main()
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-106.5f, -122.5f, 143.8f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(1.8f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.65f, 0.65f, 0.65f));//el scale va en X para simular su compactacion
+		model = glm::scale(model, glm::vec3(mov_resorte_x, 0.65f, 0.65f));//el scale va en X para simular su compactacion
 		staticShader.setMat4("model", model);
 		resorte.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -769,7 +809,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-118.5f, -121.5f, 138.5f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.65f, 0.65f, 0.65f));//el scale va en X para simular su compactacion
+		model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
 		staticShader.setMat4("model", model);
 		canica.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -855,7 +895,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
     }
 
 	//To Configure Model, en este momento no estan siendo utilizados
-	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+	/*if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
 		posZ++;
 	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
 		posZ--;
@@ -871,6 +911,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		giroMonito--;
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
 		giroMonito++;
+	*/
     if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
     {
         if (SoundEngine->isCurrentlyPlaying(amigo))
@@ -1006,4 +1047,10 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll(yoffset);
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+		animacion_resorte = true;
 }
