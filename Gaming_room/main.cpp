@@ -120,14 +120,18 @@ GLfloat metroid_x = 0.0f,
 		metroid_z = 0.0f,
 		metroid_ori = 180.0f;
 
-//animacion resorte y canica 
+//Animacion resorte y canica 
 GLfloat mov_resorte_x = 0.65f,
 		mov_canica_x = -116.5f,
 		mov_canica_y = -121.5f,
 		mov_canica_z = 139.5f,
 		rot_canica = 0.0f;
 
-
+//Animacion de los flippers
+GLfloat rot_flipper_inf_der = 0.0f,
+		rot_flipper_inf_izq = 126.0f,
+		rot_flipper_sup_izq = 126.0f,
+		rot_flipper_sup_der = 0.0f;
 
 bool animacion_metroid = true,
     re_metroid1 = true,
@@ -137,16 +141,25 @@ bool animacion_metroid = true,
 
 bool animacion_resorte = false,
 	flag_resorte1 = true,
-	flag_resorte2 = false,
-	f_repite = false;
+	flag_resorte2 = false;
 
 bool animacion_canica_1 = false,
 	flag_canica0 = true,
 	flag_canica1 = false,
 	flag_canica2 = false,
 	flag_canica3 = false,
-	flag_canica4 = false,
-	flag_canica5 = false;
+	flag_canica4 = false;
+
+
+bool animacion_flippers_izq = false,
+	animacion_flippers_der = false,
+	flag_flip1 = true,
+	flag_flip2 = false,
+	flag_flip3 = false,
+	flag_flip4 = false,
+	flag_flip5 = false,
+	flag_flip6 = false,
+	flag_flip7 = false;
 
 #define MAX_FRAMES 9
 int i_max_steps = 60;
@@ -336,6 +349,54 @@ void animate(void)
 				mov_canica_x = -116.5f;
 				mov_canica_y = -121.5f;
 				mov_canica_z = 139.5f;
+			}
+		}
+	}
+
+	if (animacion_flippers_izq) {
+		if (flag_flip1) {
+			if (rot_flipper_inf_izq <= 200.0f || rot_flipper_sup_izq <= 200.0f) {
+				rot_flipper_inf_izq += 5.5;
+				rot_flipper_sup_izq += 5.5;
+			}
+			else {
+				flag_flip1 = false;
+				flag_flip2 = true;
+			}
+		}
+
+		if (flag_flip2) {
+			if (rot_flipper_inf_izq >= 126.0f || rot_flipper_sup_izq >= 126.0f) {
+				rot_flipper_inf_izq -= 5.5;
+				rot_flipper_sup_izq -= 5.5;
+			}
+			else {
+				flag_flip2 = false;
+				animacion_flippers_izq = false;
+			}
+		}
+	}
+
+	if (animacion_flippers_der) {
+		if (flag_flip3) {
+			if (rot_flipper_inf_der <= 200.0f || rot_flipper_sup_der <= 200.0f) {
+				rot_flipper_inf_der += 5.5;
+				rot_flipper_sup_der += 5.5;
+			}
+			else {
+				flag_flip3 = false;
+				flag_flip4 = true;
+			}
+		}
+
+		if (flag_flip4) {
+			if (rot_flipper_inf_der >= 126.0f || rot_flipper_sup_der >= 126.0f) {
+				rot_flipper_inf_der -= 5.5;
+				rot_flipper_sup_der -= 5.5;
+			}
+			else {
+				flag_flip4 = false;
+				animacion_flippers_der = false;
 			}
 		}
 	}
@@ -803,7 +864,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-130.0f, -123.0f, 140.0f));
         model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
-		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rot_flipper_inf_der), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		flipper.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -813,8 +874,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-146.0f, -123.0f, 140.0f));
         model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
-		//model = glm::rotate(model, glm::radians(5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(126.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rot_flipper_inf_izq), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		flipper.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -825,6 +885,7 @@ int main()
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-127.0f, -122.1f, 110.0f));        
         model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		model = glm::rotate(model, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rot_flipper_sup_der), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		flipper.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -835,7 +896,7 @@ int main()
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-149.0f, -122.1f, 110.0f));
         model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		model = glm::rotate(model, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(126.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rot_flipper_sup_izq), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		flipper.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -951,6 +1012,17 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
     {
         camera.imprimirPos();
     }
+
+	//Para activar el movimiento de los flippers
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+	{
+		animacion_flippers_izq = true;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	{
+		animacion_flippers_der = true;
+	}
 
 	//To Configure Model, en este momento no estan siendo utilizados
 	/*if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
