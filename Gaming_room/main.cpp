@@ -124,7 +124,7 @@ GLfloat metroid_x = 0.0f,
 GLfloat mov_resorte_x = 0.65f,
 		mov_canica_x = -116.5f,
 		mov_canica_y = -121.5f,
-		mov_canica_z = 138.5f,
+		mov_canica_z = 139.0f,
 		rot_canica = 0.0f;
 
 
@@ -140,9 +140,12 @@ bool animacion_resorte = false,
 	flag_resorte2 = false;
 
 bool animacion_canica_1 = false,
+	flag_canica0 = true,
 	flag_canica1 = false,
 	flag_canica2 = false,
-	flag_canica3 = false;
+	flag_canica3 = false,
+	flag_canica4 = false,
+	flag_canica5 = false;
 
 #define MAX_FRAMES 9
 int i_max_steps = 60;
@@ -285,19 +288,20 @@ void animate(void)
 		}
 
 		if (animacion_canica_1) {
-			//mov_canica_x = -116.5ff,
-			//mov_canica_y = -121.5f,
-			//mov_canica_z = 138.5f,
-			if (mov_canica_z > 95.0f) {
-				mov_canica_z -= 0.5f;
-			}
-			else {
-				flag_canica1 = true;
+			if (flag_canica0) {
+				if (mov_canica_z > 95.0f) {
+					mov_canica_z -= 0.5f;
+				}
+				else {
+					flag_canica0 = false;
+					flag_canica1 = true;
+				}
 			}
 
 			if (flag_canica1) {
-				if (mov_canica_y >= -117.5f) {
-					mov_canica_y += 0.5f;
+				if (mov_canica_y >= -105.0f) {
+					mov_canica_y += 1.5f;
+					mov_canica_z += 0.5f;
 				}
 				else {
 					flag_canica1 = false;
@@ -307,23 +311,29 @@ void animate(void)
 			
 			if (flag_canica2) {
 				if (mov_canica_x >= -135.0f) {
-					mov_canica_x -= 0.05f;
+					mov_canica_x -= 0.5f;
 				}
 				else {
 					flag_canica2 = false;
-					flag_canica3 - true;
+					flag_canica3 = true;
 				}
 			}
 			
 			if (flag_canica3) {
-				if (mov_canica_z <= 138.5f) {
+				if (mov_canica_z <= 160.0f) {
 					mov_canica_z += 0.5f;
 				}
 				else {
 					flag_canica3 = false;
-					animacion_canica_1 = false;
-					//flag_canica4 = true;
+					flag_canica4 = true;
 				}
+			}
+
+			if (flag_canica4) {
+				animacion_canica_1 = false;
+				mov_canica_x = -116.5f;
+				mov_canica_y = -121.5f;
+				mov_canica_z = 139.0f;
 			}
 		}
 	}
