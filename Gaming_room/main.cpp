@@ -124,7 +124,7 @@ GLfloat metroid_x = 0.0f,
 GLfloat mov_resorte_x = 0.65f,
 		mov_canica_x = -116.5f,
 		mov_canica_y = -121.5f,
-		mov_canica_z = 139.0f,
+		mov_canica_z = 139.5f,
 		rot_canica = 0.0f;
 
 
@@ -137,7 +137,8 @@ bool animacion_metroid = true,
 
 bool animacion_resorte = false,
 	flag_resorte1 = true,
-	flag_resorte2 = false;
+	flag_resorte2 = false,
+	f_repite = false;
 
 bool animacion_canica_1 = false,
 	flag_canica0 = true,
@@ -289,7 +290,7 @@ void animate(void)
 
 		if (animacion_canica_1) {
 			if (flag_canica0) {
-				if (mov_canica_z > 95.0f) {
+				if (mov_canica_z > 100.0f) {
 					mov_canica_z -= 0.5f;
 				}
 				else {
@@ -299,9 +300,9 @@ void animate(void)
 			}
 
 			if (flag_canica1) {
-				if (mov_canica_y >= -105.0f) {
-					mov_canica_y += 1.5f;
-					mov_canica_z += 0.5f;
+				if (mov_canica_y >= -98.0f) {
+					mov_canica_y += 5.0f;
+					mov_canica_z += 1.0f;
 				}
 				else {
 					flag_canica1 = false;
@@ -330,10 +331,11 @@ void animate(void)
 			}
 
 			if (flag_canica4) {
+				animacion_resorte = false;
 				animacion_canica_1 = false;
 				mov_canica_x = -116.5f;
 				mov_canica_y = -121.5f;
-				mov_canica_z = 139.0f;
+				mov_canica_z = 139.5f;
 			}
 		}
 	}
@@ -1107,6 +1109,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
 		animacion_resorte = true;
+	}
 }
