@@ -186,7 +186,9 @@ unsigned int	t_wall,
 				t_pnbll_board,
 				t_obstcl,
 				t_door,
-				t_window;
+				t_window,
+				t_view_window,
+				t_view2_window;
 
 void saveFrame(void)
 {
@@ -450,6 +452,9 @@ void LoadTextures()
 	t_pnbll_table = generateTextures("Texturas/pinball_table.jpg", 0);
 	t_pnbll_board = generateTextures("Texturas/pinball_board.jpg", 0);
 	t_door = generateTextures("Texturas/door.jpg", 0);
+	t_window = generateTextures("Texturas/window.png", 1.0);
+	t_view_window = generateTextures("Texturas/view_window.jpg", 0);
+	t_view2_window = generateTextures("Texturas/view2_window.jpg", 0);
 	//t_obstcl = generateTextures("Texturas/flipper.jpg", 0);
 }
 
@@ -709,7 +714,7 @@ int main()
 		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.75f);
 
-		// ---------------------------------------------------------a----------------------------------------------------------------
+		// -------------------------------------------------------------------------------------------------------------------------
 		// ESCENARIO
 		// -------------------------------------------------------------------------------------------------------------------------
 		
@@ -809,13 +814,39 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Puerta
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-30.0f,-75.5f, 276.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-30.0f,-75.8f, 276.0f));
 		model = glm::scale(model, glm::vec3(100.0f, 150.0f, 3.0f));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", 0.9f, 0.9f, 0.9f);
 		glBindTexture(GL_TEXTURE_2D, t_door);//
 		glDrawArrays(GL_QUADS, 0, 24);
 		// -------------------------------------------------------------------------------------------------------------------------
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Ventana
+		// -------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(251.0f, -35.0f, 15.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 80.0f, 65.0f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", 0.9f, 0.9f, 0.9f);
+		glBindTexture(GL_TEXTURE_2D, t_window);//
+		glDrawArrays(GL_QUADS, 0, 24);
+
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(251.0f, -35.0f, 15.0f));
+		model = glm::scale(model, glm::vec3(2.7f, 79.8f, 64.7f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", 0.9f, 0.9f, 0.9f);
+		glBindTexture(GL_TEXTURE_2D, t_view_window);//
+		glDrawArrays(GL_QUADS, 0, 24);
+
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(251.1f, -35.0f, 15.0f));
+		model = glm::scale(model, glm::vec3(2.7f, 79.8f, 64.7f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", 0.9f, 0.9f, 0.9f);
+		glBindTexture(GL_TEXTURE_2D, t_view2_window);//
+		glDrawArrays(GL_QUADS, 0, 24);
+		// -------------------------------------------------------------------------------------------------------------------------
+
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Obstaculo - Modo Jearquico - Pinball
