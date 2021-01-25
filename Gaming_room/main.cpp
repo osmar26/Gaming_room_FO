@@ -943,7 +943,8 @@ int main()
         // -------------------------------------------------------------------------------------------------------------------------
         // Metroid-obstaculo
         // -------------------------------------------------------------------------------------------------------------------------
-
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         model = glm::translate(glm::mat4(1.0f), glm::vec3(-138.579f + metroid_x, -119.0f + metroid_y, 82.2686f + metroid_z));
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(1.8f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -951,6 +952,8 @@ int main()
         model = glm::scale(model, glm::vec3(2.5f, 2.5f, 2.5f));
         staticShader.setMat4("model", model);
         metroid.Draw(staticShader);
+        glDisable(GL_BLEND);
+        glBindVertexArray(0);
 
 
         // -------------------------------------------------------------------------------------------------------------------------
