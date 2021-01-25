@@ -110,7 +110,6 @@ glm::vec3 convertir_inclinado(glm::vec2 coordenada)
     glm::vec3 vector = inf_izq;
     GLfloat coorden = (coordenada.y / ALTO)*ALTURA;
     vector = vector + glm::vec3(coordenada.x, coorden, -coordenada.y);
-    std::cout << vector.x << " " << vector.y << " " << vector.z;
     return vector;
 }
 
@@ -636,6 +635,8 @@ int main()
 	Model resorte("resources/objects/resorte/spring.obj");
     Model pinball("resources/objects/Pinball/Pinball.obj");
     Model metroid("resources/objects/Metroid/metroid.obj");
+    Model nave("resources/objects/Nave/nave.obj");
+    Model estructura_madera("resources/objects/estructura_madera/Pieza_madera.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -939,6 +940,25 @@ int main()
 		staticShader.setMat4("model", model);
 		canica.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------------------
+        // Nave-Samus
+        //--------------------------------------------------------------------------------------------------------------------------
+        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(4.0f, ALTO-4.0f)));
+        model = glm::scale(model, glm::vec3(1.5F, 1.5f, 1.5f));
+        model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
+        staticShader.setMat4("model", model);
+        nave.Draw(staticShader);
+
+        //--------------------------------------------------------------------------------------------------------------------------
+        // Pieza de Madera para dar forma
+        //--------------------------------------------------------------------------------------------------------------------------
+        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(ANCHO-17.0f, ALTO / 2))-glm::vec3(0.0f, 6.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(1.2F, 1.2f, 1.5f));
+        staticShader.setMat4("model", model);
+        estructura_madera.Draw(staticShader);
+
+
 
         // -------------------------------------------------------------------------------------------------------------------------
         // Metroid-obstaculo
