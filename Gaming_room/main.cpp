@@ -269,7 +269,11 @@ void interpolation(void)
 	rotInc = (KeyFrame[playIndex + 1].rotRodIzq - KeyFrame[playIndex].rotRodIzq) / i_max_steps;
 	giroMonitoInc = (KeyFrame[playIndex + 1].giroMonito - KeyFrame[playIndex].giroMonito) / i_max_steps;
 
-
+    inc_nave_x = (nave_KeyFrame[nave_playIndex + 1].nave_x - nave_KeyFrame[nave_playIndex].nave_x) / i_max_steps;
+    inc_nave_y = (nave_KeyFrame[nave_playIndex + 1].nave_y - nave_KeyFrame[nave_playIndex].nave_y) / i_max_steps;
+    inc_nave_z = (nave_KeyFrame[nave_playIndex + 1].nave_z - nave_KeyFrame[nave_playIndex].nave_z) / i_max_steps;
+    
+    inc_nave_rotacion = (nave_KeyFrame[nave_playIndex + 1].nave_rotacion - nave_KeyFrame[nave_playIndex].nave_rotacion) / i_max_steps;
 }
 
 
@@ -453,6 +457,41 @@ void animate(void)
 			}
 		}
 	}
+
+    //Animacion de nave
+    if (nave_play)
+    {
+        if (i_curr_steps >= i_max_steps) //end of animation between frames?
+        {
+            nave_playIndex++;
+            if (nave_playIndex > nave_FrameIndex - 2)	//end of total animation?
+            {
+                std::cout << "Animation ended" << std::endl;
+                //printf("termina anim\n");
+                nave_playIndex = 0;
+                nave_play = false;
+            }
+            else //Next frame interpolations
+            {
+                i_curr_steps = 0; //Reset counter
+                                  //Interpolation
+                interpolation();
+            }
+        }
+        else
+        {
+            //Draw animation
+            nave_x += inc_nave_x;
+            nave_y += inc_nave_y;
+            nave_z += inc_nave_z;
+
+            nave_rotacion += inc_nave_rotacion;
+
+            i_curr_steps++;
+        }
+    }
+
+
 }
 
 unsigned int generateTextures(const char* filename, bool alfa)
@@ -631,6 +670,13 @@ int main()
 
 	// tell GLFW to capture our mouse
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    for (int i = 0; i < MAX_FRAMES; i++)
+    {
+        nave_KeyFrame[i].nave_x = 0;
+        nave_KeyFrame[i].nave_y = 0;
+        nave_KeyFrame[i].nave_z = 0;
+        nave_KeyFrame[i].nave_rotacion = 0;
+    }
 
 	// glad: load all OpenGL function pointers
 	// ---------------------------------------
@@ -709,6 +755,13 @@ int main()
 
     //Para la musica
     SoundEngine->play2D(amigo, true);
+
+    //Aqui se ponen los keyframes de la nave
+    /*nave_saveFrame(float nav_x, float nav_y, float nav_z, float nav_rot)*/
+    nave_saveFrame(0.0f,0.0f,0.0f,0.0f);
+    nave_saveFrame(0.0f,10.0f,0.0f,0.0f);
+    nave_saveFrame(0.0f, 10.0f, 10.0f, 0.0f);
+
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -1001,6 +1054,8 @@ int main()
         model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(4.0f, ALTO-4.0f)));
         model = glm::scale(model, glm::vec3(1.5F, 1.5f, 1.5f));
         model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
+        model = glm::translate(model, glm::vec3(nave_x, nave_y, nave_z));
+        model = glm::rotate(model, glm::radians(nave_rotacion), glm::vec3(1.0f, 0.0f, 0.0f));
         staticShader.setMat4("model", model);
         nave.Draw(staticShader);
 
@@ -1215,24 +1270,23 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
             SoundEngine->play2D(amigo, true);
         }
     }
-    //Por el momento comentado
-	/*//To play KeyFrame animation 
-	if (key == GLFW_KEY_P && action == GLFW_PRESS)
+	//To play KeyFrame animation 
+	if (key == GLFW_KEY_Q && action == GLFW_PRESS)
 	{
-		if (play == false && (FrameIndex > 1))
+		if (nave_play == false && (nave_FrameIndex > 1))
 		{
 			std::cout << "Play animation" << std::endl;
 			resetElements();
 			//First Interpolation				
 			interpolation();
 
-			play = true;
-			playIndex = 0;
+			nave_play = true;
+			nave_playIndex = 0;
 			i_curr_steps = 0;
 		}
 		else
 		{
-			play = false;
+			nave_play = false;
 			std::cout << "Not enough Key Frames" << std::endl;
 		}
 	}
@@ -1244,7 +1298,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		{
 			saveFrame();
 		}
-	}*/
+	}
 }
 
 /*void my_input(GLFWwindow *window)
