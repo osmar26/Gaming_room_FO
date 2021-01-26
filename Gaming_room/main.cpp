@@ -717,6 +717,10 @@ int main()
     Model chozo("resources/objects/Chozo/chozo.obj");
     Model L_obstaculo("resources/objects/L_obstaculo/L_obstaculo.obj");
     Model palanca("resources/objects/Palanca/palanca.obj");
+    Model samus_cuerpo("resources/objects/Samus_cuerpo/samus_cuerpo.obj");
+    Model samus_canon("resources/objects/Samus_canon/samus_canon.obj");
+    Model samus_antebrazo("resources/objects/Samus_antebrazo/samus_antebrazo.obj");
+    Model samus_hombro("resources/objects/Samus_hombro/samus_hombro.obj");
 
 	// draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -819,7 +823,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Television
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(70.0f, -149.0f, -215.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(30.0f, -149.0f, -215.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		tv.Draw(staticShader);
@@ -828,7 +832,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Sofa
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(70.0f, -173.0f, -115.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(30.0f, -173.0f, -115.0f));
 		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.5f));
 		staticShader.setMat4("model", model);
 		sofa_set.Draw(staticShader);
@@ -1012,6 +1016,22 @@ int main()
 		billar.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 
+        /*Avatar de Samus*/
+        model = glm::translate(glm::mat4(1.0f), glm::vec3(170.0f, -150.5f, -193.0f));
+        staticShader.setMat4("model", model);
+        samus_cuerpo.Draw(staticShader);
+
+        model = glm::translate(model, glm::vec3(-15.0f, 98.0f, 0.0f));
+        staticShader.setMat4("model", model);
+        samus_hombro.Draw(staticShader);
+
+        model = glm::translate(model, glm::vec3(-1.0f, -14.0f, 14.0f));
+        staticShader.setMat4("model", model);
+        samus_antebrazo.Draw(staticShader);
+
+        model = glm::translate(model, glm::vec3(0.0f, -1.0f, 28.0f));
+        staticShader.setMat4("model", model);
+        samus_canon.Draw(staticShader);
 
         staticShader.setFloat("material_shininess", 51.2f);
 
