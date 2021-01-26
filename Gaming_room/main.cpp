@@ -122,6 +122,9 @@ GLfloat const ALTURA = sup_der.y - inf_der.y;
 //Esquina sup izquierda 0.0f, ALTURA, ALTO
 //ANCHO: 42.42  ALTURA:3.297 ALTO: 96.4345
 
+//Para la palanca
+float mov_palanca = 0.0f;
+
 glm::vec3 convertir_inclinado(glm::vec2 coordenada)
 {
     glm::vec3 vector = inf_izq;
@@ -306,6 +309,7 @@ void animate(void)
 		if (flag_resorte1) {
 			if (mov_resorte_x >= 0.10f) {
 				mov_resorte_x -= 0.05f;
+                mov_palanca += 0.3f;
 			}
 			else {
 				flag_resorte2 = true;
@@ -321,6 +325,7 @@ void animate(void)
 			}
 			else {
 				mov_resorte_x += 0.05f;
+                mov_palanca -= 0.3f;
 			}
 		}
 
@@ -988,7 +993,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Resorte
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-106.5f, -122.5f, 143.8f));
+		model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(ANCHO, 1.0f))+glm::vec3(10.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(1.8f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(mov_resorte_x, 0.65f, 0.65f));//el scale va en X para simular su compactacion
@@ -1105,6 +1110,7 @@ int main()
         // Palanca para el pinball
         //--------------------------------------------------------------------------------------------------------------------------
         model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(54.0f, 0.0f))+glm::vec3(-3.7f, -7.5f, 11.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, mov_palanca));
         model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
         staticShader.setMat4("model", model);
         palanca.Draw(staticShader);
