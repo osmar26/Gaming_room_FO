@@ -95,12 +95,16 @@ float	incX = 0.0f,
 float   nave_x = 0.0f,
 nave_y = 0.0f,
 nave_z = 0.0f,
-nave_rotacion = 0.0f;
+nave_rotacion_x = 0.0f,
+nave_rotacion_y = 0.0f,
+nave_rotacion_z = 0.0f;
 
 float   inc_nave_x = 0.0f,
         inc_nave_y = 0.0f,
         inc_nave_z = 0.0f,
-        inc_nave_rotacion = 0.0f;
+        inc_nave_rotacion_x = 0.0f,
+        inc_nave_rotacion_y = 0.0f,
+        inc_nave_rotacion_z = 0.0f;
 
 //Para facilitar las animaciones en el plano inclinado del pinball
 GLfloat const angulo = 1.8f;
@@ -170,32 +174,19 @@ bool animacion_flippers_izq = false,
 	flag_flip3 = true,
 	flag_flip4 = false;
 
-#define MAX_FRAMES 9
+#define MAX_FRAMES 18
 int i_max_steps = 60;
 int i_curr_steps = 0;
-typedef struct _frame
-{
-	//Variables para guardar cuadros clave
-	float posX;		//Variable para PosicionX
-	float posY;		//Variable para PosicionY
-	float posZ;		//Variable para PosicionZ
-	float rotRodIzq;
-	float giroMonito;
-
-}FRAME;
 
 struct NAVE
 {
     float nave_x = 0.0f,
-          nave_y = 0.0f,
-          nave_z = 0.0f,
-          nave_rotacion = 0.0f;
+            nave_y = 0.0f,
+            nave_z = 0.0f,
+            nave_rotacion_x = 0.0f,
+            nave_rotacion_y = 0.0f,
+            nave_rotacion_z = 0.0f; 
 };
-
-FRAME KeyFrame[MAX_FRAMES];
-int FrameIndex = 0;			//introducir datos
-bool play = false;
-int playIndex = 0;
 
 //Datos para la nave
 NAVE nave_KeyFrame[MAX_FRAMES];
@@ -217,28 +208,16 @@ unsigned int	t_wall,
 				t_view2_window,
                 t_specular;
 
-void saveFrame(void)
-{
-	//printf("frameindex %d\n", FrameIndex);
-	std::cout << "Frame Index = " << FrameIndex << std::endl;
-
-	KeyFrame[FrameIndex].posX = posX;
-	KeyFrame[FrameIndex].posY = posY;
-	KeyFrame[FrameIndex].posZ = posZ;
-
-	KeyFrame[FrameIndex].rotRodIzq = rotRodIzq;
-	KeyFrame[FrameIndex].giroMonito = giroMonito;
-
-	FrameIndex++;
-}
-
-void nave_saveFrame(float nav_x, float nav_y, float nav_z, float nav_rot)
+void nave_saveFrame(float nav_x, float nav_y, float nav_z, float nav_rot_x, float nav_rot_y, float nav_rot_z)
 {
     nave_KeyFrame[nave_FrameIndex].nave_x = nav_x;
     nave_KeyFrame[nave_FrameIndex].nave_y = nav_y;
     nave_KeyFrame[nave_FrameIndex].nave_z = nav_z;
 
-    nave_KeyFrame[nave_FrameIndex].nave_rotacion = nav_rot;
+    nave_KeyFrame[nave_FrameIndex].nave_rotacion_x = nav_rot_x;
+    nave_KeyFrame[nave_FrameIndex].nave_rotacion_y = nav_rot_y;
+    nave_KeyFrame[nave_FrameIndex].nave_rotacion_z = nav_rot_z;
+
 
     nave_FrameIndex++;
 
@@ -246,34 +225,27 @@ void nave_saveFrame(float nav_x, float nav_y, float nav_z, float nav_rot)
 
 void resetElements(void)
 {
-	posX = KeyFrame[0].posX;
-	posY = KeyFrame[0].posY;
-	posZ = KeyFrame[0].posZ;
-
-	rotRodIzq = KeyFrame[0].rotRodIzq;
-	giroMonito = KeyFrame[0].giroMonito;
+    /*Para la nave*/
 
     nave_x = nave_KeyFrame[0].nave_x;
     nave_y = nave_KeyFrame[0].nave_y;
     nave_z = nave_KeyFrame[0].nave_z;
-    nave_rotacion = nave_KeyFrame[0].nave_rotacion;
+    nave_rotacion_x = nave_KeyFrame[0].nave_rotacion_x;
+    nave_rotacion_y = nave_KeyFrame[0].nave_rotacion_y;
+    nave_rotacion_z = nave_KeyFrame[0].nave_rotacion_z;
 
 }
 
 void interpolation(void)
 {
-	incX = (KeyFrame[playIndex + 1].posX - KeyFrame[playIndex].posX) / i_max_steps;
-	incY = (KeyFrame[playIndex + 1].posY - KeyFrame[playIndex].posY) / i_max_steps;
-	incZ = (KeyFrame[playIndex + 1].posZ - KeyFrame[playIndex].posZ) / i_max_steps;
-
-	rotInc = (KeyFrame[playIndex + 1].rotRodIzq - KeyFrame[playIndex].rotRodIzq) / i_max_steps;
-	giroMonitoInc = (KeyFrame[playIndex + 1].giroMonito - KeyFrame[playIndex].giroMonito) / i_max_steps;
-
     inc_nave_x = (nave_KeyFrame[nave_playIndex + 1].nave_x - nave_KeyFrame[nave_playIndex].nave_x) / i_max_steps;
     inc_nave_y = (nave_KeyFrame[nave_playIndex + 1].nave_y - nave_KeyFrame[nave_playIndex].nave_y) / i_max_steps;
     inc_nave_z = (nave_KeyFrame[nave_playIndex + 1].nave_z - nave_KeyFrame[nave_playIndex].nave_z) / i_max_steps;
     
-    inc_nave_rotacion = (nave_KeyFrame[nave_playIndex + 1].nave_rotacion - nave_KeyFrame[nave_playIndex].nave_rotacion) / i_max_steps;
+    inc_nave_rotacion_x = (nave_KeyFrame[nave_playIndex + 1].nave_rotacion_x - nave_KeyFrame[nave_playIndex].nave_rotacion_x) / i_max_steps;
+    inc_nave_rotacion_y = (nave_KeyFrame[nave_playIndex + 1].nave_rotacion_y - nave_KeyFrame[nave_playIndex].nave_rotacion_y) / i_max_steps;
+    inc_nave_rotacion_z = (nave_KeyFrame[nave_playIndex + 1].nave_rotacion_z - nave_KeyFrame[nave_playIndex].nave_rotacion_z) / i_max_steps;
+
 }
 
 
@@ -485,7 +457,9 @@ void animate(void)
             nave_y += inc_nave_y;
             nave_z += inc_nave_z;
 
-            nave_rotacion += inc_nave_rotacion;
+            nave_rotacion_x += inc_nave_rotacion_x;
+            nave_rotacion_y += inc_nave_rotacion_y;
+            nave_rotacion_z += inc_nave_rotacion_z;
 
             i_curr_steps++;
         }
@@ -675,7 +649,9 @@ int main()
         nave_KeyFrame[i].nave_x = 0;
         nave_KeyFrame[i].nave_y = 0;
         nave_KeyFrame[i].nave_z = 0;
-        nave_KeyFrame[i].nave_rotacion = 0;
+        nave_KeyFrame[i].nave_rotacion_x = 0;
+        nave_KeyFrame[i].nave_rotacion_y = 0;
+        nave_KeyFrame[i].nave_rotacion_z = 0;
     }
 
 	// glad: load all OpenGL function pointers
@@ -737,16 +713,6 @@ int main()
     Model L_obstaculo("resources/objects/L_obstaculo/L_obstaculo.obj");
     Model palanca("resources/objects/Palanca/palanca.obj");
 
-	//Inicialización de KeyFrames
-	for (int i = 0; i < MAX_FRAMES; i++)
-	{
-		KeyFrame[i].posX = 0;
-		KeyFrame[i].posY = 0;
-		KeyFrame[i].posZ = 0;
-		KeyFrame[i].rotRodIzq = 0;
-		KeyFrame[i].giroMonito = 0;
-	}
-
 	// draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -757,10 +723,19 @@ int main()
     SoundEngine->play2D(amigo, true);
 
     //Aqui se ponen los keyframes de la nave
-    /*nave_saveFrame(float nav_x, float nav_y, float nav_z, float nav_rot)*/
-    nave_saveFrame(0.0f,0.0f,0.0f,0.0f);
-    nave_saveFrame(0.0f,10.0f,0.0f,0.0f);
-    nave_saveFrame(0.0f, 10.0f, 10.0f, 0.0f);
+    /*nave_saveFrame(float nav_x, float nav_y, float nav_z, float nav_rot_x, float nav_rot_y, float nav_rot_z)*/
+    /*    nave_saveFrame(f,f,f,f,f,f);*/
+    nave_saveFrame(0.0f,0.0f,0.0f,0.0f, 0.0f, 0.0f);
+    nave_saveFrame(0.0f,10.0f,0.0f,0.0f, 0.0f, 0.0f);
+    nave_saveFrame(0.0f,20.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    nave_saveFrame(0.0f,20.0f, 10.0f, 0.0f, 0.0f, 0.0f);
+    nave_saveFrame(0.0f, 15.0f, 20.0f, 30.0f, 0.0f, 0.0f);
+    nave_saveFrame(0.0f, 10.0f, 25.0f, 0.0f, 0.0f, 0.0f);
+    nave_saveFrame(0.0f, 15.0f, 30.0f, -30.0f, 0.0f, 0.0f);
+    nave_saveFrame(5.0f, 20.0f, 35.0f, 0.0f, 15.0f, -15.0f);
+    nave_saveFrame(20.0f, 20.0f, 39.0f, 0.0f, 45.0f, -45.0f);
+    nave_saveFrame(30.0f, 20.0f, 41.0f, 0.0f, 75.0f, -15.0f);
+    nave_saveFrame(40.0f, 20.0f, 42.0f, 0.0f, 90.0f, 0.0f);
 
 
 	while (!glfwWindowShouldClose(window))
@@ -1055,7 +1030,9 @@ int main()
         model = glm::scale(model, glm::vec3(1.5F, 1.5f, 1.5f));
         model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
         model = glm::translate(model, glm::vec3(nave_x, nave_y, nave_z));
-        model = glm::rotate(model, glm::radians(nave_rotacion), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(nave_rotacion_x), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(nave_rotacion_y), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(nave_rotacion_z), glm::vec3(0.0f, 0.0f, 1.0f));
         staticShader.setMat4("model", model);
         nave.Draw(staticShader);
 
@@ -1291,14 +1268,6 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		}
 	}
 
-	//To Save a KeyFrame
-	if (key == GLFW_KEY_L && action == GLFW_PRESS)
-	{
-		if (FrameIndex < MAX_FRAMES)
-		{
-			saveFrame();
-		}
-	}
 }
 
 /*void my_input(GLFWwindow *window)
