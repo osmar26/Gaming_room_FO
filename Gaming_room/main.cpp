@@ -90,7 +90,7 @@ float	incX = 0.0f,
 		giroMonitoInc = 0.0f;
 
 //Para facilitar las animaciones en el plano inclinado del pinball
-GLfloat const angulo = 1.6959f;
+GLfloat const angulo = 1.8f;
 glm::vec3 const inf_izq = glm::vec3(-159.632f, -122.493f, 157.976f);
 glm::vec3 const inf_der = glm::vec3(-117.212f, -122.493f, 157.976f);
 glm::vec3 const sup_izq = glm::vec3(-159.632f, -119.196f, 61.5415f);
@@ -637,6 +637,13 @@ int main()
     Model metroid("resources/objects/Metroid/metroid.obj");
     Model nave("resources/objects/Nave/nave.obj");
     Model estructura_madera("resources/objects/estructura_madera/Pieza_madera.obj");
+    Model triangulo_madera("resources/objects/Triangulo_madera/triangulo_madera.obj");
+    Model triangulo_abajo("resources/objects/Triangulo_abajo/triangulo_abajo.obj");
+    Model triangulo_obstaculo("resources/objects/Triangulo_obstaculo/triangulo_obstaculo.obj");
+    Model cubo("resources/objects/Cubo/cubo.obj");
+    Model chozo("resources/objects/Chozo/chozo.obj");
+    Model L_obstaculo("resources/objects/L_obstaculo/L_obstaculo.obj");
+    Model palanca("resources/objects/Palanca/palanca.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -951,14 +958,60 @@ int main()
         nave.Draw(staticShader);
 
         //--------------------------------------------------------------------------------------------------------------------------
-        // Pieza de Madera para dar forma
+        // Pieza de Madera para dar forma (estructura de madera larga del lado derecho)
         //--------------------------------------------------------------------------------------------------------------------------
-        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(ANCHO-17.0f, ALTO / 2))-glm::vec3(0.0f, 6.0f, 0.0f));
+        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(ANCHO-15.0f, ALTO / 2))-glm::vec3(0.0f, 7.0f, 0.0f));
         model = glm::scale(model, glm::vec3(1.2F, 1.2f, 1.5f));
+        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
         staticShader.setMat4("model", model);
         estructura_madera.Draw(staticShader);
 
 
+        //--------------------------------------------------------------------------------------------------------------------------
+        // Pieza de Madera para dar forma (triangulo de madera, superior derecho)
+        //--------------------------------------------------------------------------------------------------------------------------
+        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(ANCHO, ALTO-2.0f)));
+        model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.5f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+        staticShader.setMat4("model", model);
+        triangulo_madera.Draw(staticShader);
+
+        /*
+        Model triangulo_madera("resources/objects/Triangulo_madera/triangulo_madera.obj");
+        Model triangulo_abajo("resources/objects/Triangulo_abajo/triangulo_abajo.obj");
+        Model triangulo_obstaculo("resources/objects/Triangulo_obstaculo/triangulo_obstaculo.obj");
+        Model L_obstaculo("resources/objects/L_obstaculo/L_obstaculo.obj");
+        Model palanca("resources/objects/Palanca/palanca.obj");
+        */
+
+        //--------------------------------------------------------------------------------------------------------------------------
+        // Pieza de textura verdosa para dar forma (triangulo de abajo, izquierda)
+        //--------------------------------------------------------------------------------------------------------------------------
+        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(5.9f,3.3f)));
+        model = glm::scale(model, glm::vec3(1.2f)*glm::vec3(1.2f, 1.2f, 1.5f));
+        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        staticShader.setMat4("model", model);
+        triangulo_abajo.Draw(staticShader);
+
+        //--------------------------------------------------------------------------------------------------------------------------
+        // Pieza de textura verdosa para dar forma (triangulo de abajo, derecha)
+        //--------------------------------------------------------------------------------------------------------------------------
+        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(32.5f, 3.3f)));
+        model = glm::scale(model, glm::vec3(1.2f)*glm::vec3(1.2f, 1.2f, 1.5f));
+        model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+        staticShader.setMat4("model", model);
+        triangulo_abajo.Draw(staticShader);
+
+        //--------------------------------------------------------------------------------------------------------------------------
+        // Palanca para el pinball
+        //--------------------------------------------------------------------------------------------------------------------------
+        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(54.0f, 0.0f))+glm::vec3(-3.7f, -7.5f, 11.0f));
+        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+        staticShader.setMat4("model", model);
+        palanca.Draw(staticShader);
 
         // -------------------------------------------------------------------------------------------------------------------------
         // Metroid-obstaculo
