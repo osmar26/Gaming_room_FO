@@ -89,6 +89,19 @@ float	incX = 0.0f,
 		rotInc = 0.0f,
 		giroMonitoInc = 0.0f;
 
+
+//KeyFrames (para la nave)
+
+float   nave_x = 0.0f,
+nave_y = 0.0f,
+nave_z = 0.0f,
+nave_rotacion = 0.0f;
+
+float   inc_nave_x = 0.0f,
+        inc_nave_y = 0.0f,
+        inc_nave_z = 0.0f,
+        inc_nave_rotacion = 0.0f;
+
 //Para facilitar las animaciones en el plano inclinado del pinball
 GLfloat const angulo = 1.8f;
 glm::vec3 const inf_izq = glm::vec3(-159.632f, -122.493f, 157.976f);
@@ -171,10 +184,24 @@ typedef struct _frame
 
 }FRAME;
 
+struct NAVE
+{
+    float nave_x = 0.0f,
+          nave_y = 0.0f,
+          nave_z = 0.0f,
+          nave_rotacion = 0.0f;
+};
+
 FRAME KeyFrame[MAX_FRAMES];
 int FrameIndex = 0;			//introducir datos
 bool play = false;
 int playIndex = 0;
+
+//Datos para la nave
+NAVE nave_KeyFrame[MAX_FRAMES];
+int nave_FrameIndex = 0;
+bool nave_play = false;
+int nave_playIndex = 0;
 
 //Variables para cargar las texturas
 unsigned int	t_wall,
@@ -187,7 +214,8 @@ unsigned int	t_wall,
 				t_door,
 				t_window,
 				t_view_window,
-				t_view2_window;
+				t_view2_window,
+                t_specular;
 
 void saveFrame(void)
 {
@@ -204,6 +232,18 @@ void saveFrame(void)
 	FrameIndex++;
 }
 
+void nave_saveFrame(float nav_x, float nav_y, float nav_z, float nav_rot)
+{
+    nave_KeyFrame[nave_FrameIndex].nave_x = nav_x;
+    nave_KeyFrame[nave_FrameIndex].nave_y = nav_y;
+    nave_KeyFrame[nave_FrameIndex].nave_z = nav_z;
+
+    nave_KeyFrame[nave_FrameIndex].nave_rotacion = nav_rot;
+
+    nave_FrameIndex++;
+
+}
+
 void resetElements(void)
 {
 	posX = KeyFrame[0].posX;
@@ -212,6 +252,12 @@ void resetElements(void)
 
 	rotRodIzq = KeyFrame[0].rotRodIzq;
 	giroMonito = KeyFrame[0].giroMonito;
+
+    nave_x = nave_KeyFrame[0].nave_x;
+    nave_y = nave_KeyFrame[0].nave_y;
+    nave_z = nave_KeyFrame[0].nave_z;
+    nave_rotacion = nave_KeyFrame[0].nave_rotacion;
+
 }
 
 void interpolation(void)
@@ -222,6 +268,7 @@ void interpolation(void)
 
 	rotInc = (KeyFrame[playIndex + 1].rotRodIzq - KeyFrame[playIndex].rotRodIzq) / i_max_steps;
 	giroMonitoInc = (KeyFrame[playIndex + 1].giroMonito - KeyFrame[playIndex].giroMonito) / i_max_steps;
+
 
 }
 
@@ -454,6 +501,7 @@ void LoadTextures()
 	t_window = generateTextures("Texturas/window.png", 1.0);
 	t_view_window = generateTextures("Texturas/view_window.jpg", 0);
 	t_view2_window = generateTextures("Texturas/view2_window.jpg", 0);
+    t_specular = generateTextures("Texturas/Metal_gris.jpg", 0);
 	//t_obstcl = generateTextures("Texturas/flipper.jpg", 0);
 }
 
@@ -715,11 +763,6 @@ int main()
 		staticShader.setMat4("projection", projection);
 		staticShader.setMat4("view", view);
 
-		//// Light
-		glm::vec3 lightColor = glm::vec3(1.0f);
-		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.75f);
-
 		// -------------------------------------------------------------------------------------------------------------------------
 		// ESCENARIO
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -936,6 +979,9 @@ int main()
 		billar.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 
+
+        staticShader.setFloat("material_shininess", 51.2f);
+
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Canica Resorte
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -945,6 +991,9 @@ int main()
 		staticShader.setMat4("model", model);
 		canica.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
+
+        staticShader.setFloat("material_shininess", 32.0f);
+
 
         //--------------------------------------------------------------------------------------------------------------------------
         // Nave-Samus
@@ -978,6 +1027,27 @@ int main()
         /*
         Model L_obstaculo("resources/objects/L_obstaculo/L_obstaculo.obj");
         */
+
+        // -------------------------------------------------------------------------------------------------------------------------
+        // L-obstaculo inf Derecho
+        // -------------------------------------------------------------------------------------------------------------------------
+        model = glm::translate(glm::mat4(1.0f), glm::vec3(-121.0f, -123.0f, 148.0f));
+        model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.5f));
+        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+        staticShader.setMat4("model", model);
+        L_obstaculo.Draw(staticShader);
+        // -------------------------------------------------------------------------------------------------------------------------
+
+        // -------------------------------------------------------------------------------------------------------------------------
+        // L-obstaculo inf Izquierdo
+        // -------------------------------------------------------------------------------------------------------------------------
+        model = glm::translate(glm::mat4(1.0f), glm::vec3(-160.0f, -123.0f, 148.0f));
+        model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.5f));
+        model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+        staticShader.setMat4("model", model);
+        L_obstaculo.Draw(staticShader);
+        // -------------------------------------------------------------------------------------------------------------------------
 
         //--------------------------------------------------------------------------------------------------------------------------
         // Pieza de textura verdosa para dar forma (triangulo de abajo, izquierda)

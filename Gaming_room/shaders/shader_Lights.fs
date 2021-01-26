@@ -177,7 +177,7 @@ vec4 CalcSpotLight( SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir )
         diffuse   *= attenuation;
         specular *= attenuation;   
             
-        //vec3 result = ambient + diffuse + specular;
+        //vec3 result = ambient + diffuse + zspecular;
         //FragColor = vec4(result, 1.0);
         vec4 result = vec4(ambient + diffuse + specular,texture(material_diffuse, TexCoords).a) ;
         if(result.a < 0.1)
