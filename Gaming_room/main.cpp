@@ -639,8 +639,6 @@ int main()
     Model estructura_madera("resources/objects/estructura_madera/Pieza_madera.obj");
     Model triangulo_madera("resources/objects/Triangulo_madera/triangulo_madera.obj");
     Model triangulo_abajo("resources/objects/Triangulo_abajo/triangulo_abajo.obj");
-    Model triangulo_obstaculo("resources/objects/Triangulo_obstaculo/triangulo_obstaculo.obj");
-    Model cubo("resources/objects/Cubo/cubo.obj");
     Model chozo("resources/objects/Chozo/chozo.obj");
     Model L_obstaculo("resources/objects/L_obstaculo/L_obstaculo.obj");
     Model palanca("resources/objects/Palanca/palanca.obj");
@@ -887,7 +885,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Flipper inf Izquierdo
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-146.0f, -123.0f, 140.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-151.0f, -123.0f, 140.0f));
         model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		model = glm::rotate(model, glm::radians(rot_flipper_inf_izq), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
@@ -908,7 +906,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Flipper sup Izquierdo
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-149.0f, -122.1f, 110.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-154.0f, -122.1f, 110.0f));
         model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		model = glm::rotate(model, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(rot_flipper_sup_izq), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -978,11 +976,7 @@ int main()
         triangulo_madera.Draw(staticShader);
 
         /*
-        Model triangulo_madera("resources/objects/Triangulo_madera/triangulo_madera.obj");
-        Model triangulo_abajo("resources/objects/Triangulo_abajo/triangulo_abajo.obj");
-        Model triangulo_obstaculo("resources/objects/Triangulo_obstaculo/triangulo_obstaculo.obj");
         Model L_obstaculo("resources/objects/L_obstaculo/L_obstaculo.obj");
-        Model palanca("resources/objects/Palanca/palanca.obj");
         */
 
         //--------------------------------------------------------------------------------------------------------------------------
@@ -1013,12 +1007,25 @@ int main()
         staticShader.setMat4("model", model);
         palanca.Draw(staticShader);
 
+
+        /*Instancia de dos chozos*/
+        auto temp = model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(9.0f, 70.0f)));
+        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+        staticShader.setMat4("model", model);
+        chozo.Draw(staticShader);
+
+        model = glm::translate(temp, glm::vec3(21.0f, 0.0f, 0.0f ));
+        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+        staticShader.setMat4("model", model);
+        chozo.Draw(staticShader);
+
+
         // -------------------------------------------------------------------------------------------------------------------------
         // Metroid-obstaculo
         // -------------------------------------------------------------------------------------------------------------------------
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        model = glm::translate(glm::mat4(1.0f), glm::vec3(-138.579f + metroid_x, -119.0f + metroid_y, 82.2686f + metroid_z));
+        model = glm::translate(glm::mat4(1.0f), glm::vec3(-142.0f + metroid_x, -119.0f + metroid_y, 82.2686f + metroid_z));
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(1.8f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(metroid_ori), glm::vec3(0.0f, 0.0f, 1.0f));
