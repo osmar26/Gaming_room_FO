@@ -163,7 +163,14 @@ nav_re_1 = true,
 nav_re_2 = false,
 nav_re_3 = false,
 nav_re_4 = false,
-nav_re_5 = false;
+nav_re_5 = false,
+nav_re_6 = false, 
+nav_re_7 = false,
+nav_re_8 = false,
+nav_re_9 = false;
+
+float x_pos = 0.0f;
+float z_pos = 0.0f;
 
 //Animacion metroid 
 GLfloat metroid_x = 0.0f,
@@ -287,7 +294,6 @@ void interpolation(void)
     inc_nave_rotacion_z = (nave_KeyFrame[nave_playIndex + 1].nave_rotacion_z - nave_KeyFrame[nave_playIndex].nave_rotacion_z) / i_max_steps;
 
 }
-
 
 void animate(void)
 {
@@ -527,21 +533,133 @@ void animate(void)
         }
     }
 
-
-    static float radix = 5.0f;
+    /*0.0f, 0.0f , rot y = 90.0
+    radix, radix, rot y = 0.0
+    0.0f, 2*radix, rot y = -45
+    -radix, 3*radix, rot y = 0.0f
+    0.0f, 4*radix, rot y = 90.0
+    radix, 3*radix, roo y = 180.0
+    0.0f, 2*radix, rot y = 225
+    -radix, radix, rot  y = 180.0*/
+    static float radix = 10.0f;
     if (nav2)
     {
-        /*→r(t)=Acosωt+Asinωt.*/
         if (nav_re_1)
         {
-            movNav2X = radix * glm::sin(glm::radians(rotNav2));
-            movNav2z = radix * glm::sin(glm::radians(rotNav2));
-            rotNav2++;
-            if (movNav2X > 90)
+            movNav2z = movNav2X = radix*glm::sin(glm::radians(-rotNav2));
+            rotNav2 -= 2.0f;
+            if (rotNav2 <= -90.0f)
             {
                 nav_re_1 = false;
                 nav_re_2 = true;
+                x_pos = movNav2X;
+                z_pos = movNav2z;
             }
+        }
+        if (nav_re_2)
+        {
+            movNav2X = x_pos + radix*glm::cos(glm::radians(rotNav2));
+            movNav2z = z_pos + radix*glm::sin(glm::radians(rotNav2-90.0f));
+            rotNav2 -= 2.0f;
+            if (rotNav2 <= -180.0f)
+            {
+                nav_re_2 = false;
+                nav_re_3 = true;
+                x_pos = movNav2X;
+                z_pos = movNav2z;
+            }
+        }
+        if (nav_re_3)
+        {
+            movNav2X = x_pos + radix * glm::sin(glm::radians(rotNav2));
+            movNav2z = z_pos + radix * glm::cos(glm::radians(rotNav2 + 90.0f));
+            rotNav2 += 2.0f;
+            if (rotNav2 >= -90.0f)
+            {
+                nav_re_3 = false;
+                nav_re_4 = true;
+                x_pos = movNav2X;
+                z_pos = movNav2z;
+            }
+        }
+
+        if (nav_re_4)
+        {
+            movNav2X = x_pos + radix * glm::cos(glm::radians(rotNav2));
+            movNav2z = z_pos + radix * glm::cos(glm::radians(rotNav2));
+            rotNav2 += 2.0f;
+            if (rotNav2 >= 0.0f)
+            {
+                nav_re_4 = false;
+                nav_re_5 = true;
+                x_pos = movNav2X;
+                z_pos = movNav2z;
+            }
+        }
+
+
+        if (nav_re_5)
+        {
+            movNav2X = x_pos + radix * glm::sin(glm::radians(rotNav2));
+            movNav2z = z_pos + radix * glm::cos(glm::radians(rotNav2+90.0f));
+            rotNav2 += 2.0f;
+            if (rotNav2 >= 90.0f)
+            {
+                nav_re_5 = false;
+                nav_re_6 = true;
+                x_pos = movNav2X;
+                z_pos = movNav2z;
+            }
+        }
+
+        if (nav_re_6)
+        {
+            movNav2X = x_pos + radix * glm::sin(glm::radians(rotNav2 + 90.0f));
+            movNav2z = z_pos + radix * glm::sin(glm::radians(rotNav2 + 90.0f));
+            rotNav2 += 2.0f;
+            if (rotNav2 >= 180.0f)
+            {
+                nav_re_6 = false;
+                nav_re_7 = true;
+                x_pos = movNav2X;
+                z_pos = movNav2z;
+            }
+        }
+
+
+        if (nav_re_7)
+        {
+            movNav2X = x_pos - radix * glm::sin(glm::radians(rotNav2));
+            movNav2z = z_pos - radix * glm::sin(glm::radians(rotNav2));
+            rotNav2 -= 2.0f;
+            if (rotNav2 <= 90.0f)
+            {
+                nav_re_7 = false;
+                nav_re_8 = true;
+                x_pos = movNav2X;
+                z_pos = movNav2z;
+            }
+        }
+
+        if (nav_re_8)
+        {
+            movNav2X = x_pos + radix * glm::cos(glm::radians(rotNav2));
+            movNav2z = z_pos + radix * glm::sin(glm::radians(rotNav2-90.0f));
+            rotNav2 -= 2.0f;
+            if (rotNav2 <= 0.0f)
+            {
+                nav_re_8 = false;
+                nav_re_9 = true;
+                x_pos = movNav2X;
+                z_pos = movNav2z;
+            }
+        }
+
+        if (nav_re_9)
+        {
+            nav_re_9 = false;
+            nav2 = false;
+            nav_re_1 = true;
         }
     }
 
@@ -1157,7 +1275,7 @@ int main()
         // Nave-Samus-2
         //--------------------------------------------------------------------------------------------------------------------------
         model = glm::translate(glm::mat4(1.0f), PosIniNav2 + glm::vec3(movNav2X, 0.0f, movNav2z));
-        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::scale(model, glm::vec3(1.5F, 1.5f, 1.5f));
         model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
         model = glm::rotate(model, glm::radians(rotNav2), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -1395,10 +1513,6 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 			nave_play = true;
 			nave_playIndex = 0;
 			i_curr_steps = 0;
-		}
-		else
-		{
-			std::cout << "Not enough Key Frames" << std::endl;
 		}
 	}
 
