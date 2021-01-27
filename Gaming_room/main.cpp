@@ -929,6 +929,7 @@ int main()
     Model samus_canon("resources/objects/Samus_canon/samus_canon.obj");
     Model samus_antebrazo("resources/objects/Samus_antebrazo/samus_antebrazo.obj");
     Model samus_hombro("resources/objects/Samus_hombro/samus_hombro.obj");
+	//Model zurg("resources/objects/Zurg/zurg.obj");
 
 	// draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -1289,6 +1290,15 @@ int main()
         samus_canon.Draw(staticShader);
 
         staticShader.setFloat("material_shininess", 51.2f);
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Avatar de Zurg
+		// -------------------------------------------------------------------------------------------------------------------------
+		//model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		//staticShader.setMat4("model", model);
+		//zurg.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Canica Resorte
