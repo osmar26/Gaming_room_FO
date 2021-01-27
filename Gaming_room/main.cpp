@@ -89,7 +89,6 @@ float	incX = 0.0f,
 		rotInc = 0.0f,
 		giroMonitoInc = 0.0f;
 
-
 //KeyFrames (para la nave)
 
 float   nave_x = 0.0f,
@@ -116,6 +115,26 @@ GLfloat const ANCHO = inf_der.x - inf_izq.x;
 GLfloat const ALTO = inf_der.z - sup_der.z;
 GLfloat const ALTURA = sup_der.y - inf_der.y;
 
+
+std::vector<glm::vec3> prueba_funcion(std::vector<glm::vec3> &datos, float steps)
+{
+    std::vector<glm::vec3> estados;
+    for (size_t i = 0; i < datos.size() - 1; i++)
+    {
+        float proporcion_x = datos[i].x - datos[i + 1].x;
+        float proporcion_y = datos[i].y - datos[i + 1].y;
+        float proporcion_z = datos[i].z - datos[i + 1].z;
+        float distancia = glm::length(datos[i]-datos[i+1]);
+        float factor = distancia / steps;
+        glm::vec3 temp(0.0f);
+        temp.x = (-factor)*(1.0f* glm::sign(proporcion_x));
+        temp.y = factor * (-proporcion_y/glm::abs(proporcion_x));
+        temp.z = factor * (-proporcion_z/glm::abs(proporcion_x));
+        estados.push_back(temp);
+    }
+    return estados;
+}
+
 //Esquina inf izquierda 0.0f, 0.0f, 0.0f
 //Esquina inf derecha ANCHO, 0.0F, 0.0f
 //Esquina sup derecha ANCHO, ALTURA, ALTO
@@ -141,10 +160,13 @@ GLfloat metroid_x = 0.0f,
 
 //Animacion resorte y canica 
 GLfloat mov_resorte_x = 0.65f,
-		mov_canica_x = -116.5f,
-		mov_canica_y = -121.5f,
-		mov_canica_z = 139.5f,
+		mov_canica_x = -119.f,
+		mov_canica_y = -120.281f,
+		mov_canica_z = 152.f,
 		rot_canica = 0.0f;
+
+std::vector<glm::vec3> datos;
+std::vector<glm::vec3> estados;
 
 //Animacion de los flippers
 GLfloat rot_flipper_inf_der = 0.0f,
@@ -167,7 +189,9 @@ bool animacion_canica_1 = false,
 	flag_canica1 = false,
 	flag_canica2 = false,
 	flag_canica3 = false,
-	flag_canica4 = false;
+	flag_canica4 = false,
+    flag_canica5 = false,
+    flag_canica6 = false;
 
 
 bool animacion_flippers_izq = false,
@@ -178,7 +202,7 @@ bool animacion_flippers_izq = false,
 	flag_flip4 = false;
 
 #define MAX_FRAMES 18
-int i_max_steps = 60;
+int i_max_steps = 40;
 int i_curr_steps = 0;
 
 struct NAVE
@@ -329,10 +353,13 @@ void animate(void)
 			}
 		}
 
+        static float k1=0.003f, k2= 3.0f, k3=2.0f, k4=0.7f, k5=0.3f;
 		if (animacion_canica_1) {
 			if (flag_canica0) {
-				if (mov_canica_z > 100.0f) {
-					mov_canica_z -= 0.5f;
+				if (mov_canica_z >= datos[1].z) {
+                    mov_canica_x += k1*estados[0].x;
+                    mov_canica_y += k1*estados[0].y;
+                    mov_canica_z += k1*estados[0].z;
 				}
 				else {
 					flag_canica0 = false;
@@ -341,9 +368,10 @@ void animate(void)
 			}
 
 			if (flag_canica1) {
-				if (mov_canica_y >= -98.0f) {
-					mov_canica_y += 5.0f;
-					mov_canica_z += 1.0f;
+				if (mov_canica_x >= datos[2].x) {
+                    mov_canica_x += k2 * estados[1].x;
+                    mov_canica_y += k2 * estados[1].y;
+                    mov_canica_z += k2 * estados[1].z;
 				}
 				else {
 					flag_canica1 = false;
@@ -352,8 +380,10 @@ void animate(void)
 			}
 			
 			if (flag_canica2) {
-				if (mov_canica_x >= -135.0f) {
-					mov_canica_x -= 0.5f;
+				if (mov_canica_x <= datos[3].x) {
+					mov_canica_x += k3 * estados[2].x;
+                    mov_canica_y += k3 * estados[2].y;
+                    mov_canica_z += k3 * estados[2].z;
 				}
 				else {
 					flag_canica2 = false;
@@ -362,8 +392,10 @@ void animate(void)
 			}
 			
 			if (flag_canica3) {
-				if (mov_canica_z <= 160.0f) {
-					mov_canica_z += 0.5f;
+				if (mov_canica_z >= datos[4].z) {
+                    mov_canica_x += k4 * estados[3].x;
+                    mov_canica_y += k4 * estados[3].y;
+                    mov_canica_z += k4 * estados[3].z;
 				}
 				else {
 					flag_canica3 = false;
@@ -371,16 +403,28 @@ void animate(void)
 				}
 			}
 
-			if (flag_canica4) {
+            if (flag_canica4) {
+                if (mov_canica_z <= datos[5].z) {
+                    mov_canica_x += k5 * estados[4].x;
+                    mov_canica_y += k5 * estados[4].y;
+                    mov_canica_z += k5 * estados[4].z;
+                }
+                else {
+                    flag_canica4 = false;
+                    flag_canica5 = true;
+                }
+            }
+
+			if (flag_canica5) {
 				//reset values
-				flag_canica4 = false;
+				flag_canica5 = false;
 				flag_canica0 = true;
 				animacion_canica_1 = false;
 				flag_resorte1 = true;
 				animacion_resorte = false;
-				mov_canica_x = -116.5f;
-				mov_canica_y = -121.5f;
-				mov_canica_z = 139.5f;
+				mov_canica_x = datos[0].x;
+				mov_canica_y = datos[0].y;
+				mov_canica_z = datos[0].z;
 			}
 		}
 	}
@@ -740,11 +784,28 @@ int main()
     nave_saveFrame(0.0f,20.0f, 10.0f, 0.0f, 0.0f, 0.0f);
     nave_saveFrame(0.0f, 15.0f, 20.0f, 30.0f, 0.0f, 0.0f);
     nave_saveFrame(0.0f, 10.0f, 25.0f, 0.0f, 0.0f, 0.0f);
-    nave_saveFrame(0.0f, 15.0f, 30.0f, -30.0f, 0.0f, 0.0f);
-    nave_saveFrame(5.0f, 20.0f, 35.0f, 0.0f, 15.0f, -15.0f);
-    nave_saveFrame(20.0f, 20.0f, 39.0f, 0.0f, 45.0f, -45.0f);
-    nave_saveFrame(30.0f, 20.0f, 41.0f, 0.0f, 75.0f, -15.0f);
+    nave_saveFrame(0.0f, 15.0f, 30.0f, 0.0f, 0.0f, 0.0f);
+    nave_saveFrame(5.0f, 20.0f, 35.0f, -5.0f, 15.0f, -15.0f);
+    nave_saveFrame(20.0f, 20.0f, 39.0f, -10.0f, 45.0f, -45.0f);
+    nave_saveFrame(30.0f, 20.0f, 41.0f, -5.0f, 75.0f, -15.0f);
     nave_saveFrame(40.0f, 20.0f, 42.0f, 0.0f, 90.0f, 0.0f);
+
+    nave_saveFrame(60.0f, 20.0f, 42.0f, 90.0f, 90.0f, 0.0f);
+    nave_saveFrame(80.0f, 20.0f, 42.0f, 180.0f, 90.0f, 0.0f);
+    nave_saveFrame(100.0f, 20.0f, 42.0f, 270.0f, 90.0f, 0.0f);
+    nave_saveFrame(120.0f, 20.0f, 42.0f, 360.0f, 90.0f, 0.0f);
+
+    datos.push_back(glm::vec3(-119.416f, -120.479f, 153.883f));
+    datos.push_back(glm::vec3(-119.317f, -119.145f, 63.9851f));
+    datos.push_back(glm::vec3(-148.894f, -118.67f, 86.1526f));
+    datos.push_back(glm::vec3(-128.637f, -120.086f, 109.237f));
+    datos.push_back(glm::vec3(-131.098, -118.773, 91.2278));
+    datos.push_back(glm::vec3(-140.561, -121.863, 159.823));
+    estados = prueba_funcion(datos, 80.0f);
+
+    mov_canica_x = datos[0].x;
+    mov_canica_y = datos[0].y;
+    mov_canica_z = datos[0].z;
 
 
 	while (!glfwWindowShouldClose(window))
