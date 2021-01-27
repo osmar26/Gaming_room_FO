@@ -1,4 +1,4 @@
-/*---------------------------------------------------------*/
+﻿/*---------------------------------------------------------*/
 /* ------------------- Proyecto Final ---------------------*/
 /* -------------------     Equipo:    ---------------------*/
 /* ---------------- Juarez Aguilar Osmar ------------------*/
@@ -62,7 +62,7 @@ const int LOOP_TIME = 1000 / FPS; // = 16 milisegundos // 1000 milisegundos == 1
 double	deltaTime = 1.0f,
 lastFrame = 0.0f;
 
-//Iluminaci�n
+//Iluminación
 glm::vec3 lightPosition(0.0f, 4.0f, -10.0f);
 glm::vec3 lightDirection(0.0f, -1.0f, -1.0f);
 
@@ -77,7 +77,7 @@ irrklang::ISoundEngine *SoundEngine = irrklang::createIrrKlangDevice();
 irrklang::ISoundSource* amigo = SoundEngine->addSoundSourceFromFile("audio/You ve Got a Friend in Me with.mp3");
 irrklang::ISoundSource* tallon = SoundEngine->addSoundSourceFromFile("audio/Metroid PrimeTD.mp3");
 
-//Keyframes (Manipulaci�n y dibujo)
+//Keyframes (Manipulación y dibujo)
 float	posX = 0.0f,
 		posY = 0.0f,
 		posZ = 0.0f,
@@ -151,6 +151,19 @@ glm::vec3 convertir_inclinado(glm::vec2 coordenada)
     vector = vector + glm::vec3(coordenada.x, coorden, -coordenada.y);
     return vector;
 }
+
+
+//Animacion compleja nave 2
+glm::vec3 PosIniNav2 = glm::vec3(-141.774f, -110.872f, 155.903f);
+float movNav2X = 0.0f,
+movNav2z = 0.0f,
+rotNav2 = 0.0f;
+bool nav2 = false,
+nav_re_1 = true,
+nav_re_2 = false,
+nav_re_3 = false,
+nav_re_4 = false,
+nav_re_5 = false;
 
 //Animacion metroid 
 GLfloat metroid_x = 0.0f,
@@ -511,6 +524,24 @@ void animate(void)
             nave_rotacion_z += inc_nave_rotacion_z;
 
             i_curr_steps++;
+        }
+    }
+
+
+    static float radix = 5.0f;
+    if (nav2)
+    {
+        /*→r(t)=Acosωt+Asinωt.*/
+        if (nav_re_1)
+        {
+            movNav2X = radix * glm::sin(glm::radians(rotNav2));
+            movNav2z = radix * glm::sin(glm::radians(rotNav2));
+            rotNav2++;
+            if (movNav2X > 90)
+            {
+                nav_re_1 = false;
+                nav_re_2 = true;
+            }
         }
     }
 
@@ -1123,6 +1154,17 @@ int main()
         nave.Draw(staticShader);
 
         //--------------------------------------------------------------------------------------------------------------------------
+        // Nave-Samus-2
+        //--------------------------------------------------------------------------------------------------------------------------
+        model = glm::translate(glm::mat4(1.0f), PosIniNav2 + glm::vec3(movNav2X, 0.0f, movNav2z));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(1.5F, 1.5f, 1.5f));
+        model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
+        model = glm::rotate(model, glm::radians(rotNav2), glm::vec3(0.0f, 1.0f, 0.0f));
+        staticShader.setMat4("model", model);
+        nave.Draw(staticShader);
+
+        //--------------------------------------------------------------------------------------------------------------------------
         // Pieza de Madera para dar forma (estructura de madera larga del lado derecho)
         //--------------------------------------------------------------------------------------------------------------------------
         model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(ANCHO-15.0f, ALTO / 2))-glm::vec3(0.0f, 7.0f, 0.0f));
@@ -1302,6 +1344,12 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	{
 		animacion_flippers_der = true;
 	}
+
+    //Para activar animacion nave 2
+    if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
+    {
+        nav2 = true;
+    }
 
 	//To Configure Model, en este momento no estan siendo utilizados
 	/*if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
