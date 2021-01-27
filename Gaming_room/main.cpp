@@ -106,9 +106,8 @@ float   inc_nave_x = 0.0f,
 
 
 // Encender o Apagar luces
-float	luz1_x = 0.0f,
-		luz1_y = 0.0f,
-		luz1_z = 0.0f;
+float	luz1 = 0.0f,
+		luz1_const = 1.0f;
 
 bool    luz1_bool = false;
 
@@ -992,13 +991,13 @@ int main()
 		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
 		
 		//Luz 1 - Ilumina todo el tablero de Pinball
-		staticShader.setVec3("pointLight[0].position", glm::vec3(-140.0f, -124.0f, 120.0f));
+		staticShader.setVec3("pointLight[0].position", glm::vec3(-137.0f, -123.5f, 115.0f));
 		staticShader.setVec3("pointLight[0].ambient", glm::vec3(0.2f, 0.2f, 0.2f));
-		staticShader.setVec3("pointLight[0].diffuse", glm::vec3(luz1_x, luz1_y, luz1_z));
-		staticShader.setVec3("pointLight[0].specular", glm::vec3(1.0f, 1.0f, 1.0f));
-		staticShader.setFloat("pointLight[0].constant", 0.1f);
-		staticShader.setFloat("pointLight[0].linear", 0.0010f);
-		staticShader.setFloat("pointLight[0].quadratic", 0.004f);
+		staticShader.setVec3("pointLight[0].diffuse", glm::vec3(luz1, luz1, luz1));
+		staticShader.setVec3("pointLight[0].specular", glm::vec3(luz1, luz1, luz1));
+		staticShader.setFloat("pointLight[0].constant", luz1_const);
+		staticShader.setFloat("pointLight[0].linear", 0.00010f);
+		staticShader.setFloat("pointLight[0].quadratic", 0.0004f);
 
 		staticShader.setVec3("pointLight[1].position", glm::vec3(0.0, 0.0f, 0.0f));
 		staticShader.setVec3("pointLight[1].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -1499,15 +1498,13 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	{
 		// Enceinde Luz 1
 		if (luz1_bool == false) {
-			luz1_x = 1.0f;
-			luz1_y = 1.0f;
-			luz1_z = 1.0f;
+			luz1 = 1.0f;
+			luz1_const = 0.1f;
 			luz1_bool = true;
 		}
 		else {
-			luz1_x = 0.0f;
-			luz1_y = 0.0f;
-			luz1_z = 0.0f;
+			luz1 = 0.0f;
+			luz1_const = 1.0f;
 			luz1_bool = false;
 		}
 		
