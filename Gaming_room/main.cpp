@@ -1398,7 +1398,6 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		}
 		else
 		{
-			nave_play = false;
 			std::cout << "Not enough Key Frames" << std::endl;
 		}
 	}
