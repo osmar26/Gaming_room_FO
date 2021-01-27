@@ -1000,25 +1000,25 @@ int main()
 		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
 		
 		//Luz 1 - Ilumina todo el tablero de Pinball
-		staticShader.setVec3("pointLight[0].position", glm::vec3(-138.8f, -123.5f, 111.0f));
+		staticShader.setVec3("pointLight[0].position", glm::vec3(-138.8f, -123.5f, 105.0f));
 		staticShader.setVec3("pointLight[0].ambient", glm::vec3(0.2, 0.1f, 0.1f));
 		staticShader.setVec3("pointLight[0].diffuse", glm::vec3(luz1, luz1, luz1));
 		staticShader.setVec3("pointLight[0].specular", glm::vec3(luz1, luz1, luz1));
 		staticShader.setFloat("pointLight[0].constant", luz1_const);
-		staticShader.setFloat("pointLight[0].linear", 0.00010f);
-		staticShader.setFloat("pointLight[0].quadratic", 0.0004f);
+		staticShader.setFloat("pointLight[0].linear", 0.0007f);
+		staticShader.setFloat("pointLight[0].quadratic", 0.00035f);
 
 		// Luz 2 - flipper inf Der
-		staticShader.setVec3("pointLight[1].position", glm::vec3(-130.8f, -114.0f, 145.0f));
+		staticShader.setVec3("pointLight[1].position", glm::vec3(-129.8f, -109.0f, 138.0f));
 		staticShader.setVec3("pointLight[1].ambient", glm::vec3(luz2_x, luz2_y, luz2_z));
 		staticShader.setVec3("pointLight[1].diffuse", glm::vec3(luz2_x, luz2_y, luz2_z));
 		staticShader.setVec3("pointLight[1].specular", glm::vec3(0.0f, 0.0f, luz2_z));
 		staticShader.setFloat("pointLight[1].constant", luz2_const);
-		staticShader.setFloat("pointLight[1].linear", 0.010f);
-		staticShader.setFloat("pointLight[1].quadratic", 0.038f);
+		staticShader.setFloat("pointLight[1].linear", 0.009f);
+		staticShader.setFloat("pointLight[1].quadratic", 0.0038f);
 
 		// Luz 2 - flipper inf izq
-		staticShader.setVec3("pointLight[2].position", glm::vec3(-150.0, -114.0f, 145.0f));
+		staticShader.setVec3("pointLight[2].position", glm::vec3(-151.0, -109.0f, 138.0f));
 		staticShader.setVec3("pointLight[2].ambient", glm::vec3(luz2_x, luz2_y, luz2_z));
 		staticShader.setVec3("pointLight[2].diffuse", glm::vec3(luz2_x, luz2_y, luz2_z));
 		staticShader.setVec3("pointLight[2].specular", glm::vec3(0.0f, 0.0f, luz2_z));
@@ -1036,13 +1036,13 @@ int main()
 		staticShader.setFloat("pointLight[3].quadratic", 0.032f);
 
 		// Luz 4 - Ilumina la mesa de billar 
-		staticShader.setVec3("pointLight[4].position", glm::vec3(88.0f, -105.0f, 170.0f));
-		staticShader.setVec3("pointLight[4].ambient", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[4].position", glm::vec3(88.0f, -80.0f, 170.0f));
+		staticShader.setVec3("pointLight[4].ambient", glm::vec3(0.5f, 0.5f, 0.5f));
 		staticShader.setVec3("pointLight[4].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		staticShader.setVec3("pointLight[4].specular", glm::vec3(1.0f, 1.0f, 1.0f));
-		staticShader.setFloat("pointLight[4].constant", 0.5f);
-		staticShader.setFloat("pointLight[4].linear", 0.00009f);
-		staticShader.setFloat("pointLight[4].quadratic", 0.00032f);
+		staticShader.setFloat("pointLight[4].constant", 1.0f);
+		staticShader.setFloat("pointLight[4].linear", 0.000009f);
+		staticShader.setFloat("pointLight[4].quadratic", 0.000032f);
 
 		staticShader.setFloat("material_shininess", 32.0f);
 
