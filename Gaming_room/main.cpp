@@ -112,7 +112,10 @@ float	luz1 = 0.0f,
 		luz2_y = 0.0f,
 		luz2_z = 0.0f,
 		luz2_const = 1.0f,
-		luz3 = 0.0f,
+		luz3_fig = 0.3f,
+		luz3_st_x = 0.0f,
+		luz3_st_y = 0.0f,
+		luz3_st_z = 0.0f,
 		luz3_const = 1.0f;
 		
 
@@ -1027,12 +1030,12 @@ int main()
 		staticShader.setFloat("pointLight[2].linear", 0.0010f);
 		staticShader.setFloat("pointLight[2].quadratic", 0.0038f);
 
-		// Luz 3 - Obstaculo Jerarquico Sup
-		staticShader.setVec3("pointLight[3].position", glm::vec3(0.0, 0.0f, 0.0f));
-		staticShader.setVec3("pointLight[3].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("pointLight[3].diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("pointLight[3].specular", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setFloat("pointLight[3].constant", 1.0f);
+		// Luz 3 - Obstaculos Jerarquicos Sup
+		staticShader.setVec3("pointLight[3].position", glm::vec3(-138.0f, -115.0f, 65.0f));
+		staticShader.setVec3("pointLight[3].ambient", glm::vec3(luz3_st_x, luz3_st_y, luz3_st_z));
+		staticShader.setVec3("pointLight[3].diffuse", glm::vec3(luz3_st_x, luz3_st_y, luz3_st_z));
+		staticShader.setVec3("pointLight[3].specular", glm::vec3(0.0f, luz3_st_y, 0.0f));
+		staticShader.setFloat("pointLight[3].constant", luz3_const);
 		staticShader.setFloat("pointLight[3].linear", 0.009f);
 		staticShader.setFloat("pointLight[3].quadratic", 0.032f);
 
@@ -1199,69 +1202,69 @@ int main()
 		tmp = model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(3.0f, 4.0f, 2.0f));
 		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		projectionShader.setVec3("aColor", glm::vec3(luz3_fig, luz3_fig, luz3_fig));
 		glBindTexture(GL_TEXTURE_2D, t_obstcl);
 		glDrawArrays(GL_QUADS, 24, 24);
 
 		tmp = model = glm::translate(tmp, glm::vec3(0.0f, 2.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 3.0f, 1.0f));
 		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		projectionShader.setVec3("aColor", glm::vec3(luz3_fig, luz3_fig, luz3_fig));
 		glBindTexture(GL_TEXTURE_2D, t_obstcl);
 		glDrawArrays(GL_QUADS, 24, 24);
 
 		model = glm::translate(tmp, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f, 5.0f, 0.5f));
 		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		projectionShader.setVec3("aColor", glm::vec3(luz3_fig, luz3_fig, luz3_fig));
 		glBindTexture(GL_TEXTURE_2D, t_obstcl);
 		glDrawArrays(GL_QUADS, 0, 24);
 
 		//2
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-148.0f, -118.2f, 63.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-146.0f, -118.2f, 63.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		tmp = model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(3.0f, 4.0f, 2.0f));
 		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		projectionShader.setVec3("aColor", glm::vec3(luz3_fig, luz3_fig, luz3_fig));
 		glBindTexture(GL_TEXTURE_2D, t_obstcl);
 		glDrawArrays(GL_QUADS, 24, 24);
 
 		tmp = model = glm::translate(tmp, glm::vec3(0.0f, 2.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 3.0f, 1.0f));
 		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		projectionShader.setVec3("aColor", glm::vec3(luz3_fig, luz3_fig, luz3_fig));
 		glBindTexture(GL_TEXTURE_2D, t_obstcl);
 		glDrawArrays(GL_QUADS, 24, 24);
 
 		model = glm::translate(tmp, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f, 5.0f, 0.5f));
 		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		projectionShader.setVec3("aColor", glm::vec3(luz3_fig, luz3_fig, luz3_fig));
 		glBindTexture(GL_TEXTURE_2D, t_obstcl);
 		glDrawArrays(GL_QUADS, 0, 24);
 
 		//3
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-128.0f, -118.2f, 63.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-130.0f, -118.2f, 63.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		tmp = model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(3.0f, 4.0f, 2.0f));
 		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		projectionShader.setVec3("aColor", glm::vec3(luz3_fig, luz3_fig, luz3_fig));
 		glBindTexture(GL_TEXTURE_2D, t_obstcl);
 		glDrawArrays(GL_QUADS, 24, 24);
 
 		tmp = model = glm::translate(tmp, glm::vec3(0.0f, 2.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 3.0f, 1.0f));
 		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		projectionShader.setVec3("aColor", glm::vec3(luz3_fig, luz3_fig, luz3_fig));
 		glBindTexture(GL_TEXTURE_2D, t_obstcl);
 		glDrawArrays(GL_QUADS, 24, 24);
 
 		model = glm::translate(tmp, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f, 5.0f, 0.5f));
 		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		projectionShader.setVec3("aColor", glm::vec3(luz3_fig, luz3_fig, luz3_fig));
 		glBindTexture(GL_TEXTURE_2D, t_obstcl);
 		glDrawArrays(GL_QUADS, 0, 24);
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -1630,12 +1633,15 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	{
 		// Enceinde Luz 1
 		if (luz3_bool == false) {
-			luz3 = 1.0f;
-			luz3_const = 0.1f;
+			luz3_fig = 1.0f;
+			luz3_st_x = 0.2f;
+			luz3_st_y = 1.0f;
+			luz3_st_z = 0.1f;
+			luz3_const = 0.6f;
 			luz3_bool = true;
 		}
 		else {
-			luz3 = 0.0f;
+			luz3_fig = 0.3f;
 			luz3_const = 1.0f;
 			luz3_bool = false;
 		}
