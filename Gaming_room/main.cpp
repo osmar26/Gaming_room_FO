@@ -79,15 +79,15 @@ irrklang::ISoundSource* tallon = SoundEngine->addSoundSourceFromFile("audio/Metr
 
 //Keyframes (Manipulación y dibujo)
 float	posX = 0.0f,
-		posY = 0.0f,
-		posZ = 0.0f,
-		rotRodIzq = 0.0f,
-		giroMonito = 0.0f;	
+posY = 0.0f,
+posZ = 0.0f,
+rotRodIzq = 0.0f,
+giroMonito = 0.0f;
 float	incX = 0.0f,
-		incY = 0.0f,
-		incZ = 0.0f,
-		rotInc = 0.0f,
-		giroMonitoInc = 0.0f;
+incY = 0.0f,
+incZ = 0.0f,
+rotInc = 0.0f,
+giroMonitoInc = 0.0f;
 
 //KeyFrames (para la nave)
 float   nave_x = 0.0f,
@@ -98,30 +98,30 @@ nave_rotacion_y = 0.0f,
 nave_rotacion_z = 0.0f;
 
 float   inc_nave_x = 0.0f,
-        inc_nave_y = 0.0f,
-        inc_nave_z = 0.0f,
-        inc_nave_rotacion_x = 0.0f,
-        inc_nave_rotacion_y = 0.0f,
-        inc_nave_rotacion_z = 0.0f;
+inc_nave_y = 0.0f,
+inc_nave_z = 0.0f,
+inc_nave_rotacion_x = 0.0f,
+inc_nave_rotacion_y = 0.0f,
+inc_nave_rotacion_z = 0.0f;
 
 
 // Encender o Apagar luces
 float	luz1 = 0.0f,
-		luz1_const = 1.0f,
-		luz2_x = 0.0f,
-		luz2_y = 0.0f,
-		luz2_z = 0.0f,
-		luz2_const = 1.0f,
-		luz3_fig = 0.3f,
-		luz3_st_x = 0.0f,
-		luz3_st_y = 0.0f,
-		luz3_st_z = 0.0f,
-		luz3_const = 1.0f;
-		
+luz1_const = 1.0f,
+luz2_x = 0.0f,
+luz2_y = 0.0f,
+luz2_z = 0.0f,
+luz2_const = 1.0f,
+luz3_fig = 0.3f,
+luz3_st_x = 0.0f,
+luz3_st_y = 0.0f,
+luz3_st_z = 0.0f,
+luz3_const = 1.0f;
+
 
 bool    luz1_bool = false,
-		luz2_bool = false,
-		luz3_bool = false;
+luz2_bool = false,
+luz3_bool = false;
 
 //Para facilitar las animaciones en el plano inclinado del pinball
 GLfloat const angulo = 1.8f;
@@ -136,21 +136,21 @@ GLfloat const ALTURA = sup_der.y - inf_der.y;
 
 std::vector<glm::vec3> prueba_funcion(std::vector<glm::vec3> &datos, float steps)
 {
-    std::vector<glm::vec3> estados;
-    for (size_t i = 0; i < datos.size() - 1; i++)
-    {
-        float proporcion_x = datos[i].x - datos[i + 1].x;
-        float proporcion_y = datos[i].y - datos[i + 1].y;
-        float proporcion_z = datos[i].z - datos[i + 1].z;
-        float distancia = glm::length(datos[i]-datos[i+1]);
-        float factor = distancia / steps;
-        glm::vec3 temp(0.0f);
-        temp.x = (-factor)*(1.0f* glm::sign(proporcion_x));
-        temp.y = factor * (-proporcion_y/glm::abs(proporcion_x));
-        temp.z = factor * (-proporcion_z/glm::abs(proporcion_x));
-        estados.push_back(temp);
-    }
-    return estados;
+	std::vector<glm::vec3> estados;
+	for (size_t i = 0; i < datos.size() - 1; i++)
+	{
+		float proporcion_x = datos[i].x - datos[i + 1].x;
+		float proporcion_y = datos[i].y - datos[i + 1].y;
+		float proporcion_z = datos[i].z - datos[i + 1].z;
+		float distancia = glm::length(datos[i] - datos[i + 1]);
+		float factor = distancia / steps;
+		glm::vec3 temp(0.0f);
+		temp.x = (-factor)*(1.0f* glm::sign(proporcion_x));
+		temp.y = factor * (-proporcion_y / glm::abs(proporcion_x));
+		temp.z = factor * (-proporcion_z / glm::abs(proporcion_x));
+		estados.push_back(temp);
+	}
+	return estados;
 }
 
 //Esquina inf izquierda 0.0f, 0.0f, 0.0f
@@ -164,10 +164,10 @@ float mov_palanca = 0.0f;
 
 glm::vec3 convertir_inclinado(glm::vec2 coordenada)
 {
-    glm::vec3 vector = inf_izq;
-    GLfloat coorden = (coordenada.y / ALTO)*ALTURA;
-    vector = vector + glm::vec3(coordenada.x, coorden, -coordenada.y);
-    return vector;
+	glm::vec3 vector = inf_izq;
+	GLfloat coorden = (coordenada.y / ALTO)*ALTURA;
+	vector = vector + glm::vec3(coordenada.x, coorden, -coordenada.y);
+	return vector;
 }
 
 
@@ -182,7 +182,7 @@ nav_re_2 = false,
 nav_re_3 = false,
 nav_re_4 = false,
 nav_re_5 = false,
-nav_re_6 = false, 
+nav_re_6 = false,
 nav_re_7 = false,
 nav_re_8 = false,
 nav_re_9 = false;
@@ -192,60 +192,66 @@ float z_pos = 0.0f;
 
 //Animacion metroid 
 GLfloat metroid_x = 0.0f,
-		metroid_y = 0.0f,
-		metroid_z = 0.0f,
-		metroid_ori = 180.0f;
+metroid_y = 0.0f,
+metroid_z = 0.0f,
+metroid_ori = 180.0f;
 
 //Animacion resorte y canica 
 GLfloat mov_resorte_x = 0.65f,
-		mov_canica_x = -119.f,
-		mov_canica_y = -120.281f,
-		mov_canica_z = 152.f,
-		rot_canica = 0.0f;
+mov_canica_x = -119.f,
+mov_canica_y = -120.281f,
+mov_canica_z = 152.f,
+rot_canica = 0.0f;
 
-// Canica con camara
-GLfloat mov_canica_cam_X = 0.0f,
-		mov_canica_cam_y = 0.0f, 
-		mov_canica_cam_z = 0.0f;
 
-bool camara_canica = false;
+////////////////////// Canica con camara //////////////////////
+GLfloat mov_canica_cam_X = -138.0f,
+mov_canica_cam_y = -120.0f,
+mov_canica_cam_z = 100.0f;
 
-//
+glm::vec3 reset_camera_principal = camera.getPosition();
+glm::vec3 reset_camera_canica = glm::vec3(-138.0f, -119.2f, 100.0f);
+
+bool camara_canica = false,
+flag_camera_reset = false;
+//////////////////////////////////////////////////////////////
+
+
 std::vector<glm::vec3> datos;
 std::vector<glm::vec3> estados;
 
 //Animacion de los flippers
 GLfloat rot_flipper_inf_der = 0.0f,
-		rot_flipper_inf_izq = 126.0f,
-		rot_flipper_sup_izq = 126.0f,
-		rot_flipper_sup_der = 0.0f;
+rot_flipper_inf_izq = 126.0f,
+rot_flipper_sup_izq = 126.0f,
+rot_flipper_sup_der = 0.0f;
 
 bool animacion_metroid = true,
-    re_metroid1 = true,
-    re_metroid2 = false,
-    re_metroid3 = false,
-    re_metroid4 = false; 
+re_metroid1 = true,
+re_metroid2 = false,
+re_metroid3 = false,
+re_metroid4 = false;
 
 bool animacion_resorte = false,
-	flag_resorte1 = true,
-	flag_resorte2 = false;
+flag_resorte1 = true,
+flag_resorte2 = false;
 
 bool animacion_canica_1 = false,
-	flag_canica0 = true,
-	flag_canica1 = false,
-	flag_canica2 = false,
-	flag_canica3 = false,
-	flag_canica4 = false,
-    flag_canica5 = false,
-    flag_canica6 = false;
+flag_canica0 = true,
+flag_canica1 = false,
+flag_canica2 = false,
+flag_canica3 = false,
+flag_canica4 = false,
+flag_canica5 = false,
+flag_canica6 = false;
 
 
 bool animacion_flippers_izq = false,
-	animacion_flippers_der = false,
-	flag_flip1 = true,
-	flag_flip2 = false,
-	flag_flip3 = true,
-	flag_flip4 = false;
+animacion_flippers_der = false,
+flag_flip1 = true,
+flag_flip2 = false,
+flag_flip3 = true,
+flag_flip4 = false;
 
 #define MAX_FRAMES 18
 int i_max_steps = 40;
@@ -253,12 +259,12 @@ int i_curr_steps = 0;
 
 struct NAVE
 {
-    float nave_x = 0.0f,
-            nave_y = 0.0f,
-            nave_z = 0.0f,
-            nave_rotacion_x = 0.0f,
-            nave_rotacion_y = 0.0f,
-            nave_rotacion_z = 0.0f; 
+	float nave_x = 0.0f,
+		nave_y = 0.0f,
+		nave_z = 0.0f,
+		nave_rotacion_x = 0.0f,
+		nave_rotacion_y = 0.0f,
+		nave_rotacion_z = 0.0f;
 };
 
 //Datos para la nave
@@ -269,123 +275,123 @@ int nave_playIndex = 0;
 
 //Variables para cargar las texturas
 unsigned int	t_wall,
-				t_inside_wall,
-				t_floor,
-				t_ceiling,
-				t_pnbll_table,
-				t_pnbll_board,
-				t_obstcl,
-				t_door,
-				t_window,
-				t_view_window,
-				t_view2_window,
-                t_specular;
+t_inside_wall,
+t_floor,
+t_ceiling,
+t_pnbll_table,
+t_pnbll_board,
+t_obstcl,
+t_door,
+t_window,
+t_view_window,
+t_view2_window,
+t_specular;
 
 void nave_saveFrame(float nav_x, float nav_y, float nav_z, float nav_rot_x, float nav_rot_y, float nav_rot_z)
 {
-    nave_KeyFrame[nave_FrameIndex].nave_x = nav_x;
-    nave_KeyFrame[nave_FrameIndex].nave_y = nav_y;
-    nave_KeyFrame[nave_FrameIndex].nave_z = nav_z;
+	nave_KeyFrame[nave_FrameIndex].nave_x = nav_x;
+	nave_KeyFrame[nave_FrameIndex].nave_y = nav_y;
+	nave_KeyFrame[nave_FrameIndex].nave_z = nav_z;
 
-    nave_KeyFrame[nave_FrameIndex].nave_rotacion_x = nav_rot_x;
-    nave_KeyFrame[nave_FrameIndex].nave_rotacion_y = nav_rot_y;
-    nave_KeyFrame[nave_FrameIndex].nave_rotacion_z = nav_rot_z;
+	nave_KeyFrame[nave_FrameIndex].nave_rotacion_x = nav_rot_x;
+	nave_KeyFrame[nave_FrameIndex].nave_rotacion_y = nav_rot_y;
+	nave_KeyFrame[nave_FrameIndex].nave_rotacion_z = nav_rot_z;
 
 
-    nave_FrameIndex++;
+	nave_FrameIndex++;
 
 }
 
 void resetElements(void)
 {
-    /*Para la nave*/
+	/*Para la nave*/
 
-    nave_x = nave_KeyFrame[0].nave_x;
-    nave_y = nave_KeyFrame[0].nave_y;
-    nave_z = nave_KeyFrame[0].nave_z;
-    nave_rotacion_x = nave_KeyFrame[0].nave_rotacion_x;
-    nave_rotacion_y = nave_KeyFrame[0].nave_rotacion_y;
-    nave_rotacion_z = nave_KeyFrame[0].nave_rotacion_z;
+	nave_x = nave_KeyFrame[0].nave_x;
+	nave_y = nave_KeyFrame[0].nave_y;
+	nave_z = nave_KeyFrame[0].nave_z;
+	nave_rotacion_x = nave_KeyFrame[0].nave_rotacion_x;
+	nave_rotacion_y = nave_KeyFrame[0].nave_rotacion_y;
+	nave_rotacion_z = nave_KeyFrame[0].nave_rotacion_z;
 
 }
 
 void interpolation(void)
 {
-    inc_nave_x = (nave_KeyFrame[nave_playIndex + 1].nave_x - nave_KeyFrame[nave_playIndex].nave_x) / i_max_steps;
-    inc_nave_y = (nave_KeyFrame[nave_playIndex + 1].nave_y - nave_KeyFrame[nave_playIndex].nave_y) / i_max_steps;
-    inc_nave_z = (nave_KeyFrame[nave_playIndex + 1].nave_z - nave_KeyFrame[nave_playIndex].nave_z) / i_max_steps;
-    
-    inc_nave_rotacion_x = (nave_KeyFrame[nave_playIndex + 1].nave_rotacion_x - nave_KeyFrame[nave_playIndex].nave_rotacion_x) / i_max_steps;
-    inc_nave_rotacion_y = (nave_KeyFrame[nave_playIndex + 1].nave_rotacion_y - nave_KeyFrame[nave_playIndex].nave_rotacion_y) / i_max_steps;
-    inc_nave_rotacion_z = (nave_KeyFrame[nave_playIndex + 1].nave_rotacion_z - nave_KeyFrame[nave_playIndex].nave_rotacion_z) / i_max_steps;
+	inc_nave_x = (nave_KeyFrame[nave_playIndex + 1].nave_x - nave_KeyFrame[nave_playIndex].nave_x) / i_max_steps;
+	inc_nave_y = (nave_KeyFrame[nave_playIndex + 1].nave_y - nave_KeyFrame[nave_playIndex].nave_y) / i_max_steps;
+	inc_nave_z = (nave_KeyFrame[nave_playIndex + 1].nave_z - nave_KeyFrame[nave_playIndex].nave_z) / i_max_steps;
+
+	inc_nave_rotacion_x = (nave_KeyFrame[nave_playIndex + 1].nave_rotacion_x - nave_KeyFrame[nave_playIndex].nave_rotacion_x) / i_max_steps;
+	inc_nave_rotacion_y = (nave_KeyFrame[nave_playIndex + 1].nave_rotacion_y - nave_KeyFrame[nave_playIndex].nave_rotacion_y) / i_max_steps;
+	inc_nave_rotacion_z = (nave_KeyFrame[nave_playIndex + 1].nave_rotacion_z - nave_KeyFrame[nave_playIndex].nave_rotacion_z) / i_max_steps;
 
 }
 
 void animate(void)
 {
-    if (animacion_metroid)
-    {
-        static float pii = glm::pi<float>();
-        if (re_metroid1)
-        {
-            metroid_x += 0.2f;
-            if (metroid_x >= 5.0f)
-            {
-                re_metroid1 = false;
-                re_metroid2 = true;
-                metroid_ori = -90.0f;
-            }
-        }
-        if (re_metroid2)
-        {
-            metroid_z -= 0.2f;
-            metroid_y += 0.2f*glm::tan(1.6819f*pii / 180.0f);
-            if (metroid_z <= -2.5f)
-            {
-                re_metroid2 = false;
-                re_metroid3 = true;
-                metroid_ori = 0.0f;
-            }
-        }
-        if (re_metroid3)
-        {
-            metroid_x -= 0.2f;
-            if (metroid_x <= 0.0f)
-            {
-                re_metroid3 = false;
-                re_metroid4 = true;
-                metroid_ori = 90.0f;
-            }
-        }
+	if (animacion_metroid)
+	{
+		static float pii = glm::pi<float>();
+		if (re_metroid1)
+		{
+			metroid_x += 0.2f;
+			if (metroid_x >= 5.0f)
+			{
+				re_metroid1 = false;
+				re_metroid2 = true;
+				metroid_ori = -90.0f;
+			}
+		}
+		if (re_metroid2)
+		{
+			metroid_z -= 0.2f;
+			metroid_y += 0.2f*glm::tan(1.6819f*pii / 180.0f);
+			if (metroid_z <= -2.5f)
+			{
+				re_metroid2 = false;
+				re_metroid3 = true;
+				metroid_ori = 0.0f;
+			}
+		}
+		if (re_metroid3)
+		{
+			metroid_x -= 0.2f;
+			if (metroid_x <= 0.0f)
+			{
+				re_metroid3 = false;
+				re_metroid4 = true;
+				metroid_ori = 90.0f;
+			}
+		}
 
-        if (re_metroid4)
-        {
-            metroid_z += 0.2f;
-            metroid_y -= 0.2f*glm::tan(1.6819f*pii / 180.0f);
-            if (metroid_z >= 0.0f)
-            {
-                re_metroid4 = false;
-                re_metroid1 = true;
-                metroid_x = 0.0f;
-                metroid_y = 0.0f;
-                metroid_z = 0.0f;
-                metroid_ori = 180.0f;
-            }
-        }
-    }
-	
+		if (re_metroid4)
+		{
+			metroid_z += 0.2f;
+			metroid_y -= 0.2f*glm::tan(1.6819f*pii / 180.0f);
+			if (metroid_z >= 0.0f)
+			{
+				re_metroid4 = false;
+				re_metroid1 = true;
+				metroid_x = 0.0f;
+				metroid_y = 0.0f;
+				metroid_z = 0.0f;
+				metroid_ori = 180.0f;
+			}
+		}
+	}
+
 	if (animacion_resorte) {
 		if (flag_resorte1) {
 			if (mov_resorte_x >= 0.10f) {
 				mov_resorte_x -= 0.05f;
-                mov_palanca += 0.3f;
+				mov_palanca += 0.3f;
 			}
 			else {
 				flag_resorte2 = true;
 				flag_resorte1 = false;
 			}
 		}
-		
+
 		if (flag_resorte2) {
 			if (mov_resorte_x >= 0.65f) {
 				flag_resorte2 = false;
@@ -394,17 +400,17 @@ void animate(void)
 			}
 			else {
 				mov_resorte_x += 0.05f;
-                mov_palanca -= 0.3f;
+				mov_palanca -= 0.3f;
 			}
 		}
 
-        static float k1=0.003f, k2= 3.0f, k3=2.0f, k4=0.7f, k5=0.3f;
+		static float k1 = 0.003f, k2 = 3.0f, k3 = 2.0f, k4 = 0.7f, k5 = 0.3f;
 		if (animacion_canica_1) {
 			if (flag_canica0) {
 				if (mov_canica_z >= datos[1].z) {
-                    mov_canica_x += k1*estados[0].x;
-                    mov_canica_y += k1*estados[0].y;
-                    mov_canica_z += k1*estados[0].z;
+					mov_canica_x += k1 * estados[0].x;
+					mov_canica_y += k1 * estados[0].y;
+					mov_canica_z += k1 * estados[0].z;
 				}
 				else {
 					flag_canica0 = false;
@@ -414,33 +420,33 @@ void animate(void)
 
 			if (flag_canica1) {
 				if (mov_canica_x >= datos[2].x) {
-                    mov_canica_x += k2 * estados[1].x;
-                    mov_canica_y += k2 * estados[1].y;
-                    mov_canica_z += k2 * estados[1].z;
+					mov_canica_x += k2 * estados[1].x;
+					mov_canica_y += k2 * estados[1].y;
+					mov_canica_z += k2 * estados[1].z;
 				}
 				else {
 					flag_canica1 = false;
 					flag_canica2 = true;
 				}
 			}
-			
+
 			if (flag_canica2) {
 				if (mov_canica_x <= datos[3].x) {
 					mov_canica_x += k3 * estados[2].x;
-                    mov_canica_y += k3 * estados[2].y;
-                    mov_canica_z += k3 * estados[2].z;
+					mov_canica_y += k3 * estados[2].y;
+					mov_canica_z += k3 * estados[2].z;
 				}
 				else {
 					flag_canica2 = false;
 					flag_canica3 = true;
 				}
 			}
-			
+
 			if (flag_canica3) {
 				if (mov_canica_z >= datos[4].z) {
-                    mov_canica_x += k4 * estados[3].x;
-                    mov_canica_y += k4 * estados[3].y;
-                    mov_canica_z += k4 * estados[3].z;
+					mov_canica_x += k4 * estados[3].x;
+					mov_canica_y += k4 * estados[3].y;
+					mov_canica_z += k4 * estados[3].z;
 				}
 				else {
 					flag_canica3 = false;
@@ -448,17 +454,17 @@ void animate(void)
 				}
 			}
 
-            if (flag_canica4) {
-                if (mov_canica_z <= datos[5].z) {
-                    mov_canica_x += k5 * estados[4].x;
-                    mov_canica_y += k5 * estados[4].y;
-                    mov_canica_z += k5 * estados[4].z;
-                }
-                else {
-                    flag_canica4 = false;
-                    flag_canica5 = true;
-                }
-            }
+			if (flag_canica4) {
+				if (mov_canica_z <= datos[5].z) {
+					mov_canica_x += k5 * estados[4].x;
+					mov_canica_y += k5 * estados[4].y;
+					mov_canica_z += k5 * estados[4].z;
+				}
+				else {
+					flag_canica4 = false;
+					flag_canica5 = true;
+				}
+			}
 
 			if (flag_canica5) {
 				//reset values
@@ -524,172 +530,170 @@ void animate(void)
 		}
 	}
 
-    //Animacion de nave
-    if (nave_play)
-    {
-        if (i_curr_steps >= i_max_steps) //end of animation between frames?
-        {
-            nave_playIndex++;
-            if (nave_playIndex > nave_FrameIndex - 2)	//end of total animation?
-            {
-                std::cout << "Animation ended" << std::endl;
-                //printf("termina anim\n");
-                nave_playIndex = 0;
-                nave_play = false;
-            }
-            else //Next frame interpolations
-            {
-                i_curr_steps = 0; //Reset counter
-                                  //Interpolation
-                interpolation();
-            }
-        }
-        else
-        {
-            //Draw animation
-            nave_x += inc_nave_x;
-            nave_y += inc_nave_y;
-            nave_z += inc_nave_z;
+	//Animacion de nave
+	if (nave_play)
+	{
+		if (i_curr_steps >= i_max_steps) //end of animation between frames?
+		{
+			nave_playIndex++;
+			if (nave_playIndex > nave_FrameIndex - 2)	//end of total animation?
+			{
+				std::cout << "Animation ended" << std::endl;
+				//printf("termina anim\n");
+				nave_playIndex = 0;
+				nave_play = false;
+			}
+			else //Next frame interpolations
+			{
+				i_curr_steps = 0; //Reset counter
+								  //Interpolation
+				interpolation();
+			}
+		}
+		else
+		{
+			//Draw animation
+			nave_x += inc_nave_x;
+			nave_y += inc_nave_y;
+			nave_z += inc_nave_z;
 
-            nave_rotacion_x += inc_nave_rotacion_x;
-            nave_rotacion_y += inc_nave_rotacion_y;
-            nave_rotacion_z += inc_nave_rotacion_z;
+			nave_rotacion_x += inc_nave_rotacion_x;
+			nave_rotacion_y += inc_nave_rotacion_y;
+			nave_rotacion_z += inc_nave_rotacion_z;
 
-            i_curr_steps++;
-        }
-    }
+			i_curr_steps++;
+		}
+	}
 
-    /*0.0f, 0.0f , rot y = 90.0
-    radix, radix, rot y = 0.0
-    0.0f, 2*radix, rot y = -45
-    -radix, 3*radix, rot y = 0.0f
-    0.0f, 4*radix, rot y = 90.0
-    radix, 3*radix, roo y = 180.0
-    0.0f, 2*radix, rot y = 225
-    -radix, radix, rot  y = 180.0*/
-    static float radix = 10.0f;
-    if (nav2)
-    {
-        if (nav_re_1)
-        {
-            movNav2z = movNav2X = radix*glm::sin(glm::radians(-rotNav2));
-            rotNav2 -= 2.0f;
-            if (rotNav2 <= -90.0f)
-            {
-                nav_re_1 = false;
-                nav_re_2 = true;
-                x_pos = movNav2X;
-                z_pos = movNav2z;
-            }
-        }
-        if (nav_re_2)
-        {
-            movNav2X = x_pos + radix*glm::cos(glm::radians(rotNav2));
-            movNav2z = z_pos + radix*glm::sin(glm::radians(rotNav2-90.0f));
-            rotNav2 -= 2.0f;
-            if (rotNav2 <= -180.0f)
-            {
-                nav_re_2 = false;
-                nav_re_3 = true;
-                x_pos = movNav2X;
-                z_pos = movNav2z;
-            }
-        }
-        if (nav_re_3)
-        {
-            movNav2X = x_pos + radix * glm::sin(glm::radians(rotNav2));
-            movNav2z = z_pos + radix * glm::cos(glm::radians(rotNav2 + 90.0f));
-            rotNav2 += 2.0f;
-            if (rotNav2 >= -90.0f)
-            {
-                nav_re_3 = false;
-                nav_re_4 = true;
-                x_pos = movNav2X;
-                z_pos = movNav2z;
-            }
-        }
+	/*0.0f, 0.0f , rot y = 90.0
+	radix, radix, rot y = 0.0
+	0.0f, 2*radix, rot y = -45
+	-radix, 3*radix, rot y = 0.0f
+	0.0f, 4*radix, rot y = 90.0
+	radix, 3*radix, roo y = 180.0
+	0.0f, 2*radix, rot y = 225
+	-radix, radix, rot  y = 180.0*/
+	static float radix = 10.0f;
+	if (nav2)
+	{
+		if (nav_re_1)
+		{
+			movNav2z = movNav2X = radix * glm::sin(glm::radians(-rotNav2));
+			rotNav2 -= 2.0f;
+			if (rotNav2 <= -90.0f)
+			{
+				nav_re_1 = false;
+				nav_re_2 = true;
+				x_pos = movNav2X;
+				z_pos = movNav2z;
+			}
+		}
+		if (nav_re_2)
+		{
+			movNav2X = x_pos + radix * glm::cos(glm::radians(rotNav2));
+			movNav2z = z_pos + radix * glm::sin(glm::radians(rotNav2 - 90.0f));
+			rotNav2 -= 2.0f;
+			if (rotNav2 <= -180.0f)
+			{
+				nav_re_2 = false;
+				nav_re_3 = true;
+				x_pos = movNav2X;
+				z_pos = movNav2z;
+			}
+		}
+		if (nav_re_3)
+		{
+			movNav2X = x_pos + radix * glm::sin(glm::radians(rotNav2));
+			movNav2z = z_pos + radix * glm::cos(glm::radians(rotNav2 + 90.0f));
+			rotNav2 += 2.0f;
+			if (rotNav2 >= -90.0f)
+			{
+				nav_re_3 = false;
+				nav_re_4 = true;
+				x_pos = movNav2X;
+				z_pos = movNav2z;
+			}
+		}
 
-        if (nav_re_4)
-        {
-            movNav2X = x_pos + radix * glm::cos(glm::radians(rotNav2));
-            movNav2z = z_pos + radix * glm::cos(glm::radians(rotNav2));
-            rotNav2 += 2.0f;
-            if (rotNav2 >= 0.0f)
-            {
-                nav_re_4 = false;
-                nav_re_5 = true;
-                x_pos = movNav2X;
-                z_pos = movNav2z;
-            }
-        }
-
-
-        if (nav_re_5)
-        {
-            movNav2X = x_pos + radix * glm::sin(glm::radians(rotNav2));
-            movNav2z = z_pos + radix * glm::cos(glm::radians(rotNav2+90.0f));
-            rotNav2 += 2.0f;
-            if (rotNav2 >= 90.0f)
-            {
-                nav_re_5 = false;
-                nav_re_6 = true;
-                x_pos = movNav2X;
-                z_pos = movNav2z;
-            }
-        }
-
-        if (nav_re_6)
-        {
-            movNav2X = x_pos + radix * glm::sin(glm::radians(rotNav2 + 90.0f));
-            movNav2z = z_pos + radix * glm::sin(glm::radians(rotNav2 + 90.0f));
-            rotNav2 += 2.0f;
-            if (rotNav2 >= 180.0f)
-            {
-                nav_re_6 = false;
-                nav_re_7 = true;
-                x_pos = movNav2X;
-                z_pos = movNav2z;
-            }
-        }
+		if (nav_re_4)
+		{
+			movNav2X = x_pos + radix * glm::cos(glm::radians(rotNav2));
+			movNav2z = z_pos + radix * glm::cos(glm::radians(rotNav2));
+			rotNav2 += 2.0f;
+			if (rotNav2 >= 0.0f)
+			{
+				nav_re_4 = false;
+				nav_re_5 = true;
+				x_pos = movNav2X;
+				z_pos = movNav2z;
+			}
+		}
 
 
-        if (nav_re_7)
-        {
-            movNav2X = x_pos - radix * glm::sin(glm::radians(rotNav2));
-            movNav2z = z_pos - radix * glm::sin(glm::radians(rotNav2));
-            rotNav2 -= 2.0f;
-            if (rotNav2 <= 90.0f)
-            {
-                nav_re_7 = false;
-                nav_re_8 = true;
-                x_pos = movNav2X;
-                z_pos = movNav2z;
-            }
-        }
+		if (nav_re_5)
+		{
+			movNav2X = x_pos + radix * glm::sin(glm::radians(rotNav2));
+			movNav2z = z_pos + radix * glm::cos(glm::radians(rotNav2 + 90.0f));
+			rotNav2 += 2.0f;
+			if (rotNav2 >= 90.0f)
+			{
+				nav_re_5 = false;
+				nav_re_6 = true;
+				x_pos = movNav2X;
+				z_pos = movNav2z;
+			}
+		}
 
-        if (nav_re_8)
-        {
-            movNav2X = x_pos + radix * glm::cos(glm::radians(rotNav2));
-            movNav2z = z_pos + radix * glm::sin(glm::radians(rotNav2-90.0f));
-            rotNav2 -= 2.0f;
-            if (rotNav2 <= 0.0f)
-            {
-                nav_re_8 = false;
-                nav_re_9 = true;
-                x_pos = movNav2X;
-                z_pos = movNav2z;
-            }
-        }
-
-        if (nav_re_9)
-        {
-            nav_re_9 = false;
-            nav2 = false;
-            nav_re_1 = true;
-        }
-    }
+		if (nav_re_6)
+		{
+			movNav2X = x_pos + radix * glm::sin(glm::radians(rotNav2 + 90.0f));
+			movNav2z = z_pos + radix * glm::sin(glm::radians(rotNav2 + 90.0f));
+			rotNav2 += 2.0f;
+			if (rotNav2 >= 180.0f)
+			{
+				nav_re_6 = false;
+				nav_re_7 = true;
+				x_pos = movNav2X;
+				z_pos = movNav2z;
+			}
+		}
 
 
+		if (nav_re_7)
+		{
+			movNav2X = x_pos - radix * glm::sin(glm::radians(rotNav2));
+			movNav2z = z_pos - radix * glm::sin(glm::radians(rotNav2));
+			rotNav2 -= 2.0f;
+			if (rotNav2 <= 90.0f)
+			{
+				nav_re_7 = false;
+				nav_re_8 = true;
+				x_pos = movNav2X;
+				z_pos = movNav2z;
+			}
+		}
+
+		if (nav_re_8)
+		{
+			movNav2X = x_pos + radix * glm::cos(glm::radians(rotNav2));
+			movNav2z = z_pos + radix * glm::sin(glm::radians(rotNav2 - 90.0f));
+			rotNav2 -= 2.0f;
+			if (rotNav2 <= 0.0f)
+			{
+				nav_re_8 = false;
+				nav_re_9 = true;
+				x_pos = movNav2X;
+				z_pos = movNav2z;
+			}
+		}
+
+		if (nav_re_9)
+		{
+			nav_re_9 = false;
+			nav2 = false;
+			nav_re_1 = true;
+		}
+	}
 }
 
 unsigned int generateTextures(const char* filename, bool alfa)
@@ -738,7 +742,7 @@ void LoadTextures()
 	t_window = generateTextures("Texturas/window.png", 1.0);
 	t_view_window = generateTextures("Texturas/view_window.jpg", 0);
 	t_view2_window = generateTextures("Texturas/view2_window.jpg", 0);
-    t_specular = generateTextures("Texturas/Metal_gris.jpg", 0);
+	t_specular = generateTextures("Texturas/Metal_gris.jpg", 0);
 	t_obstcl = generateTextures("Texturas/obstacle.jpg", 0);
 }
 
@@ -848,8 +852,8 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    //ANCHO: 42.42  ALTURA:3.297 ALTO: 96.4345
-    convertir_inclinado(glm::vec2(42.42f, 96.4345f));
+	//ANCHO: 42.42  ALTURA:3.297 ALTO: 96.4345
+	convertir_inclinado(glm::vec2(42.42f, 96.4345f));
 	// glfw window creation
 	// --------------------
 	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Gaming Room - Final Project", NULL, NULL);
@@ -868,15 +872,15 @@ int main()
 
 	// tell GLFW to capture our mouse
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    for (int i = 0; i < MAX_FRAMES; i++)
-    {
-        nave_KeyFrame[i].nave_x = 0;
-        nave_KeyFrame[i].nave_y = 0;
-        nave_KeyFrame[i].nave_z = 0;
-        nave_KeyFrame[i].nave_rotacion_x = 0;
+	for (int i = 0; i < MAX_FRAMES; i++)
+	{
+		nave_KeyFrame[i].nave_x = 0;
+		nave_KeyFrame[i].nave_y = 0;
+		nave_KeyFrame[i].nave_z = 0;
+		nave_KeyFrame[i].nave_rotacion_x = 0;
 		nave_KeyFrame[i].nave_rotacion_y = 0;
-        nave_KeyFrame[i].nave_rotacion_z = 0;
-    }
+		nave_KeyFrame[i].nave_rotacion_z = 0;
+	}
 
 	// glad: load all OpenGL function pointers
 	// ---------------------------------------
@@ -927,19 +931,19 @@ int main()
 	Model flipper("resources/objects/flipper/flipper_1.obj");
 	Model canica("resources/objects/canica/ball.obj");
 	Model resorte("resources/objects/resorte/spring.obj");
-    Model pinball("resources/objects/Pinball/Pinball.obj");
-    Model metroid("resources/objects/Metroid/metroid.obj");
-    Model nave("resources/objects/Nave/nave.obj");
-    Model estructura_madera("resources/objects/estructura_madera/Pieza_madera.obj");
-    Model triangulo_madera("resources/objects/Triangulo_madera/triangulo_madera.obj");
-    Model triangulo_abajo("resources/objects/Triangulo_abajo/triangulo_abajo.obj");
-    Model chozo("resources/objects/Chozo/chozo.obj");
-    Model L_obstaculo("resources/objects/L_obstaculo/L_obstaculo.obj");
-    Model palanca("resources/objects/Palanca/palanca.obj");
-    Model samus_cuerpo("resources/objects/Samus_cuerpo/samus_cuerpo.obj");
-    Model samus_canon("resources/objects/Samus_canon/samus_canon.obj");
-    Model samus_antebrazo("resources/objects/Samus_antebrazo/samus_antebrazo.obj");
-    Model samus_hombro("resources/objects/Samus_hombro/samus_hombro.obj");
+	Model pinball("resources/objects/Pinball/Pinball.obj");
+	Model metroid("resources/objects/Metroid/metroid.obj");
+	Model nave("resources/objects/Nave/nave.obj");
+	Model estructura_madera("resources/objects/estructura_madera/Pieza_madera.obj");
+	Model triangulo_madera("resources/objects/Triangulo_madera/triangulo_madera.obj");
+	Model triangulo_abajo("resources/objects/Triangulo_abajo/triangulo_abajo.obj");
+	Model chozo("resources/objects/Chozo/chozo.obj");
+	Model L_obstaculo("resources/objects/L_obstaculo/L_obstaculo.obj");
+	Model palanca("resources/objects/Palanca/palanca.obj");
+	Model samus_cuerpo("resources/objects/Samus_cuerpo/samus_cuerpo.obj");
+	Model samus_canon("resources/objects/Samus_canon/samus_canon.obj");
+	Model samus_antebrazo("resources/objects/Samus_antebrazo/samus_antebrazo.obj");
+	Model samus_hombro("resources/objects/Samus_hombro/samus_hombro.obj");
 	Model zurg("resources/objects/Zurg/zurg.obj");
 
 	// draw in wireframe
@@ -948,40 +952,40 @@ int main()
 	// render loop
 	// -----------
 
-    //Para la musica
-    SoundEngine->play2D(amigo, true);
+	//Para la musica
+	SoundEngine->play2D(amigo, true);
 
-    //Aqui se ponen los keyframes de la nave
-    /*nave_saveFrame(float nav_x, float nav_y, float nav_z, float nav_rot_x, float nav_rot_y, float nav_rot_z)*/
-    /*    nave_saveFrame(f,f,f,f,f,f);*/
-    nave_saveFrame(0.0f,0.0f,0.0f,0.0f, 0.0f, 0.0f);
-    nave_saveFrame(0.0f,10.0f,0.0f,0.0f, 0.0f, 0.0f);
-    nave_saveFrame(0.0f,20.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-    nave_saveFrame(0.0f,20.0f, 10.0f, 0.0f, 0.0f, 0.0f);
-    nave_saveFrame(0.0f, 15.0f, 20.0f, 30.0f, 0.0f, 0.0f);
-    nave_saveFrame(0.0f, 10.0f, 25.0f, 0.0f, 0.0f, 0.0f);
-    nave_saveFrame(0.0f, 15.0f, 30.0f, 0.0f, 0.0f, 0.0f);
-    nave_saveFrame(5.0f, 20.0f, 35.0f, -5.0f, 15.0f, -15.0f);
-    nave_saveFrame(20.0f, 20.0f, 39.0f, -10.0f, 45.0f, -45.0f);
-    nave_saveFrame(30.0f, 20.0f, 41.0f, -5.0f, 75.0f, -15.0f);
-    nave_saveFrame(40.0f, 20.0f, 42.0f, 0.0f, 90.0f, 0.0f);
+	//Aqui se ponen los keyframes de la nave
+	/*nave_saveFrame(float nav_x, float nav_y, float nav_z, float nav_rot_x, float nav_rot_y, float nav_rot_z)*/
+	/*    nave_saveFrame(f,f,f,f,f,f);*/
+	nave_saveFrame(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	nave_saveFrame(0.0f, 10.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	nave_saveFrame(0.0f, 20.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	nave_saveFrame(0.0f, 20.0f, 10.0f, 0.0f, 0.0f, 0.0f);
+	nave_saveFrame(0.0f, 15.0f, 20.0f, 30.0f, 0.0f, 0.0f);
+	nave_saveFrame(0.0f, 10.0f, 25.0f, 0.0f, 0.0f, 0.0f);
+	nave_saveFrame(0.0f, 15.0f, 30.0f, 0.0f, 0.0f, 0.0f);
+	nave_saveFrame(5.0f, 20.0f, 35.0f, -5.0f, 15.0f, -15.0f);
+	nave_saveFrame(20.0f, 20.0f, 39.0f, -10.0f, 45.0f, -45.0f);
+	nave_saveFrame(30.0f, 20.0f, 41.0f, -5.0f, 75.0f, -15.0f);
+	nave_saveFrame(40.0f, 20.0f, 42.0f, 0.0f, 90.0f, 0.0f);
 
-    nave_saveFrame(60.0f, 20.0f, 42.0f, 90.0f, 90.0f, 0.0f);
-    nave_saveFrame(80.0f, 20.0f, 42.0f, 180.0f, 90.0f, 0.0f);
-    nave_saveFrame(100.0f, 20.0f, 42.0f, 270.0f, 90.0f, 0.0f);
-    nave_saveFrame(120.0f, 20.0f, 42.0f, 360.0f, 90.0f, 0.0f);
+	nave_saveFrame(60.0f, 20.0f, 42.0f, 90.0f, 90.0f, 0.0f);
+	nave_saveFrame(80.0f, 20.0f, 42.0f, 180.0f, 90.0f, 0.0f);
+	nave_saveFrame(100.0f, 20.0f, 42.0f, 270.0f, 90.0f, 0.0f);
+	nave_saveFrame(120.0f, 20.0f, 42.0f, 360.0f, 90.0f, 0.0f);
 
-    datos.push_back(glm::vec3(-119.416f, -120.479f, 153.883f));
-    datos.push_back(glm::vec3(-119.317f, -119.145f, 63.9851f));
-    datos.push_back(glm::vec3(-148.894f, -118.67f, 86.1526f));
-    datos.push_back(glm::vec3(-128.637f, -120.086f, 109.237f));
-    datos.push_back(glm::vec3(-131.098, -118.773, 91.2278));
-    datos.push_back(glm::vec3(-140.561, -121.863, 159.823));
-    estados = prueba_funcion(datos, 80.0f);
+	datos.push_back(glm::vec3(-119.416f, -120.479f, 153.883f));
+	datos.push_back(glm::vec3(-119.317f, -119.145f, 63.9851f));
+	datos.push_back(glm::vec3(-148.894f, -118.67f, 86.1526f));
+	datos.push_back(glm::vec3(-128.637f, -120.086f, 109.237f));
+	datos.push_back(glm::vec3(-131.098, -118.773, 91.2278));
+	datos.push_back(glm::vec3(-140.561, -121.863, 159.823));
+	estados = prueba_funcion(datos, 80.0f);
 
-    mov_canica_x = datos[0].x;
-    mov_canica_y = datos[0].y;
-    mov_canica_z = datos[0].z;
+	mov_canica_x = datos[0].x;
+	mov_canica_y = datos[0].y;
+	mov_canica_z = datos[0].z;
 
 
 	while (!glfwWindowShouldClose(window))
@@ -1010,7 +1014,7 @@ int main()
 		staticShader.setVec3("dirLight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
 		staticShader.setVec3("dirLight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
-		
+
 		//Luz 1 - Ilumina todo el tablero de Pinball
 		staticShader.setVec3("pointLight[0].position", glm::vec3(-138.8f, -123.5f, 105.0f));
 		staticShader.setVec3("pointLight[0].ambient", glm::vec3(0.2, 0.1f, 0.1f));
@@ -1069,7 +1073,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// ESCENARIO
 		// -------------------------------------------------------------------------------------------------------------------------
-		
+
 		staticShader.setMat4("projection", projection);
 		staticShader.setMat4("view", view);
 
@@ -1103,14 +1107,14 @@ int main()
 		staticShader.setMat4("model", model);
 		sofa_set.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
-        
+
 		// -------------------------------------------------------------------------------------------------------------------------
-        // Carcasa de pinball
-        // -------------------------------------------------------------------------------------------------------------------------	
+		// Carcasa de pinball
+		// -------------------------------------------------------------------------------------------------------------------------	
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-138.0f, -130.0f, 100.0f));
-        model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.5f));
-        staticShader.setMat4("model", model);
-        pinball.Draw(staticShader);
+		model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.5f));
+		staticShader.setMat4("model", model);
+		pinball.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 
 
@@ -1163,11 +1167,11 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, t_ceiling);//
 		glDrawArrays(GL_QUADS, 0, 24);
 		// -------------------------------------------------------------------------------------------------------------------------
-        
+
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Puerta
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-30.0f,-75.8f, 276.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-30.0f, -75.8f, 276.0f));
 		model = glm::scale(model, glm::vec3(100.0f, 150.0f, 3.0f));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", 0.9f, 0.9f, 0.9f);
@@ -1278,28 +1282,28 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 
 		// -------------------------------------------------------------------------------------------------------------------------
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glDisable(GL_BLEND);
 		glBindVertexArray(0);
-		
+
 
 		staticShader.use();
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Flipper inf Derecho
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-130.0f, -123.0f, 140.0f));
-        model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
+		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		model = glm::rotate(model, glm::radians(rot_flipper_inf_der), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		flipper.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
-		
+
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Flipper inf Izquierdo
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-151.0f, -123.0f, 140.0f));
-        model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
+		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		model = glm::rotate(model, glm::radians(rot_flipper_inf_izq), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		flipper.Draw(staticShader);
@@ -1308,8 +1312,8 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Flipper sup Derecho
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-127.0f, -122.1f, 110.0f));        
-        model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-127.0f, -122.1f, 110.0f));
+		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		model = glm::rotate(model, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(rot_flipper_sup_der), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
@@ -1320,7 +1324,7 @@ int main()
 		// Flipper sup Izquierdo
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-154.0f, -122.1f, 110.0f));
-        model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
+		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		model = glm::rotate(model, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(rot_flipper_sup_izq), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
@@ -1330,14 +1334,14 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Resorte
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(ANCHO, 1.0f))+glm::vec3(10.0f, 0.0f, 0.0f));
+		model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(ANCHO, 1.0f)) + glm::vec3(10.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(1.8f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(1.8f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(mov_resorte_x, 0.65f, 0.65f));//el scale va en X para simular su compactacion
 		staticShader.setMat4("model", model);
 		resorte.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
-		
+
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Mesa de billar 
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -1349,30 +1353,33 @@ int main()
 		billar.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 
-        staticShader.setFloat("material_shininess", 51.2f);
+		/*Avatar de Samus*/
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(170.0f, -150.5f, -193.0f));
+		staticShader.setMat4("model", model);
+		samus_cuerpo.Draw(staticShader);
 
-        /*Avatar de Samus*/
-        model = glm::translate(glm::mat4(1.0f), glm::vec3(170.0f, -150.5f, -193.0f));
-        staticShader.setMat4("model", model);
-        samus_cuerpo.Draw(staticShader);
+		model = glm::translate(model, glm::vec3(-15.0f, 98.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		samus_hombro.Draw(staticShader);
 
-        model = glm::translate(model, glm::vec3(-15.0f, 98.0f, 0.0f));
-        staticShader.setMat4("model", model);
-        samus_hombro.Draw(staticShader);
+		model = glm::translate(model, glm::vec3(-1.0f, -14.0f, 14.0f));
+		staticShader.setMat4("model", model);
+		samus_antebrazo.Draw(staticShader);
 
-        model = glm::translate(model, glm::vec3(-1.0f, -14.0f, 14.0f));
-        staticShader.setMat4("model", model);
-        samus_antebrazo.Draw(staticShader);
+		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 28.0f));
+		staticShader.setMat4("model", model);
+		samus_canon.Draw(staticShader);
 
-        model = glm::translate(model, glm::vec3(0.0f, -1.0f, 28.0f));
-        staticShader.setMat4("model", model);
-        samus_canon.Draw(staticShader);
+		staticShader.setFloat("material_shininess", 51.2f);
 
-        //Avatar Zurg
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Avatar de Zurg
+		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-154.144f, -148.623f, -229.835f));
-        model = glm::scale(model, glm::vec3(20.0f, 20.0f, 20.0f));
+		model = glm::scale(model, glm::vec3(20.0f, 20.0f, 20.0f));
 		staticShader.setMat4("model", model);
 		zurg.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Canica Resorte
@@ -1384,155 +1391,147 @@ int main()
 		canica.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 
-        staticShader.setFloat("material_shininess", 32.0f);
+		staticShader.setFloat("material_shininess", 32.0f);
 
 
-        //--------------------------------------------------------------------------------------------------------------------------
-        // Nave-Samus
-        //--------------------------------------------------------------------------------------------------------------------------
-        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(4.0f, ALTO-4.0f)));
-        model = glm::scale(model, glm::vec3(1.5F, 1.5f, 1.5f));
-        model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
-        model = glm::translate(model, glm::vec3(nave_x, nave_y, nave_z));
-        model = glm::rotate(model, glm::radians(nave_rotacion_x), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(nave_rotacion_y), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(nave_rotacion_z), glm::vec3(0.0f, 0.0f, 1.0f));
-        staticShader.setMat4("model", model);
-        nave.Draw(staticShader);
+		//--------------------------------------------------------------------------------------------------------------------------
+		// Nave-Samus
+		//--------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(4.0f, ALTO - 4.0f)));
+		model = glm::scale(model, glm::vec3(1.5F, 1.5f, 1.5f));
+		model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
+		model = glm::translate(model, glm::vec3(nave_x, nave_y, nave_z));
+		model = glm::rotate(model, glm::radians(nave_rotacion_x), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(nave_rotacion_y), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(nave_rotacion_z), glm::vec3(0.0f, 0.0f, 1.0f));
+		staticShader.setMat4("model", model);
+		nave.Draw(staticShader);
 
-        //--------------------------------------------------------------------------------------------------------------------------
-        // Nave-Samus-2
-        //--------------------------------------------------------------------------------------------------------------------------
-        model = glm::translate(glm::mat4(1.0f), PosIniNav2 + glm::vec3(movNav2X, 0.0f, movNav2z));
-        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::scale(model, glm::vec3(1.5F, 1.5f, 1.5f));
-        model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
-        model = glm::rotate(model, glm::radians(rotNav2), glm::vec3(0.0f, 1.0f, 0.0f));
-        staticShader.setMat4("model", model);
-        nave.Draw(staticShader);
+		//--------------------------------------------------------------------------------------------------------------------------
+		// Nave-Samus-2
+		//--------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), PosIniNav2 + glm::vec3(movNav2X, 0.0f, movNav2z));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.5F, 1.5f, 1.5f));
+		model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
+		model = glm::rotate(model, glm::radians(rotNav2), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		nave.Draw(staticShader);
 
-        //--------------------------------------------------------------------------------------------------------------------------
-        // Pieza de Madera para dar forma (estructura de madera larga del lado derecho)
-        //--------------------------------------------------------------------------------------------------------------------------
-        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(ANCHO-15.0f, ALTO / 2))-glm::vec3(0.0f, 7.0f, 0.0f));
-        model = glm::scale(model, glm::vec3(1.2F, 1.2f, 1.5f));
-        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
-        staticShader.setMat4("model", model);
-        estructura_madera.Draw(staticShader);
-
-
-        //--------------------------------------------------------------------------------------------------------------------------
-        // Pieza de Madera para dar forma (triangulo de madera, superior derecho)
-        //--------------------------------------------------------------------------------------------------------------------------
-        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(ANCHO, ALTO-2.0f)));
-        model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.5f));
-        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
-        staticShader.setMat4("model", model);
-        triangulo_madera.Draw(staticShader);
-
-        /*
-        Model L_obstaculo("resources/objects/L_obstaculo/L_obstaculo.obj");
-        */
-
-        // -------------------------------------------------------------------------------------------------------------------------
-        // L-obstaculo inf Derecho
-        // -------------------------------------------------------------------------------------------------------------------------
-        model = glm::translate(glm::mat4(1.0f), glm::vec3(-121.0f, -123.0f, 148.0f));
-        model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.5f));
-        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
-        staticShader.setMat4("model", model);
-        L_obstaculo.Draw(staticShader);
-        // -------------------------------------------------------------------------------------------------------------------------
-
-        // -------------------------------------------------------------------------------------------------------------------------
-        // L-obstaculo inf Izquierdo
-        // -------------------------------------------------------------------------------------------------------------------------
-        model = glm::translate(glm::mat4(1.0f), glm::vec3(-160.0f, -123.0f, 148.0f));
-        model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.5f));
-        model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
-        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
-        staticShader.setMat4("model", model);
-        L_obstaculo.Draw(staticShader);
-        // -------------------------------------------------------------------------------------------------------------------------
-
-        //--------------------------------------------------------------------------------------------------------------------------
-        // Pieza de textura verdosa para dar forma (triangulo de abajo, izquierda)
-        //--------------------------------------------------------------------------------------------------------------------------
-        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(5.9f,3.3f)));
-        model = glm::scale(model, glm::vec3(1.2f)*glm::vec3(1.2f, 1.2f, 1.5f));
-        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
-        //model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        staticShader.setMat4("model", model);
-        triangulo_abajo.Draw(staticShader);
-
-        //--------------------------------------------------------------------------------------------------------------------------
-        // Pieza de textura verdosa para dar forma (triangulo de abajo, derecha)
-        //--------------------------------------------------------------------------------------------------------------------------
-        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(32.5f, 3.3f)));
-        model = glm::scale(model, glm::vec3(1.2f)*glm::vec3(1.2f, 1.2f, 1.5f));
-        model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
-        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
-        staticShader.setMat4("model", model);
-        triangulo_abajo.Draw(staticShader);
-
-        //--------------------------------------------------------------------------------------------------------------------------
-        // Palanca para el pinball
-        //--------------------------------------------------------------------------------------------------------------------------
-        model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(54.0f, 0.0f))+glm::vec3(-3.7f, -7.5f, 11.0f));
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, mov_palanca));
-        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
-        staticShader.setMat4("model", model);
-        palanca.Draw(staticShader);
+		//--------------------------------------------------------------------------------------------------------------------------
+		// Pieza de Madera para dar forma (estructura de madera larga del lado derecho)
+		//--------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(ANCHO - 15.0f, ALTO / 2)) - glm::vec3(0.0f, 7.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.2F, 1.2f, 1.5f));
+		model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		estructura_madera.Draw(staticShader);
 
 
-        /*Instancia de dos chozos*/
-        auto temp = model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(9.0f, 70.0f)));
-        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
-        staticShader.setMat4("model", model);
-        chozo.Draw(staticShader);
+		//--------------------------------------------------------------------------------------------------------------------------
+		// Pieza de Madera para dar forma (triangulo de madera, superior derecho)
+		//--------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(ANCHO, ALTO - 2.0f)));
+		model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.5f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		triangulo_madera.Draw(staticShader);
 
-        model = glm::translate(temp, glm::vec3(21.0f, 0.0f, 0.0f ));
-        model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
-        staticShader.setMat4("model", model);
-        chozo.Draw(staticShader);
+		/*
+		Model L_obstaculo("resources/objects/L_obstaculo/L_obstaculo.obj");
+		*/
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// L-obstaculo inf Derecho
+		// -------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-121.0f, -123.0f, 148.0f));
+		model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.5f));
+		model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		L_obstaculo.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// L-obstaculo inf Izquierdo
+		// -------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-160.0f, -123.0f, 148.0f));
+		model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.5f));
+		model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		L_obstaculo.Draw(staticShader);
+		// -------------------------------------------------------------------------------------------------------------------------
+
+		//--------------------------------------------------------------------------------------------------------------------------
+		// Pieza de textura verdosa para dar forma (triangulo de abajo, izquierda)
+		//--------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(5.9f, 3.3f)));
+		model = glm::scale(model, glm::vec3(1.2f)*glm::vec3(1.2f, 1.2f, 1.5f));
+		model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		triangulo_abajo.Draw(staticShader);
+
+		//--------------------------------------------------------------------------------------------------------------------------
+		// Pieza de textura verdosa para dar forma (triangulo de abajo, derecha)
+		//--------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(32.5f, 3.3f)));
+		model = glm::scale(model, glm::vec3(1.2f)*glm::vec3(1.2f, 1.2f, 1.5f));
+		model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		triangulo_abajo.Draw(staticShader);
+
+		//--------------------------------------------------------------------------------------------------------------------------
+		// Palanca para el pinball
+		//--------------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(54.0f, 0.0f)) + glm::vec3(-3.7f, -7.5f, 11.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, mov_palanca));
+		model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		palanca.Draw(staticShader);
+
+
+		/*Instancia de dos chozos*/
+		auto temp = model = glm::translate(glm::mat4(1.0f), convertir_inclinado(glm::vec2(9.0f, 70.0f)));
+		model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		chozo.Draw(staticShader);
+
+		model = glm::translate(temp, glm::vec3(21.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(angulo), glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		chozo.Draw(staticShader);
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Canica Con Camara especial
 		// -------------------------------------------------------------------------------------------------------------------------
-		/*
-		projection = glm::perspective(glm::radians(camera.getZoom()), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
-		view = camera.GetViewMatrix();
-		staticShader.setMat4("projection", projection);
-		staticShader.setMat4("view", view);
-
-		
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(mov_canica_cam_X, mov_canica_cam_y, mov_canica_cam_z));
 		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
 		staticShader.setMat4("model", model);
 		canica.Draw(staticShader);
-		*/
 		// -------------------------------------------------------------------------------------------------------------------------
 
-        // -------------------------------------------------------------------------------------------------------------------------
-        // Metroid-obstaculo
-        // -------------------------------------------------------------------------------------------------------------------------
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        model = glm::translate(glm::mat4(1.0f), glm::vec3(-142.0f + metroid_x, -119.0f + metroid_y, 82.2686f + metroid_z));
-        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(1.8f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(metroid_ori), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, glm::vec3(2.5f, 2.5f, 2.5f));
-        staticShader.setMat4("model", model);
-        metroid.Draw(staticShader);
-        glDisable(GL_BLEND);
-        glBindVertexArray(0);
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Metroid-obstaculo
+		// -------------------------------------------------------------------------------------------------------------------------
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-142.0f + metroid_x, -119.0f + metroid_y, 82.2686f + metroid_z));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(1.8f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(metroid_ori), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(2.5f, 2.5f, 2.5f));
+		staticShader.setMat4("model", model);
+		metroid.Draw(staticShader);
+		glDisable(GL_BLEND);
+		glBindVertexArray(0);
 
 
-        // -------------------------------------------------------------------------------------------------------------------------
-        // -------------------------------------------------------------------------------------------------------------------------
+		// -------------------------------------------------------------------------------------------------------------------------
+		// -------------------------------------------------------------------------------------------------------------------------
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// TERMINA ESCENARIO
@@ -1560,7 +1559,7 @@ int main()
 
 	skybox.Terminate();
 
-    SoundEngine->drop();
+	SoundEngine->drop();
 
 	glfwTerminate();
 	return 0;
@@ -1572,31 +1571,101 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera.ProcessKeyboard(Camera_Movement::FORWARD, (float)deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera.ProcessKeyboard(Camera_Movement::BACKWARD, (float)deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera.ProcessKeyboard(Camera_Movement::LEFT, (float)deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera.ProcessKeyboard(Camera_Movement::RIGHT, (float)deltaTime);
-    //O para decrementar velocidad y P para incrementar velocidad
-    if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
-    {
-        //Decrementamos por 0.1f
-        camera.IncrementaDecrementaVel(false);
-    }
-    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-    {
-        //Incrementamos por 0.1f
-        camera.IncrementaDecrementaVel(true);
-    }
 
-    //Para conseguir la posicion de la camara, util para ubicar las posiciones de los modelos
-    if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
-    {
-        camera.imprimirPos();
-    }
+	// Movimiento de la camara
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		if (camara_canica) {
+			glm::vec3 tmp_cam_pos = camera.getPosition();
+			camera.ProcessKeyboard(Camera_Movement::FORWARD, (float)deltaTime);
+			glm::vec3 cam_pos = camera.getPosition();
+			if (cam_pos.x >= -155.5f && cam_pos.x <= -118.5f && cam_pos.y >= -122.0f && cam_pos.y <= -117.0f && cam_pos.z <= 155.0f && cam_pos.z >= 62.0f) {
+				mov_canica_cam_X = cam_pos.x;
+				mov_canica_cam_y = cam_pos.y - 0.8f;
+				mov_canica_cam_z = cam_pos.z;
+			}
+			else {
+				camera.SetPositionCamera(tmp_cam_pos.x, tmp_cam_pos.y, tmp_cam_pos.z);
+			}
+		}
+		else {
+			camera.ProcessKeyboard(Camera_Movement::FORWARD, (float)deltaTime);
+		}
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+		if (camara_canica) {
+			glm::vec3 tmp_cam_pos = camera.getPosition();
+			camera.ProcessKeyboard(Camera_Movement::BACKWARD, (float)deltaTime);
+			glm::vec3 cam_pos = camera.getPosition();
+			if (cam_pos.x >= -155.5f && cam_pos.x <= -118.5f && cam_pos.y >= -122.0f && cam_pos.y <= -117.0f && cam_pos.z <= 155.0f && cam_pos.z >= 62.0f) {
+				mov_canica_cam_X = cam_pos.x;
+				mov_canica_cam_y = cam_pos.y - 0.8f;
+				mov_canica_cam_z = cam_pos.z;
+			}
+			else {
+				camera.SetPositionCamera(tmp_cam_pos.x, tmp_cam_pos.y, tmp_cam_pos.z);
+			}
+		}
+		else {
+			camera.ProcessKeyboard(Camera_Movement::BACKWARD, (float)deltaTime);
+		}
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+		if (camara_canica) {
+			glm::vec3 tmp_cam_pos = camera.getPosition();
+			camera.ProcessKeyboard(Camera_Movement::LEFT, (float)deltaTime);
+			glm::vec3 cam_pos = camera.getPosition();
+			if (cam_pos.x >= -155.5f && cam_pos.x <= -118.5f && cam_pos.y >= -122.0f && cam_pos.y <= -117.0f && cam_pos.z <= 155.0f && cam_pos.z >= 62.0f) {
+				mov_canica_cam_X = cam_pos.x;
+				mov_canica_cam_y = cam_pos.y - 0.8f;
+				mov_canica_cam_z = cam_pos.z;
+			}
+			else {
+				camera.SetPositionCamera(tmp_cam_pos.x, tmp_cam_pos.y, tmp_cam_pos.z);
+			}
+		}
+		else {
+			camera.ProcessKeyboard(Camera_Movement::LEFT, (float)deltaTime);
+		}
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+		if (camara_canica) {
+			glm::vec3 tmp_cam_pos = camera.getPosition();
+			camera.ProcessKeyboard(Camera_Movement::RIGHT, (float)deltaTime);
+			glm::vec3 cam_pos = camera.getPosition();
+			if (cam_pos.x >= -155.5f && cam_pos.x <= -118.5f && cam_pos.y >= -122.0f && cam_pos.y <= -117.0f && cam_pos.z <= 155.0f && cam_pos.z >= 62.0f) {
+				mov_canica_cam_X = cam_pos.x;
+				mov_canica_cam_y = cam_pos.y - 0.8f;
+				mov_canica_cam_z = cam_pos.z;
+			}
+			else {
+				camera.SetPositionCamera(tmp_cam_pos.x, tmp_cam_pos.y, tmp_cam_pos.z);
+			}
+		}
+		else {
+			camera.ProcessKeyboard(Camera_Movement::RIGHT, (float)deltaTime);
+		}
+	}
+
+	//O para decrementar velocidad y P para incrementar velocidad
+	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+	{
+		//Decrementamos por 0.1f
+		camera.IncrementaDecrementaVel(false);
+	}
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+	{
+		//Incrementamos por 0.1f
+		camera.IncrementaDecrementaVel(true);
+	}
+
+	//Para conseguir la posicion de la camara, util para ubicar las posiciones de los modelos
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+	{
+		camera.imprimirPos();
+	}
 
 	//Para activar el movimiento de los flippers
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
@@ -1609,13 +1678,13 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		animacion_flippers_der = true;
 	}
 
-    //Para activar animacion nave 2
-    if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
-    {
-        nav2 = true;
-    }
+	//Para activar animacion nave 2
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
+	{
+		nav2 = true;
+	}
 
-	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) 
+	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
 	{
 		// Enceinde Luz 1
 		if (luz1_bool == false) {
@@ -1628,7 +1697,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 			luz1_const = 1.0f;
 			luz1_bool = false;
 		}
-		
+
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
@@ -1671,11 +1740,22 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
-		//glm::vec3 reset_camera = camera.getPosition();
-		//camera.SetPositionCamera(0.0f, 0.0f, 0.0f);
-		//Camera camera(glm::vec3(0.0f, -115.0f, 450.0f));
+		if (!flag_camera_reset) {
+			flag_camera_reset = true;
+			reset_camera_principal = camera.getPosition();
+			camera.SetPositionCamera(reset_camera_canica.x, reset_camera_canica.y, reset_camera_canica.z);
+			camara_canica = true;
+		}
 	}
-	
+	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) {
+		if (flag_camera_reset) {
+			flag_camera_reset = false;
+			camara_canica = false;
+			reset_camera_canica = camera.getPosition();
+			camera.SetPositionCamera(reset_camera_principal.x, reset_camera_principal.y, reset_camera_principal.z);
+		}
+	}
+
 
 	//To Configure Model, en este momento no estan siendo utilizados
 	/*if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
@@ -1695,19 +1775,19 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
 		giroMonito++;
 	*/
-    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
-    {
-        if (SoundEngine->isCurrentlyPlaying(amigo))
-        {
-            SoundEngine->stopAllSounds();
-            SoundEngine->play2D(tallon, true);
-        }
-        else if (SoundEngine->isCurrentlyPlaying(tallon))
-        {
-            SoundEngine->stopAllSounds();
-            SoundEngine->play2D(amigo, true);
-        }
-    }
+	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+	{
+		if (SoundEngine->isCurrentlyPlaying(amigo))
+		{
+			SoundEngine->stopAllSounds();
+			SoundEngine->play2D(tallon, true);
+		}
+		else if (SoundEngine->isCurrentlyPlaying(tallon))
+		{
+			SoundEngine->stopAllSounds();
+			SoundEngine->play2D(amigo, true);
+		}
+	}
 	//To play KeyFrame animation 
 	if (key == GLFW_KEY_Q && action == GLFW_PRESS)
 	{
