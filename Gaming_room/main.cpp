@@ -728,7 +728,7 @@ void LoadTextures()
 	t_view_window = generateTextures("Texturas/view_window.jpg", 0);
 	t_view2_window = generateTextures("Texturas/view2_window.jpg", 0);
     t_specular = generateTextures("Texturas/Metal_gris.jpg", 0);
-	//t_obstcl = generateTextures("Texturas/flipper.jpg", 0);
+	t_obstcl = generateTextures("Texturas/obstacle.jpg", 0);
 }
 
 void myData()
@@ -863,7 +863,7 @@ int main()
         nave_KeyFrame[i].nave_y = 0;
         nave_KeyFrame[i].nave_z = 0;
         nave_KeyFrame[i].nave_rotacion_x = 0;
-        nave_KeyFrame[i].nave_rotacion_y = 0;
+		nave_KeyFrame[i].nave_rotacion_y = 0;
         nave_KeyFrame[i].nave_rotacion_z = 0;
     }
 
@@ -1193,13 +1193,79 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Obstaculo - Modo Jearquico - Pinball
 		// -------------------------------------------------------------------------------------------------------------------------
-		//model = glm::translate(glm::mat4(1.0f), glm::vec3(-125.0f, -110.0f, 100.7f));
-		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		//model = glm::scale(model, glm::vec3(3.0f, 15.0f, 5.0f));
-		//projectionShader.setMat4("model", model);
-		//projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-		//glBindTexture(GL_TEXTURE_2D, t_obstcl);
-		//glDrawArrays(GL_QUADS, 24, 24);
+		//1
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-138.0f, -118.2f, 63.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		tmp = model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 4.0f, 2.0f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		glBindTexture(GL_TEXTURE_2D, t_obstcl);
+		glDrawArrays(GL_QUADS, 24, 24);
+
+		tmp = model = glm::translate(tmp, glm::vec3(0.0f, 2.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 3.0f, 1.0f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		glBindTexture(GL_TEXTURE_2D, t_obstcl);
+		glDrawArrays(GL_QUADS, 24, 24);
+
+		model = glm::translate(tmp, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 5.0f, 0.5f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		glBindTexture(GL_TEXTURE_2D, t_obstcl);
+		glDrawArrays(GL_QUADS, 0, 24);
+
+		//2
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-148.0f, -118.2f, 63.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		tmp = model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 4.0f, 2.0f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		glBindTexture(GL_TEXTURE_2D, t_obstcl);
+		glDrawArrays(GL_QUADS, 24, 24);
+
+		tmp = model = glm::translate(tmp, glm::vec3(0.0f, 2.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 3.0f, 1.0f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		glBindTexture(GL_TEXTURE_2D, t_obstcl);
+		glDrawArrays(GL_QUADS, 24, 24);
+
+		model = glm::translate(tmp, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 5.0f, 0.5f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		glBindTexture(GL_TEXTURE_2D, t_obstcl);
+		glDrawArrays(GL_QUADS, 0, 24);
+
+		//3
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-128.0f, -118.2f, 63.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		tmp = model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 4.0f, 2.0f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		glBindTexture(GL_TEXTURE_2D, t_obstcl);
+		glDrawArrays(GL_QUADS, 24, 24);
+
+		tmp = model = glm::translate(tmp, glm::vec3(0.0f, 2.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 3.0f, 1.0f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		glBindTexture(GL_TEXTURE_2D, t_obstcl);
+		glDrawArrays(GL_QUADS, 24, 24);
+
+		model = glm::translate(tmp, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 5.0f, 0.5f));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		glBindTexture(GL_TEXTURE_2D, t_obstcl);
+		glDrawArrays(GL_QUADS, 0, 24);
+		// -------------------------------------------------------------------------------------------------------------------------
+
 		// -------------------------------------------------------------------------------------------------------------------------
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
