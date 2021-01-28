@@ -20,6 +20,12 @@ void Camera::ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime)
         Position += Right * velocity;
 }
 
+void Camera::SetPositionCamera(GLfloat pos_x, GLfloat pos_y, GLfloat pos_z) {
+	Position.x = pos_x;
+	Position.y = pos_y;
+	Position.z = pos_z;
+}
+
 //Procesa la entrada proveniente de un sistema de entrada del mouse y requiere el valor x e y.
 void Camera::ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset, GLboolean constrainPitch)
 {

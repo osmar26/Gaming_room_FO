@@ -203,6 +203,14 @@ GLfloat mov_resorte_x = 0.65f,
 		mov_canica_z = 152.f,
 		rot_canica = 0.0f;
 
+// Canica con camara
+GLfloat mov_canica_cam_X = 0.0f,
+		mov_canica_cam_y = 0.0f, 
+		mov_canica_cam_z = 0.0f;
+
+bool camara_canica = false;
+
+//
 std::vector<glm::vec3> datos;
 std::vector<glm::vec3> estados;
 
@@ -1492,6 +1500,23 @@ int main()
         staticShader.setMat4("model", model);
         chozo.Draw(staticShader);
 
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Canica Con Camara especial
+		// -------------------------------------------------------------------------------------------------------------------------
+		/*
+		projection = glm::perspective(glm::radians(camera.getZoom()), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
+		view = camera.GetViewMatrix();
+		staticShader.setMat4("projection", projection);
+		staticShader.setMat4("view", view);
+
+		
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(mov_canica_cam_X, mov_canica_cam_y, mov_canica_cam_z));
+		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
+		staticShader.setMat4("model", model);
+		canica.Draw(staticShader);
+		*/
+		// -------------------------------------------------------------------------------------------------------------------------
 
         // -------------------------------------------------------------------------------------------------------------------------
         // Metroid-obstaculo
@@ -1647,6 +1672,14 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		}
 
 	}
+
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
+		//glm::vec3 reset_camera = camera.getPosition();
+		camera.SetPositionCamera(0.0f, 0.0f, 0.0f);
+		//Camera camera(glm::vec3(0.0f, -115.0f, 450.0f));
+	}
+	
+
 	//To Configure Model, en este momento no estan siendo utilizados
 	/*if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
 		posZ++;

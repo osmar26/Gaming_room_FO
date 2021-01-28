@@ -53,6 +53,9 @@ public:
     para ello se usa la clase enum*/
     void ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime);
 
+	/*Cambia la posicion de la camara a la que se reciba por parametro*/
+	void SetPositionCamera(GLfloat pos_x, GLfloat pos_t, GLfloat pos_z);
+
     /*Con esta función podremos decrementar la velocidad o incrementarla*/
     void IncrementaDecrementaVel(bool incre);
 
