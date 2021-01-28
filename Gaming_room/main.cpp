@@ -203,14 +203,20 @@ GLfloat mov_resorte_x = 0.65f,
 		mov_canica_z = 152.f,
 		rot_canica = 0.0f;
 
-// Canica con camara
-GLfloat mov_canica_cam_X = 0.0f,
-		mov_canica_cam_y = 0.0f, 
-		mov_canica_cam_z = 0.0f;
 
-bool camara_canica = false;
+////////////////////// Canica con camara //////////////////////
+GLfloat mov_canica_cam_X = -138.0f,
+		mov_canica_cam_y = -120.0f, 
+		mov_canica_cam_z = 100.0f;
 
-//
+glm::vec3 reset_camera_principal = camera.getPosition();
+glm::vec3 reset_camera_canica = glm::vec3(-138.0f, -119.2f, 100.0f);
+
+bool camara_canica = false,
+	 flag_camera_reset = false;
+//////////////////////////////////////////////////////////////
+
+
 std::vector<glm::vec3> datos;
 std::vector<glm::vec3> estados;
 
@@ -688,8 +694,6 @@ void animate(void)
             nav_re_1 = true;
         }
     }
-
-
 }
 
 unsigned int generateTextures(const char* filename, bool alfa)
@@ -1503,19 +1507,11 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Canica Con Camara especial
 		// -------------------------------------------------------------------------------------------------------------------------
-		/*
-		projection = glm::perspective(glm::radians(camera.getZoom()), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
-		view = camera.GetViewMatrix();
-		staticShader.setMat4("projection", projection);
-		staticShader.setMat4("view", view);
-
-		
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(mov_canica_cam_X, mov_canica_cam_y, mov_canica_cam_z));
 		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.65, 0.65f, 0.65f));
 		staticShader.setMat4("model", model);
 		canica.Draw(staticShader);
-		*/
 		// -------------------------------------------------------------------------------------------------------------------------
 
         // -------------------------------------------------------------------------------------------------------------------------
@@ -1575,14 +1571,84 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera.ProcessKeyboard(Camera_Movement::FORWARD, (float)deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera.ProcessKeyboard(Camera_Movement::BACKWARD, (float)deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera.ProcessKeyboard(Camera_Movement::LEFT, (float)deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera.ProcessKeyboard(Camera_Movement::RIGHT, (float)deltaTime);
+
+	// Movimiento de la camara
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		if (camara_canica) {
+			glm::vec3 tmp_cam_pos = camera.getPosition();
+			camera.ProcessKeyboard(Camera_Movement::FORWARD, (float)deltaTime);
+			glm::vec3 cam_pos = camera.getPosition();
+			if (cam_pos.x >= -155.5f && cam_pos.x <= -118.5f && cam_pos.y >=-124.0f && cam_pos.y <=-119.2f && cam_pos.z <= 155.0f && cam_pos.z >=62.0f) {
+				mov_canica_cam_X = cam_pos.x;
+				mov_canica_cam_y = cam_pos.y - 0.8f;
+				mov_canica_cam_z = cam_pos.z;
+			}
+			else {
+				camera.SetPositionCamera(tmp_cam_pos.x, tmp_cam_pos.y, tmp_cam_pos.z);
+			}
+		}
+		else {
+			camera.ProcessKeyboard(Camera_Movement::FORWARD, (float)deltaTime);
+		}
+	}
+		
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+		if (camara_canica) {
+			glm::vec3 tmp_cam_pos = camera.getPosition();
+			camera.ProcessKeyboard(Camera_Movement::BACKWARD, (float)deltaTime);
+			glm::vec3 cam_pos = camera.getPosition();
+			if (cam_pos.x >= -155.5f && cam_pos.x <= -118.5f && cam_pos.y >= -124.0f && cam_pos.y <= -119.2f && cam_pos.z <= 155.0f && cam_pos.z >= 62.0f) {
+				mov_canica_cam_X = cam_pos.x;
+				mov_canica_cam_y = cam_pos.y - 0.8f;
+				mov_canica_cam_z = cam_pos.z;
+			}
+			else {
+				camera.SetPositionCamera(tmp_cam_pos.x, tmp_cam_pos.y, tmp_cam_pos.z);
+			}
+		}
+		else {
+			camera.ProcessKeyboard(Camera_Movement::BACKWARD, (float)deltaTime);
+		}
+	}
+		
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+		if (camara_canica) {
+			glm::vec3 tmp_cam_pos = camera.getPosition();
+			camera.ProcessKeyboard(Camera_Movement::LEFT, (float)deltaTime);
+			glm::vec3 cam_pos = camera.getPosition();
+			if (cam_pos.x >= -155.5f && cam_pos.x <= -118.5f && cam_pos.y >= -124.0f && cam_pos.y <= -119.2f && cam_pos.z <=155.0f && cam_pos.z >= 62.0f) {
+				mov_canica_cam_X = cam_pos.x;
+				mov_canica_cam_y = cam_pos.y - 0.8f;
+				mov_canica_cam_z = cam_pos.z;
+			}
+			else {
+				camera.SetPositionCamera(tmp_cam_pos.x, tmp_cam_pos.y, tmp_cam_pos.z);
+			}
+		}
+		else {
+			camera.ProcessKeyboard(Camera_Movement::LEFT, (float)deltaTime);
+		}
+	}
+		
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+		if (camara_canica) {
+			glm::vec3 tmp_cam_pos = camera.getPosition();
+			camera.ProcessKeyboard(Camera_Movement::RIGHT, (float)deltaTime);
+			glm::vec3 cam_pos = camera.getPosition();
+			if (cam_pos.x >= -155.5f && cam_pos.x <= -118.5f && cam_pos.y >= -124.0f && cam_pos.y <= -119.2f && cam_pos.z <= 155.0f && cam_pos.z >= 62.0f) {
+				mov_canica_cam_X = cam_pos.x;
+				mov_canica_cam_y = cam_pos.y - 0.8f;
+				mov_canica_cam_z = cam_pos.z;
+			}
+			else {
+				camera.SetPositionCamera(tmp_cam_pos.x, tmp_cam_pos.y, tmp_cam_pos.z);
+			}
+		}
+		else {
+			camera.ProcessKeyboard(Camera_Movement::RIGHT, (float)deltaTime);
+		}
+	}
+		
     //O para decrementar velocidad y P para incrementar velocidad
     if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
     {
@@ -1674,9 +1740,20 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
-		//glm::vec3 reset_camera = camera.getPosition();
-		camera.SetPositionCamera(0.0f, 0.0f, 0.0f);
-		//Camera camera(glm::vec3(0.0f, -115.0f, 450.0f));
+		if (!flag_camera_reset) {
+			flag_camera_reset = true;
+			reset_camera_principal = camera.getPosition();
+			camera.SetPositionCamera(reset_camera_canica.x, reset_camera_canica.y, reset_camera_canica.z);
+			camara_canica = true;
+		}
+	}
+	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) {
+		if (flag_camera_reset) {
+			flag_camera_reset = false;
+			camara_canica = false;
+			reset_camera_canica = camera.getPosition();
+			camera.SetPositionCamera(reset_camera_principal.x, reset_camera_principal.y, reset_camera_principal.z);
+		}
 	}
 	
 
