@@ -940,7 +940,7 @@ int main()
     Model samus_canon("resources/objects/Samus_canon/samus_canon.obj");
     Model samus_antebrazo("resources/objects/Samus_antebrazo/samus_antebrazo.obj");
     Model samus_hombro("resources/objects/Samus_hombro/samus_hombro.obj");
-	//Model zurg("resources/objects/Zurg/zurg.obj");
+	Model zurg("resources/objects/Zurg/zurg.obj");
 
 	// draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -1349,6 +1349,8 @@ int main()
 		billar.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 
+        staticShader.setFloat("material_shininess", 51.2f);
+
         /*Avatar de Samus*/
         model = glm::translate(glm::mat4(1.0f), glm::vec3(170.0f, -150.5f, -193.0f));
         staticShader.setMat4("model", model);
@@ -1366,16 +1368,11 @@ int main()
         staticShader.setMat4("model", model);
         samus_canon.Draw(staticShader);
 
-        staticShader.setFloat("material_shininess", 51.2f);
-
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Avatar de Zurg
-		// -------------------------------------------------------------------------------------------------------------------------
-		//model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		//model = glm::scale(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		//staticShader.setMat4("model", model);
-		//zurg.Draw(staticShader);
-		// -------------------------------------------------------------------------------------------------------------------------
+        //Avatar Zurg
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-154.144f, -148.623f, -229.835f));
+        model = glm::scale(model, glm::vec3(20.0f, 20.0f, 20.0f));
+		staticShader.setMat4("model", model);
+		zurg.Draw(staticShader);
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Canica Resorte
@@ -1675,7 +1672,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
 		//glm::vec3 reset_camera = camera.getPosition();
-		camera.SetPositionCamera(0.0f, 0.0f, 0.0f);
+		//camera.SetPositionCamera(0.0f, 0.0f, 0.0f);
 		//Camera camera(glm::vec3(0.0f, -115.0f, 450.0f));
 	}
 	
